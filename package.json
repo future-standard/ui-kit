@@ -1,0 +1,23 @@
+{
+  "name": "ui-kit-root",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "lint": "eslint .",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "2.30.0",
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "turbo": "2.8.17",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.35.1"
+  }
+}
