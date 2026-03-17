@@ -9,13 +9,20 @@
     "lint": "eslint .",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
     "@changesets/cli": "2.30.0",
     "@eslint/js": "^9.28.0",
+    "@storybook/react-vite": "^10.2.19",
+    "@types/react": "19.2.14",
     "eslint": "^9.28.0",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "storybook": "^10.2.19",
     "turbo": "2.8.17",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.35.1"
