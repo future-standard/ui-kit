@@ -9,6 +9,7 @@
       "dependsOn": ["^build", "^typecheck"],
       "outputs": ["dist/**/*.d.ts", "dist/**/*.d.ts.map"]
     },
+    "check": {},
     "lint": {}
   }
 }
