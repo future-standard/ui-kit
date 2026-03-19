@@ -61,8 +61,34 @@ pnpm install
 ```bash
 pnpm build        # Build all packages (via Turborepo)
 pnpm typecheck    # Type-check all packages
-pnpm lint         # Lint all packages
+pnpm check        # Run all Biome checks (lint + format + import sorting)
+pnpm check:fix    # Auto-fix all Biome issues
+pnpm lint         # Lint only
+pnpm lint:fix     # Lint and auto-fix
+pnpm format       # Format all files
 ```
+
+### Linting & Formatting
+
+This project uses [Biome](https://biomejs.dev/) for linting, formatting, and import sorting — configured in `biome.json` at the repo root.
+
+#### VS Code Setup
+
+1. Install the [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) from the VS Code marketplace.
+2. Add the following to your workspace or user `settings.json`:
+
+```json
+{
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  }
+}
+```
+
+This gives you format-on-save, auto-fix lint issues, and import sorting on every save.
 
 ### Adding a changeset
 
