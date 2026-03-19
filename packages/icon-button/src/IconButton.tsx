@@ -1,4 +1,4 @@
-import { forwardRef, type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { Button, type ButtonProps } from "@future-standard/button";
 import styles from "./IconButton.module.css";
 
@@ -7,16 +7,14 @@ export type IconButtonProps = Omit<ButtonProps, "children"> & {
   "aria-label": string;
 };
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  function IconButton({ icon, className, ...props }, ref) {
-    const classes = [styles.iconButton, className]
-      .filter(Boolean)
-      .join(" ");
+export function IconButton({ icon, className, ref, ...props }: IconButtonProps) {
+  const classes = [styles.iconButton, className]
+    .filter(Boolean)
+    .join(" ");
 
-    return (
-      <Button ref={ref} className={classes} {...props}>
-        {icon}
-      </Button>
-    );
-  }
-);
+  return (
+    <Button ref={ref} className={classes} {...props}>
+      {icon}
+    </Button>
+  );
+}
