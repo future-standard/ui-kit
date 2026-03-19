@@ -1,3 +1,5 @@
+import "./styles.css";
+
 export { Button } from "@future-standard/button";
 export type { ButtonProps } from "@future-standard/button";
 

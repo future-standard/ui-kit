@@ -47,7 +47,7 @@ import "@future-standard/ui-kit/style.css";
 
 ### Prerequisites
 
-- Node.js 22+
+- Node.js 24+
 - pnpm (enabled via `corepack enable`)
 
 ### Setup
