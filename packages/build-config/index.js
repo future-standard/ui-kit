@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 /**
  * @param {{ entry?: string; dirname: string; additionalExternal?: string[] }} options
@@ -21,12 +21,7 @@ export function createLibraryConfig({ entry = "src/index.ts", dirname, additiona
       },
 
       rolldownOptions: {
-        external: [
-          "react",
-          "react-dom",
-          "react/jsx-runtime",
-          ...additionalExternal,
-        ],
+        external: ["react", "react-dom", "react/jsx-runtime", ...additionalExternal],
       },
     },
   });

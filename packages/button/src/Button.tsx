@@ -1,4 +1,4 @@
-import { type ComponentPropsWithRef } from "react";
+import type { ComponentPropsWithRef } from "react";
 import styles from "./Button.module.css";
 
 export type ButtonProps = ComponentPropsWithRef<"button"> & {
@@ -6,9 +6,7 @@ export type ButtonProps = ComponentPropsWithRef<"button"> & {
 };
 
 export function Button({ variant = "primary", className, ref, ...props }: ButtonProps) {
-  const classes = [styles.button, styles[variant], className]
-    .filter(Boolean)
-    .join(" ");
+  const classes = [styles.button, styles[variant], className].filter(Boolean).join(" ");
 
   return <button ref={ref} className={classes} {...props} />;
 }
