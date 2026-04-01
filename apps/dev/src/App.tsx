@@ -1,9 +1,9 @@
-import { Button } from "@future-standard/button";
-import "@future-standard/button/style.css";
-import { IconButton } from "@future-standard/icon-button";
-import "@future-standard/icon-button/style.css";
-import { LoadingButton } from "@future-standard/loading-button";
-import "@future-standard/loading-button/style.css";
+import { Button } from "@future-standard-ui/button";
+import "@future-standard-ui/button/style.css";
+import { IconButton } from "@future-standard-ui/icon-button";
+import "@future-standard-ui/icon-button/style.css";
+import { LoadingButton } from "@future-standard-ui/loading-button";
+import "@future-standard-ui/loading-button/style.css";
 import { useState } from "react";
 
 const StarIcon = () => (
@@ -22,7 +22,7 @@ export function App() {
 
   return (
     <div style={{ maxWidth: 640, margin: "0 auto" }}>
-      <h1>@future-standard UI Kit</h1>
+      <h1>@future-standard-ui UI Kit</h1>
 
       <Section title="Button">
         <Button variant="primary">Primary</Button>

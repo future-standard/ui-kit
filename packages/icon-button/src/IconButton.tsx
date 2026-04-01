@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "@future-standard/button";
+import { Button, type ButtonProps } from "@future-standard-ui/button";
 import type { ReactElement } from "react";
 import styles from "./IconButton.module.css";
 

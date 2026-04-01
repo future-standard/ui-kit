@@ -23,13 +23,13 @@ importers:
 
   apps/dev:
     dependencies:
-      '@future-standard/button':
+      '@future-standard-ui/button':
         specifier: workspace:*
         version: link:../../packages/button
-      '@future-standard/icon-button':
+      '@future-standard-ui/icon-button':
         specifier: workspace:*
         version: link:../../packages/icon-button
-      '@future-standard/loading-button':
+      '@future-standard-ui/loading-button':
         specifier: workspace:*
         version: link:../../packages/loading-button
       react:
@@ -73,7 +73,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@future-standard/build-config':
+      '@future-standard-ui/build-config':
         specifier: workspace:*
         version: link:../build-config
       '@types/react':
@@ -88,7 +88,7 @@ importers:
 
   packages/icon-button:
     dependencies:
-      '@future-standard/button':
+      '@future-standard-ui/button':
         specifier: workspace:*
         version: link:../button
       react:
@@ -98,7 +98,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@future-standard/build-config':
+      '@future-standard-ui/build-config':
         specifier: workspace:*
         version: link:../build-config
       '@types/react':
@@ -113,7 +113,7 @@ importers:
 
   packages/loading-button:
     dependencies:
-      '@future-standard/button':
+      '@future-standard-ui/button':
         specifier: workspace:*
         version: link:../button
       react:
@@ -123,7 +123,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@future-standard/build-config':
+      '@future-standard-ui/build-config':
         specifier: workspace:*
         version: link:../build-config
       '@types/react':
@@ -138,13 +138,13 @@ importers:
 
   packages/ui-kit:
     dependencies:
-      '@future-standard/button':
+      '@future-standard-ui/button':
         specifier: workspace:*
         version: link:../button
-      '@future-standard/icon-button':
+      '@future-standard-ui/icon-button':
         specifier: workspace:*
         version: link:../icon-button
-      '@future-standard/loading-button':
+      '@future-standard-ui/loading-button':
         specifier: workspace:*
         version: link:../loading-button
       react:
@@ -154,7 +154,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@future-standard/build-config':
+      '@future-standard-ui/build-config':
         specifier: workspace:*
         version: link:../build-config
       '@types/react':

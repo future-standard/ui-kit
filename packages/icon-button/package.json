@@ -1,5 +1,5 @@
 {
-  "name": "@future-standard/icon-button",
+  "name": "@future-standard-ui/icon-button",
   "version": "0.0.0",
   "type": "module",
   "sideEffects": ["**/*.css"],
@@ -25,14 +25,14 @@
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
-    "@future-standard/button": "workspace:*"
+    "@future-standard-ui/button": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@future-standard/build-config": "workspace:*",
+    "@future-standard-ui/build-config": "workspace:*",
     "@types/react": "19.2.14",
     "typescript": "5.9.3",
     "vite": "8.0.0"
