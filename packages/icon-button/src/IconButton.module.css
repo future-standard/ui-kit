@@ -1,4 +1,4 @@
 .iconButton {
-  padding: 0.5rem;
+  padding: var(--button-icon-h-padding);
   aspect-ratio: 1;
 }
