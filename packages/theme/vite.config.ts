@@ -14,6 +14,7 @@ export default {
       formats: ["es", "cjs"],
       fileName: (format: string, entryName: string) =>
         `${entryName}.${format === "es" ? "js" : "cjs"}`,
+      cssFileName: "index",
     },
   },
 };
