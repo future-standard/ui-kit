@@ -1,0 +1,56 @@
+/* ============================================================
+   Component Dimension & Sizing Tokens
+   ============================================================ */
+
+:root {
+  /* Typography */
+  --font-ui: Monorale, Hiragino Sans, "ヒラギノ角ゴシック", Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", Roboto, YuGothic, "游ゴシック", Meiryo, "メイリオ", sans-serif;
+  --font-data: Lato, Hiragino Sans, "ヒラギノ角ゴシック", Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", Roboto, YuGothic, "游ゴシック", Meiryo, "メイリオ", sans-serif;
+  --font-size: 14px;
+
+  /* Common */
+  --common-height: 32px;
+
+  /* Navigation */
+  --global-menu-width-closed: 80px;
+  --global-menu-width-open: 280px;
+
+  /* Inputs */
+  --input-height: 40px;
+  --input-compact-height: 32px;
+  --input-required-dot-display: inline-block;
+
+  --input-box-shadow-x: 0;
+  --input-box-shadow-y: 0;
+  --input-box-shadow-blur: 0;
+  --input-box-shadow-spread: 0;
+
+  --input-focused-box-shadow-x: 0;
+  --input-focused-box-shadow-y: 3px;
+  --input-focused-box-shadow-blur: 3px;
+  --input-focused-box-shadow-spread: 0;
+
+  /* Buttons */
+  --button-font-size: 14px;
+  --button-height: 32px;
+  --button-h-padding: 8px;
+  --button-h-padding-outline: 7px;
+  --button-lift-default-x: 0px;
+  --button-lift-default-y: 2px;
+  --button-lift-default-blur: 4px;
+  --button-lift-default-spread: 2px;
+  --button-icon-size: 14px;
+  --button-icon-h-padding: 8px;
+
+  /* Switches */
+  --switch-height: 24px;
+  --switch-width: 40px;
+  --switch-border-width: 2px;
+  --switch-inner-size: 16px;
+  --switch-intent-offset: 3px;
+
+  /* Labels */
+  --label-font: var(--font-ui);
+  --label-font-size: 14px;
+  --label-weight: 500;
+}
