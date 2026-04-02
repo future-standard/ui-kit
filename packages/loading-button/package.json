@@ -13,8 +13,7 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.cjs"
       }
-    },
-    "./style.css": "./dist/index.css"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

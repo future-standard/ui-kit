@@ -29,7 +29,6 @@ npm install @future-standard-ui/ui-kit
 
 ```tsx
 import { Button } from "@future-standard-ui/button";
-import "@future-standard-ui/button/style.css";
 
 function App() {
   return <Button variant="primary">Click me</Button>;
@@ -40,8 +39,9 @@ With the kitchen-sink package:
 
 ```tsx
 import { Button, LoadingButton, IconButton } from "@future-standard-ui/ui-kit";
-import "@future-standard-ui/ui-kit/style.css";
 ```
+
+CSS is automatically injected when you import a component — no separate style import needed.
 
 ## Development
 

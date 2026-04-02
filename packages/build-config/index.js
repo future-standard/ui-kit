@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
+import { libInjectCss } from "vite-plugin-lib-inject-css";
 import { defineConfig } from "vite";
 
 /**
@@ -7,7 +8,7 @@ import { defineConfig } from "vite";
  */
 export function createLibraryConfig({ entry = "src/index.ts", dirname, additionalExternal = [] }) {
   return defineConfig({
-    plugins: [react()],
+    plugins: [react(), libInjectCss()],
     css: {
       modules: {
         localsConvention: "camelCaseOnly",

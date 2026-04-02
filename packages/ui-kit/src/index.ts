@@ -1,5 +1,3 @@
-import "./styles.css";
-
 export { Button } from "@future-standard-ui/button";
 export type { ButtonProps } from "@future-standard-ui/button";
 

@@ -1,9 +1,6 @@
 import { Button } from "@future-standard-ui/button";
-import "@future-standard-ui/button/style.css";
 import { IconButton } from "@future-standard-ui/icon-button";
-import "@future-standard-ui/icon-button/style.css";
 import { LoadingButton } from "@future-standard-ui/loading-button";
-import "@future-standard-ui/loading-button/style.css";
 import { useState } from "react";
 
 const StarIcon = () => (
