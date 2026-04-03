@@ -13,8 +13,7 @@ const applyTheme = (isDark: boolean) => {
 
 const getInitialTheme = (): boolean => {
   const stored = localStorage.getItem(STORAGE_KEY);
-  const isDark =
-    stored !== null ? stored !== "false" : window.matchMedia(MATCH_DARK).matches;
+  const isDark = stored !== null ? stored !== "false" : window.matchMedia(MATCH_DARK).matches;
   applyTheme(isDark);
   return isDark;
 };

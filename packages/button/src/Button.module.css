@@ -12,10 +12,8 @@
   color: var(--button-text-color);
   background-color: var(--button-background-color);
   cursor: pointer;
-  transition:
-    background-color var(--speed-fast) var(--easing-primary-out),
-    border-color var(--speed-fast) var(--easing-primary-out),
-    color var(--speed-fast) var(--easing-primary-out);
+  transition: background-color var(--speed-fast) var(--easing-primary-out), border-color
+    var(--speed-fast) var(--easing-primary-out), color var(--speed-fast) var(--easing-primary-out);
 }
 
 .button:hover:not(:disabled) {
