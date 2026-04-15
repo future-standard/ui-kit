@@ -1,5 +1,5 @@
 {
-  "name": "@future-standard/dev",
+  "name": "@future-standard-ui/dev",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,9 +7,9 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@future-standard/button": "workspace:*",
-    "@future-standard/icon-button": "workspace:*",
-    "@future-standard/loading-button": "workspace:*",
+    "@future-standard-ui/button": "workspace:*",
+    "@future-standard-ui/icon-button": "workspace:*",
+    "@future-standard-ui/loading-button": "workspace:*",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

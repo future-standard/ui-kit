@@ -1,4 +1,4 @@
-import { Button } from "@future-standard/button";
+import { Button } from "@future-standard-ui/button";
 import type { ComponentPropsWithRef } from "react";
 import styles from "./LoadingButton.module.css";
 

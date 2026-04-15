@@ -1,5 +1,5 @@
 {
-  "name": "@future-standard/build-config",
+  "name": "@future-standard-ui/build-config",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,5 +9,8 @@
   "dependencies": {
     "@vitejs/plugin-react": "6.0.1",
     "vite": "8.0.0"
+  },
+  "devDependencies": {
+    "vite-plugin-lib-inject-css": "^2.2.2"
   }
 }

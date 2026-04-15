@@ -1,4 +1,4 @@
-# @future-standard UI Kit
+# @future-standard-ui UI Kit
 
 A React 19 component library built as independently versioned, individually installable packages.
 
@@ -6,30 +6,29 @@ A React 19 component library built as independently versioned, individually inst
 
 | Package | Description |
 |---|---|
-| `@future-standard/button` | Base button with `primary`/`secondary` variants |
-| `@future-standard/loading-button` | Button with a loading spinner state |
-| `@future-standard/icon-button` | Icon-only button (requires `aria-label`) |
-| `@future-standard/ui-kit` | Kitchen-sink re-export of all components |
+| `@future-standard-ui/button` | Base button with `primary`/`secondary` variants |
+| `@future-standard-ui/loading-button` | Button with a loading spinner state |
+| `@future-standard-ui/icon-button` | Icon-only button (requires `aria-label`) |
+| `@future-standard-ui/ui-kit` | Kitchen-sink re-export of all components |
 
 ## Installation
 
 Install individual packages:
 
 ```bash
-npm install @future-standard/button
+npm install @future-standard-ui/button
 ```
 
 Or install everything at once:
 
 ```bash
-npm install @future-standard/ui-kit
+npm install @future-standard-ui/ui-kit
 ```
 
 ## Usage
 
 ```tsx
-import { Button } from "@future-standard/button";
-import "@future-standard/button/style.css";
+import { Button } from "@future-standard-ui/button";
 
 function App() {
   return <Button variant="primary">Click me</Button>;
@@ -39,9 +38,10 @@ function App() {
 With the kitchen-sink package:
 
 ```tsx
-import { Button, LoadingButton, IconButton } from "@future-standard/ui-kit";
-import "@future-standard/ui-kit/style.css";
+import { Button, LoadingButton, IconButton } from "@future-standard-ui/ui-kit";
 ```
+
+CSS is automatically injected when you import a component — no separate style import needed.
 
 ## Development
 
@@ -101,10 +101,10 @@ pnpm changeset
 ```
 packages/
   build-config/     # Shared Vite 8 library config (internal, not published)
-  button/           # @future-standard/button
-  loading-button/   # @future-standard/loading-button
-  icon-button/      # @future-standard/icon-button
-  ui-kit/           # @future-standard/ui-kit
+  button/           # @future-standard-ui/button
+  loading-button/   # @future-standard-ui/loading-button
+  icon-button/      # @future-standard-ui/icon-button
+  ui-kit/           # @future-standard-ui/ui-kit
 ```
 
 ### Creating a new component package

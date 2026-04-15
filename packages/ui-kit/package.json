@@ -1,5 +1,5 @@
 {
-  "name": "@future-standard/ui-kit",
+  "name": "@future-standard-ui/ui-kit",
   "version": "0.0.0",
   "type": "module",
   "sideEffects": ["**/*.css"],
@@ -13,8 +13,7 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.cjs"
       }
-    },
-    "./style.css": "./dist/index.css"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,16 +24,16 @@
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
-    "@future-standard/button": "workspace:*",
-    "@future-standard/icon-button": "workspace:*",
-    "@future-standard/loading-button": "workspace:*"
+    "@future-standard-ui/button": "workspace:*",
+    "@future-standard-ui/icon-button": "workspace:*",
+    "@future-standard-ui/loading-button": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@future-standard/build-config": "workspace:*",
+    "@future-standard-ui/build-config": "workspace:*",
     "@types/react": "19.2.14",
     "typescript": "5.9.3",
     "vite": "8.0.0"
