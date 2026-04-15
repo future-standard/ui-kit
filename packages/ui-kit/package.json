@@ -26,7 +26,8 @@
   "dependencies": {
     "@future-standard-ui/button": "workspace:*",
     "@future-standard-ui/icon-button": "workspace:*",
-    "@future-standard-ui/loading-button": "workspace:*"
+    "@future-standard-ui/loading-button": "workspace:*",
+    "@future-standard-ui/theme": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0",
