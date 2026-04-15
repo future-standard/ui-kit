@@ -1,0 +1,52 @@
+name: Publish Beta
+
+on:
+  workflow_dispatch:
+    inputs:
+      preid:
+        description: 'Pre-release identifier (e.g. beta, alpha, rc)'
+        required: false
+        default: 'beta'
+  push:
+    branches: ['beta', 'rc']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish-beta:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Determine pre-release identifier
+        id: preid
+        run: |
+          if [ -n "${{ github.event.inputs.preid }}" ]; then
+            echo "id=${{ github.event.inputs.preid }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "id=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Enter pre-release mode and version
+        run: |
+          pnpm changeset pre enter ${{ steps.preid.outputs.id }}
+          pnpm changeset version
+
+      - name: Publish to npm with pre-release tag
+        run: pnpm changeset publish --tag ${{ steps.preid.outputs.id }}

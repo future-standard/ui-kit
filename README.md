@@ -90,11 +90,66 @@ This project uses [Biome](https://biomejs.dev/) for linting, formatting, and imp
 
 This gives you format-on-save, auto-fix lint issues, and import sorting on every save.
 
-### Adding a changeset
+### Releasing
+
+This project uses [changesets](https://github.com/changesets/changesets) for versioning and npm [Trusted Publishers](https://docs.npmjs.com/trusted-publishers) for tokenless publishing via OIDC.
+
+#### Adding a changeset
+
+Run this when you make a change that should be released:
 
 ```bash
 pnpm changeset
 ```
+
+Follow the prompts to select which packages changed and whether it's a patch, minor, or major bump. Commit the generated changeset file with your PR.
+
+#### Stable release
+
+1. Changesets accumulate on `main` as PRs are merged
+2. The Publish workflow automatically creates a "Version Packages" PR that bumps versions and updates changelogs
+3. Review and merge that PR — this triggers publishing to npm under the `latest` tag
+
+#### Beta release
+
+Two ways to publish a beta:
+
+**Option A — Manual dispatch:** Go to Actions > "Publish Beta" > "Run workflow". Pick the identifier (`beta`, `alpha`, `rc`) and the branch to publish from.
+
+**Option B — Push to a release branch:** Push to the `beta` or `rc` branch and the workflow runs automatically, using the branch name as the identifier.
+
+Either way, packages are published under the pre-release tag:
+
+```bash
+npm install @future-standard-ui/button@beta
+npm install @future-standard-ui/button@1.2.0-beta.0  # specific version
+```
+
+**Beta release from a feature branch:**
+
+1. Create your changesets as usual (`pnpm changeset`)
+2. Push your branch to `beta`: `git push origin my-feature:beta`
+3. The workflow publishes all packages with pending changesets as beta versions
+
+#### Setting up trusted publishers
+
+Each package needs a trusted publisher on npmjs.com so GitHub Actions can publish without tokens. This discovers all publishable packages in the workspace, checks which ones are already configured, and sets up the rest:
+
+```bash
+pnpm setup-trust
+```
+
+Run this whenever you add a new package. It skips packages that are already configured.
+
+### CI/CD
+
+| Workflow | Trigger | Description |
+|---|---|---|
+| CI | Pull request | Biome checks, build, typecheck |
+| PR Deploy Preview | Pull request | Deploys dev app preview to GitHub Pages |
+| Deploy gh-pages | Push to main | Deploys dev app to GitHub Pages, cleans up stale PR previews |
+| Publish | Push to main | Creates version PR or publishes to npm |
+| Publish Beta | Manual dispatch or push to `beta`/`rc` branch | Publishes beta/alpha/rc to npm |
 
 ### Project structure
 
@@ -113,3 +168,4 @@ packages/
 2. Update `package.json` with the new package name and dependencies
 3. Update `vite.config.ts` — add any inter-package deps to `additionalExternal`
 4. Add the component to `packages/ui-kit/src/index.ts`
+5. Run `pnpm setup-trust` to configure npm trusted publishers for the new package
