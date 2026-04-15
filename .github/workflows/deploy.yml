@@ -1,0 +1,112 @@
+name: Deploy gh-pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  deployments: write
+  pull-requests: read
+
+# Share concurrency group with PR deploys to avoid push races
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build library packages
+        run: pnpm run build --filter '!@future-standard-ui/dev'
+
+      - name: Build dev app
+        run: pnpm run build --filter @future-standard-ui/dev -- --base /ui-kit/
+
+      - name: Deploy to gh-pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions-bot"
+          git config user.email "support+actions@github.com"
+
+          git fetch origin gh-pages || {
+            echo "gh-pages branch does not exist yet — creating it"
+            git checkout --orphan gh-pages
+            git rm -rf .
+            git commit --allow-empty -m "Initialize gh-pages"
+            git push origin gh-pages
+            git checkout -
+            git fetch origin gh-pages
+          }
+
+          git worktree add gh-pages-dir origin/gh-pages
+
+          # Replace root content but preserve pr/ subdirectory
+          mkdir -p /tmp/gh-pages-preserve
+          if [ -d "gh-pages-dir/pr" ]; then
+            mv gh-pages-dir/pr /tmp/gh-pages-preserve/
+          fi
+
+          rm -rf gh-pages-dir/*
+          cp -r apps/dev/dist/* gh-pages-dir/
+
+          if [ -d "/tmp/gh-pages-preserve/pr" ]; then
+            mv /tmp/gh-pages-preserve/pr gh-pages-dir/
+          fi
+
+          # Clean up previews for PRs that are no longer open
+          if [ -d "gh-pages-dir/pr" ]; then
+            OPEN_PRS=$(gh pr list --state open --json number --jq '.[].number' || echo "")
+            for pr_dir in gh-pages-dir/pr/*/; do
+              [ -d "$pr_dir" ] || continue
+              pr_num=$(basename "$pr_dir")
+              if ! echo "$OPEN_PRS" | grep -qx "$pr_num"; then
+                echo "Removing stale preview for PR #${pr_num}"
+                rm -rf "$pr_dir"
+              fi
+            done
+            rmdir gh-pages-dir/pr 2>/dev/null || true
+          fi
+
+          cd gh-pages-dir
+          git add .
+          git commit -m "Deploy production from ${GITHUB_SHA::7}" || echo "No changes to deploy"
+          git push origin HEAD:gh-pages
+
+      - name: Create deployment status
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const url = 'https://future-standard.github.io/ui-kit/';
+
+            const { data: deployment } = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              auto_merge: false,
+              required_contexts: [],
+              description: 'Deploy production',
+            });
+
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deployment.id,
+              state: 'success',
+              environment_url: url,
+            });
