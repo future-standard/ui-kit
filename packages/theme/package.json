@@ -13,17 +13,6 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.cjs"
       }
-    },
-    "./style.css": "./dist/index.css",
-    "./hooks": {
-      "import": {
-        "types": "./dist/hooks.d.ts",
-        "default": "./dist/hooks.js"
-      },
-      "require": {
-        "types": "./dist/hooks.d.ts",
-        "default": "./dist/hooks.cjs"
-      }
     }
   },
   "main": "./dist/index.cjs",

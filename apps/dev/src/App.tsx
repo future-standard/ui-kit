@@ -1,8 +1,7 @@
 import { Button } from '@future-standard-ui/button';
 import { IconButton } from '@future-standard-ui/icon-button';
 import { LoadingButton } from '@future-standard-ui/loading-button';
-import '@future-standard-ui/theme/style.css';
-import { useThemeToggle } from '@future-standard-ui/theme/hooks';
+import { useThemeToggle } from '@future-standard-ui/theme';
 import { useState } from 'react';
 
 const StarIcon = () => (

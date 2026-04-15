@@ -5,3 +5,5 @@ import './animation.css';
 import './layout.css';
 import './components.css';
 import './base.css';
+
+export { useThemeToggle } from './hooks/useThemeToggle';
