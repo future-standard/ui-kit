@@ -32,7 +32,7 @@ importers:
       '@future-standard-ui/loading-button':
         specifier: workspace:*
         version: link:../../packages/loading-button
-      '@future-standard/theme':
+      '@future-standard-ui/theme':
         specifier: workspace:*
         version: link:../../packages/theme
       react:
@@ -152,7 +152,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@future-standard/build-config':
+      '@future-standard-ui/build-config':
         specifier: workspace:*
         version: link:../build-config
       '@types/react':

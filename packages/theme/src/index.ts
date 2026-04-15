@@ -1,7 +1,7 @@
-import "./fonts.css";
-import "./colors.css";
-import "./colors.aliases.css";
-import "./animation.css";
-import "./layout.css";
-import "./components.css";
-import "./base.css";
+import './fonts.css';
+import './colors.css';
+import './colors.aliases.css';
+import './animation.css';
+import './layout.css';
+import './components.css';
+import './base.css';
