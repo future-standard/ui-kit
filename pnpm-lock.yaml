@@ -32,6 +32,9 @@ importers:
       '@future-standard-ui/loading-button':
         specifier: workspace:*
         version: link:../../packages/loading-button
+      '@future-standard-ui/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -140,6 +143,28 @@ importers:
         specifier: 8.0.0
         version: 8.0.0
 
+  packages/theme:
+    dependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@future-standard-ui/build-config':
+        specifier: workspace:*
+        version: link:../build-config
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vite:
+        specifier: 8.0.0
+        version: 8.0.0
+
   packages/ui-kit:
     dependencies:
       '@future-standard-ui/button':
@@ -151,6 +176,9 @@ importers:
       '@future-standard-ui/loading-button':
         specifier: workspace:*
         version: link:../loading-button
+      '@future-standard-ui/theme':
+        specifier: workspace:*
+        version: link:../theme
       react:
         specifier: ^19.0.0
         version: 19.2.4

@@ -6,7 +6,8 @@ export type ButtonProps = ComponentPropsWithRef<'button'> & {
 };
 
 export function Button({ variant = 'primary', className, ref, ...props }: ButtonProps) {
-  const classes = [styles.button, styles[variant], className].filter(Boolean).join(' ');
+  const designClass = variant === 'secondary' ? 'button-design-secondary' : undefined;
+  const classes = [styles.button, designClass, className].filter(Boolean).join(' ');
 
   return <button ref={ref} className={classes} {...props} />;
 }
