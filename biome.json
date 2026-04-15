@@ -43,12 +43,12 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double",
+      "quoteStyle": "single",
       "trailingCommas": "es5",
       "semicolons": "always",
       "arrowParentheses": "always",
       "bracketSpacing": true,
-      "jsxQuoteStyle": "double",
+      "jsxQuoteStyle": "single",
       "bracketSameLine": false
     }
   },
