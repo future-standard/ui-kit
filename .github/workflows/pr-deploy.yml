@@ -1,0 +1,106 @@
+name: PR Deploy Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Serialize all gh-pages pushes so concurrent PR deploys don't race
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build library packages
+        run: pnpm run build --filter '!@future-standard-ui/dev'
+
+      - name: Build dev app for preview
+        run: pnpm run build --filter @future-standard-ui/dev -- --base /ui-kit/pr/${{ github.event.pull_request.number }}/
+
+      - name: Deploy preview to gh-pages
+        run: |
+          PR_NUM=${{ github.event.pull_request.number }}
+
+          git config user.name "github-actions-bot"
+          git config user.email "support+actions@github.com"
+
+          git fetch origin gh-pages || {
+            echo "gh-pages branch does not exist yet — creating it"
+            git checkout --orphan gh-pages
+            git rm -rf .
+            git commit --allow-empty -m "Initialize gh-pages"
+            git push origin gh-pages
+            git checkout -
+            git fetch origin gh-pages
+          }
+
+          git worktree add gh-pages-dir origin/gh-pages
+
+          rm -rf "gh-pages-dir/pr/${PR_NUM}"
+          mkdir -p "gh-pages-dir/pr/${PR_NUM}"
+          cp -r apps/dev/dist/* "gh-pages-dir/pr/${PR_NUM}/"
+
+          cd gh-pages-dir
+          git add .
+          git commit -m "Deploy preview for PR ${PR_NUM}" || echo "No changes to deploy"
+          git push origin HEAD:gh-pages
+
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const sha = context.payload.pull_request.head.sha.substring(0, 7);
+            const previewUrl = `https://future-standard.github.io/ui-kit/pr/${prNumber}/`;
+
+            const body = [
+              `## Deploy Preview`,
+              ``,
+              `${previewUrl}`,
+              ``,
+              `_Built from ${sha} — ${new Date().toISOString()}_`,
+            ].join('\n');
+
+            // Update existing comment or create new one
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Deploy Preview')
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+            }
