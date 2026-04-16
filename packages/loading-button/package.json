@@ -2,7 +2,9 @@
   "name": "@future-standard-ui/loading-button",
   "version": "0.0.0",
   "type": "module",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "import": {
@@ -18,7 +20,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --emitDeclarationOnly"
