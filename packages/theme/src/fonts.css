@@ -6,7 +6,8 @@
 
 @font-face {
   font-family: "Lato";
-  src: url("./fonts/Lato3Upr3M-VF.woff2") format("woff2 supports variations"),
+  src:
+    url("./fonts/Lato3Upr3M-VF.woff2") format("woff2 supports variations"),
     url("./fonts/Lato3Upr3M-VF.woff2") format("woff2-variations");
   font-weight: 100 900;
 }
@@ -14,7 +15,8 @@
 @font-face {
   font-family: "Lato";
   font-style: italic;
-  src: url("./fonts/Lato3Ita3M-VF.woff2") format("woff2 supports variations"),
+  src:
+    url("./fonts/Lato3Ita3M-VF.woff2") format("woff2 supports variations"),
     url("./fonts/Lato3Ita3M-VF.woff2") format("woff2-variations");
   font-weight: 100 900;
 }
