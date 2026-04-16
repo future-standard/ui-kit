@@ -1,12 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignore": ["**/dist/**", "**/node_modules/**", "**/.turbo/**"]
+    "includes": ["**", "!**/dist", "!**/node_modules", "!**/.turbo"]
   },
   "formatter": {
     "enabled": true,
@@ -15,9 +15,7 @@
     "lineWidth": 100,
     "lineEnding": "lf"
   },
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -29,8 +27,11 @@
         "useHookAtTopLevel": "error"
       },
       "suspicious": {
-        "noExplicitAny": "warn",
-        "noConsoleLog": "warn"
+        "noExplicitAny": "error",
+        "noConsole": {
+          "level": "error",
+          "options": { "allow": ["warn", "error", "info", "debug"] }
+        }
       },
       "style": {
         "noNonNullAssertion": "warn",
@@ -54,11 +55,11 @@
   },
   "overrides": [
     {
-      "include": ["**/*.config.{js,ts}", "**/vite.config.{js,ts}"],
+      "includes": ["**/*.config.{js,ts}", "**/vite.config.{js,ts}"],
       "linter": {
         "rules": {
           "suspicious": {
-            "noConsoleLog": "off"
+            "noConsole": "off"
           }
         }
       }
