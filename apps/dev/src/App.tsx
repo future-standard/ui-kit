@@ -63,10 +63,29 @@ export function App() {
         />
       </div>
 
-      <Section title='Button'>
-        <Button variant='primary'>Primary</Button>
-        <Button variant='secondary'>Secondary</Button>
+      <Section title='Button — designs'>
+        <Button design='primary'>Primary</Button>
+        <Button design='secondary'>Secondary</Button>
+        <Button design='warning'>Warning</Button>
+        <Button design='danger'>Danger</Button>
+        <Button design='outline'>Outline</Button>
+        <Button design='text-only'>Text only</Button>
+      </Section>
+
+      <Section title='Button — sizes'>
+        <Button size='xsmall'>XSmall</Button>
+        <Button size='small'>Small</Button>
+        <Button size='normal'>Normal</Button>
+        <Button size='large'>Large</Button>
+      </Section>
+
+      <Section title='Button — flags'>
+        <Button shadow>Shadow</Button>
+        <Button loading>Loading</Button>
         <Button disabled>Disabled</Button>
+        <Button design='secondary' shadow size='large'>
+          Composed
+        </Button>
       </Section>
 
       <Section title='LoadingButton'>
@@ -77,7 +96,7 @@ export function App() {
 
       <Section title='IconButton'>
         <IconButton icon={<StarIcon />} aria-label='Favorite' />
-        <IconButton icon={<StarIcon />} aria-label='Favorite' variant='secondary' />
+        <IconButton icon={<StarIcon />} aria-label='Favorite' design='secondary' />
       </Section>
     </div>
   );
