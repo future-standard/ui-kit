@@ -10,6 +10,7 @@
     "@future-standard-ui/button": "workspace:*",
     "@future-standard-ui/icon-button": "workspace:*",
     "@future-standard-ui/loading-button": "workspace:*",
+    "@future-standard-ui/theme": "workspace:*",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

@@ -9,6 +9,7 @@ A React 19 component library built as independently versioned, individually inst
 | `@future-standard-ui/button` | Base button with `primary`/`secondary` variants |
 | `@future-standard-ui/loading-button` | Button with a loading spinner state |
 | `@future-standard-ui/icon-button` | Icon-only button (requires `aria-label`) |
+| `@future-standard-ui/theme` | Design tokens, fonts, colors, and dark mode support |
 | `@future-standard-ui/ui-kit` | Kitchen-sink re-export of all components |
 
 ## Installation
@@ -28,17 +29,17 @@ npm install @future-standard-ui/ui-kit
 ## Usage
 
 ```tsx
-import { Button } from "@future-standard-ui/button";
+import { Button } from '@future-standard-ui/button';
 
 function App() {
-  return <Button variant="primary">Click me</Button>;
+  return <Button variant='primary'>Click me</Button>;
 }
 ```
 
 With the kitchen-sink package:
 
 ```tsx
-import { Button, LoadingButton, IconButton } from "@future-standard-ui/ui-kit";
+import { Button, LoadingButton, IconButton } from '@future-standard-ui/ui-kit';
 ```
 
 CSS is automatically injected when you import a component — no separate style import needed.
@@ -104,6 +105,7 @@ packages/
   button/           # @future-standard-ui/button
   loading-button/   # @future-standard-ui/loading-button
   icon-button/      # @future-standard-ui/icon-button
+  theme/            # @future-standard-ui/theme
   ui-kit/           # @future-standard-ui/ui-kit
 ```
 

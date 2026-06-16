@@ -1,5 +1,5 @@
 {
-  "name": "@future-standard-ui/ui-kit",
+  "name": "@future-standard-ui/theme",
   "version": "0.0.0",
   "type": "module",
   "sideEffects": ["**/*.css"],
@@ -22,12 +22,6 @@
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --emitDeclarationOnly"
-  },
-  "dependencies": {
-    "@future-standard-ui/button": "workspace:*",
-    "@future-standard-ui/icon-button": "workspace:*",
-    "@future-standard-ui/loading-button": "workspace:*",
-    "@future-standard-ui/theme": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0",
