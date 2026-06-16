@@ -88,6 +88,11 @@ export function App() {
         </Button>
       </Section>
 
+      <Section title='Button — layer override (green + custom --_height)'>
+        <Button>Default</Button>
+        <Button className='demo-green-lg'>Overridden</Button>
+      </Section>
+
       <Section title='LoadingButton'>
         <LoadingButton loading={loading} onClick={handleLoadingClick}>
           {loading ? 'Submitting...' : 'Submit'}
