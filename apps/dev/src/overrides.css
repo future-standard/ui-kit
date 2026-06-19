@@ -1,0 +1,27 @@
+/* Declare layer order up front so it never depends on CSS injection order.
+   The library ships its styles in `component`; anything in `overrides`
+   (declared later) wins regardless of specificity — no :where, no !important. */
+@layer component, overrides;
+
+@layer overrides {
+  /* Target through the stable, un-hashed `data-ui` hook the component emits,
+     scoped to the demo button via its className. The hook makes the intent
+     explicit ("this is the UI kit's button") and is override-API surface. */
+  [data-ui="button"].demo-green-lg {
+    /* 1. Override the component-INTERNAL var that .button set in @layer component.
+          Custom props aren't hashed, so we can target it directly; the higher
+          layer makes our declaration the winning one on this element. */
+    --_height: 56px;
+
+    /* 2. Recolor by overriding the THEME tokens the component reads. */
+    --button-background-color: var(--green-9);
+    --button-border-color: var(--green-9);
+    --button-text-color: var(--white-1);
+
+    --button-hover-background-color: var(--green-10);
+    --button-hover-border-color: var(--green-10);
+
+    --button-active-background-color: var(--green-10);
+    --button-active-border-color: var(--green-10);
+  }
+}

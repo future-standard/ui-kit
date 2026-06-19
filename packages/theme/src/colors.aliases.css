@@ -333,10 +333,10 @@
   --button-gradient-end: var(--primary-gradient-end);
 }
 
-.light-theme .button-design-secondary,
-[data-theme="light"] .button-design-secondary,
-.dark-theme .button-design-secondary,
-[data-theme="dark"] .button-design-secondary {
+.light-theme [data-design="secondary"],
+[data-theme="light"] [data-design="secondary"],
+.dark-theme [data-design="secondary"],
+[data-theme="dark"] [data-design="secondary"] {
   --button-background-color: var(--grey-9);
   --button-border-color: var(--grey-6);
   --button-inner-shadow-color: transparent;
@@ -364,14 +364,14 @@
   --button-gradient-end: var(--secondary-gradient-end);
 }
 
-.light-theme .button-design-danger,
-[data-theme="light"] .button-design-danger,
-.dark-theme .button-design-danger,
-[data-theme="dark"] .button-design-danger,
-.light-theme .button-design-warning,
-[data-theme="light"] .button-design-warning,
-.dark-theme .button-design-warning,
-[data-theme="dark"] .button-design-warning {
+.light-theme [data-design="danger"],
+[data-theme="light"] [data-design="danger"],
+.dark-theme [data-design="danger"],
+[data-theme="dark"] [data-design="danger"],
+.light-theme [data-design="warning"],
+[data-theme="light"] [data-design="warning"],
+.dark-theme [data-design="warning"],
+[data-theme="dark"] [data-design="warning"] {
   --button-background-color: var(--warning-9);
   --button-border-color: var(--warning-9);
   --button-inner-shadow-color: transparent;
@@ -399,10 +399,10 @@
   --button-gradient-end: var(--warning-gradient-end);
 }
 
-.light-theme .button-design-text-only,
-[data-theme="light"] .button-design-text-only,
-.dark-theme .button-design-text-only,
-[data-theme="dark"] .button-design-text-only {
+.light-theme [data-design="text-only"],
+[data-theme="light"] [data-design="text-only"],
+.dark-theme [data-design="text-only"],
+[data-theme="dark"] [data-design="text-only"] {
   --button-background-color: transparent;
   --button-border-color: transparent;
   --button-inner-shadow-color: transparent;
@@ -431,10 +431,10 @@
   --button-active-text-color: var(--primary-10);
 }
 
-.light-theme .button-design-outline,
-[data-theme="light"] .button-design-outline,
-.dark-theme .button-design-outline,
-[data-theme="dark"] .button-design-outline {
+.light-theme [data-design="outline"],
+[data-theme="light"] [data-design="outline"],
+.dark-theme [data-design="outline"],
+[data-theme="dark"] [data-design="outline"] {
   --button-background-color: transparent;
   --button-border-color: var(--grey-11);
   --button-border-width: 2px;
