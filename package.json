@@ -14,6 +14,7 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
+    "setup-trust": "bash scripts/setup-trusted-publishers.sh",
     "dev": "pnpm --filter @future-standard-ui/dev dev"
   },
   "engines": {
