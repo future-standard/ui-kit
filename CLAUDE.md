@@ -10,6 +10,7 @@ pnpm monorepo (Turborepo) for `@future-standard-ui` React 19 component library.
 pnpm install          # Install deps
 pnpm run build        # Build all packages
 pnpm run typecheck    # Type-check all packages
+pnpm run test         # Vitest across packages (Turbo)
 pnpm run check        # Biome: lint + format + import sorting
 pnpm run check:fix    # Biome: auto-fix all
 pnpm run lint         # Lint only
@@ -28,7 +29,7 @@ Always use `pnpm` — never `npx`.
 
 ## Structure
 
-- `packages/` — published packages (`button`, `icon-button`, `loading-button`, `theme`, `ui-kit`, `build-config`)
+- `packages/` — published packages (`button`, `icon-button`, `loading-button`, `theme`, `table-core`, `ui-kit`, `build-config`)
 - `apps/dev/` — dev app for testing components
 - Scope: `@future-standard-ui`
 - Shared Vite build config in `packages/build-config`

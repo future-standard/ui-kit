@@ -9,6 +9,7 @@ A React 19 component library built as independently versioned, individually inst
 | `@future-standard-ui/button` | Base button with `primary`/`secondary` variants |
 | `@future-standard-ui/loading-button` | Button with a loading spinner state |
 | `@future-standard-ui/icon-button` | Icon-only button (requires `aria-label`) |
+| `@future-standard-ui/table-core` | Framework-free table engine: schema, state, row model, DOM contract |
 | `@future-standard-ui/theme` | Design tokens, fonts, colors, and dark mode support |
 | `@future-standard-ui/ui-kit` | Kitchen-sink re-export of all components |
 
@@ -106,6 +107,7 @@ packages/
   loading-button/   # @future-standard-ui/loading-button
   icon-button/      # @future-standard-ui/icon-button
   theme/            # @future-standard-ui/theme
+  table-core/       # @future-standard-ui/table-core (no React)
   ui-kit/           # @future-standard-ui/ui-kit
 ```
 

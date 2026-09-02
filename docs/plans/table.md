@@ -199,18 +199,22 @@ Each phase ends with: green `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm b
 ### Phase 0 — Housekeeping
 - [x] Branch `feature/table` from `feature/css-pattern`.
 - [x] Biome 2.4.12 upgrade merged to main and into this branch (2026-09-02).
-- [ ] Commit the pending `.gitignore` change and this plan.
-- [ ] Add Vitest (+ Testing Library for Phase 2) at the root, `pnpm test` via Turbo and CI.
+- [x] Commit the pending `.gitignore` change and this plan.
+- [x] Add Vitest at the root, `pnpm test` via Turbo and CI (Testing Library arrives with Phase 2).
   Why now: `table-core` is pure logic and the tests are its spec; they also prove the React
   and vanilla renderers behave identically (Phase 5). Retrofitting after Phases 2–4 is the
   expensive path, and the old kit's untested table is how the mount-time header bug shipped.
 
-### Phase 1 — `table-core`: schema, store, row model
-- Schema types + runtime validation with tests.
-- Store with feature slices; controlled/uncontrolled semantics.
-- Row model + accessors; opt-in client sorting helper.
-- DOM contract document (`docs/components/table/dom-contract.md`).
-- Deliverable: a pure-TS package with 100% of logic under test, no React.
+### Phase 1 — `table-core`: schema, store, row model ✅ 2026-09-02
+- [x] Schema types + runtime validation with tests (`schema.ts`, `validate.ts`).
+- [x] Store with feature slices; controlled/uncontrolled semantics (`store.ts`, `state.ts`, `table.ts`).
+- [x] Row model + accessors; opt-in client sorting helper; adjacent-row grouping (`rowModel.ts`, `sorting.ts`).
+- [x] DOM contract helpers and document (`domContract.ts`, `docs/components/table/dom-contract.md`).
+- [x] Schema reference (`docs/components/table/schema.md`).
+- [x] 87 tests across 9 files; zero runtime deps; `pnpm check/typecheck/test/build` green.
+- Resolved here: single-column sort with array-shaped state (asc → desc → asc, `allowSortClear` opt-in);
+  selection keyed by `rowKey`, select-all acts on the current row model's keys; empty values sort
+  last in both directions.
 
 ### Phase 2 — `table`: React renderer v1 (the "basic looking table with focus on features")
 - Primitives + `useTable` + `DataTable`.
@@ -282,8 +286,8 @@ Filters and Pagination components · virtualisation (store is designed so the ro
 |---|---|---|
 | `<table>` vs CSS grid | `<table>` + `<colgroup>`; fall back to grid only if sticky/pinned/container queries fight it | Phase 2 |
 | Column visibility: CSS container queries vs JS ResizeObserver | CSS with named breakpoints first (works for vanilla for free); JS only if state needs to know (e.g. sort dropdown lists) | Phase 3 |
-| Sort model | Single column in v1, array-shaped state | Phase 1 |
+| ~~Sort model~~ | Resolved: single column, array-shaped state, `multiSort` / `allowSortClear` opt-in | Phase 1 ✅ |
 | Cell renderer signature (React) | `(ctx: CellContext) => ReactNode`; vanilla returns `Node \| string` | Phase 2 / 5 |
-| Selection identity | `Set`/record of `rowKey` values; select-all operates on the *current* rows array (consumer decides page vs total) | Phase 1 |
+| ~~Selection identity~~ | Resolved: record of `rowKey` → `true`; select-all operates on the current row model's keys | Phase 1 ✅ |
 | Header group representation | Flat `group` string on columns, adjacent-equal merge (as today) vs nested column tree | Phase 4 |
 | Breakpoint names | Reuse theme layout breakpoints (1280 / 1536 exist) + add `sm`/`md` | Phase 3 |

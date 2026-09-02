@@ -53,12 +53,42 @@ The new kit runs alongside the old one. Before naming anything:
 
 ## 4. Design the API schema-first
 
-_To be written during Phase 1._ Principles fixed so far: JSON-serialisable schema, string
-accessors, cell type names, functions only via runtime registry, controlled-first state.
+- **Start from the data the consumer already has**, not from the DOM. The schema names the
+  fields (`accessor` paths) and the intent (`cell.type`, `emphasis`, `align`); the renderer owns the
+  markup.
+- **Everything in the schema must survive `JSON.stringify`.** String accessors, type names, CSS
+  lengths. If you need a function, it belongs in runtime options (a registry, `accessors`,
+  `comparators`), never in the schema. Test this: `JSON.parse(JSON.stringify(schema))` must equal
+  the schema.
+- **Key by id, never by index.** Every column has an `id`; every row resolves a `rowKey`. Positional
+  coupling was the single largest source of bugs in the old kit.
+- **Controlled-first.** Every state slice can be owned by the consumer (`state.x` + `onXChange`) or
+  left to the instance. Never copy props into state at mount and forget them.
+- **Model state as small, replaceable slices** (`sorting`, `rowSelection`, `expanded`, …), each a
+  plain JSON value, so they can be persisted and shared with sibling components later.
+- **Write the schema reference (`docs/components/<name>/schema.md`) as you design**, with defaults
+  and the runtime-only options listed separately. Validate the schema at runtime with issues that
+  name the exact path.
 
 ## 5. Build the headless core
 
-_To be written during Phase 1._
+- **No framework imports.** Build with `createLibraryConfig({ react: false })`; the package has no
+  peer dependencies.
+- **One write path.** All state changes go through a single `updateSlice` that reports to the
+  consumer and updates internal state only for uncontrolled slices. This is where controlled /
+  uncontrolled semantics live, once.
+- **Pure derivations, memoised on input identity.** `buildRowModel` and `getVisibleColumns` are
+  pure functions; the instance caches them on the identity of their inputs. New data or new state
+  invalidates; repeated reads are free.
+- **Never mutate consumer data.** Sorting returns copies. Test it with a JSON snapshot.
+- **The DOM contract is part of the core.** Attribute helpers live next to the state so every
+  renderer emits identical `data-ui` / `data-*` / `aria-*` attributes. Document it in
+  `docs/components/<name>/dom-contract.md`.
+- **Tests are the spec.** One test file per module plus one for the instance covering
+  uncontrolled, controlled, mixed, and memoisation. Use fixtures shaped like real consumer data
+  (`*.fixtures.ts`, excluded from declaration emit).
+- **Exit criteria:** `pnpm check`, `typecheck`, `test`, `build` green; schema and DOM contract
+  docs written; changeset added.
 
 ## 6. Render (React first, contract for others)
 
@@ -96,3 +126,9 @@ Short, dated notes on what we learned the hard way, to feed back into the steps 
   branches during research.
 - **2026-09-02** — Merging a formatter upgrade (Biome 2) produced conflicts only in files the
   feature branch had rewritten. Resolve with the feature branch's content, then re-run the formatter.
+- **2026-09-02** — Sorting descending flipped empty values to the top because the emptiness rank
+  was negated with the direction. Handle "empties last" *outside* the direction flip.
+- **2026-09-02** — `Array.prototype.sort` never passes `undefined` to a comparator; it moves those
+  elements to the end itself. Test comparators on `undefined` directly, not through `sort`.
+- **2026-09-02** — Turbo can report a transient failure when a formatter rewrite invalidates a
+  build mid-pipeline. Re-run with `--force` before hunting a phantom error.
