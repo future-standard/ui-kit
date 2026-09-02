@@ -23,8 +23,10 @@
     background-color: var(--button-background-color);
     cursor: pointer;
     outline: none;
-    transition: background-color var(--speed-fast) var(--easing-primary-out), border-color
-      var(--speed-fast) var(--easing-primary-out), color var(--speed-fast) var(--easing-primary-out),
+    transition:
+      background-color var(--speed-fast) var(--easing-primary-out),
+      border-color var(--speed-fast) var(--easing-primary-out),
+      color var(--speed-fast) var(--easing-primary-out),
       box-shadow var(--speed-fast) var(--easing-primary-out);
 
     &:hover:not(:disabled) {
@@ -69,12 +71,14 @@
     }
 
     &[data-shadow] {
-      box-shadow: 0 2px 4px 2px var(--button-drop-shadow-color), 0 0 0
-        var(--button-inner-shadow-color) inset;
+      box-shadow:
+        0 2px 4px 2px var(--button-drop-shadow-color),
+        0 0 0 var(--button-inner-shadow-color) inset;
 
       &:hover:not(:disabled) {
-        box-shadow: 0 4px 8px var(--button-hover-drop-shadow-color), 0 0 5px
-          var(--button-hover-inner-shadow-color) inset;
+        box-shadow:
+          0 4px 8px var(--button-hover-drop-shadow-color),
+          0 0 5px var(--button-hover-inner-shadow-color) inset;
       }
     }
 
