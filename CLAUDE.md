@@ -29,8 +29,10 @@ Always use `pnpm` — never `npx`.
 
 ## Structure
 
-- `packages/` — published packages (`button`, `icon-button`, `loading-button`, `theme`, `table-core`, `ui-kit`, `build-config`)
+- `packages/` — published packages (`button`, `icon-button`, `loading-button`, `theme`, `table-core`, `table`, `ui-kit`, `build-config`)
 - `apps/dev/` — dev app for testing components
 - Scope: `@future-standard-ui`
 - Shared Vite build config in `packages/build-config`
+- Table docs: `docs/components/table/` (schema reference, DOM contract); plan in `docs/plans/table.md`; process in `docs/playbooks/building-a-component.md`
+- `pnpm dev` serves `apps/dev` example pages (hash routes, e.g. `#/table-cameras`); build packages first, the app resolves workspace packages from `dist`
 - CSS modules with `vite-plugin-lib-inject-css` (CSS auto-injected on import — no separate style.css import needed for component packages)

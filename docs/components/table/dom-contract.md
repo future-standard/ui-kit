@@ -41,6 +41,10 @@ than hand-writing attributes.
 | `table-drawer` | `tr > td[colspan]` | Expanded content beneath a row. |
 | `table-status` | `tr > td[colspan]` or `div` | Loading / empty / error slot. |
 
+Group header cells (`table-group-header-cell`) also carry `data-visible-from` / `data-visible-until`
+when every column in the group shares them, plus `data-empty` for the placeholder cells above
+ungrouped columns.
+
 ## Root attributes — `getRootAttributes(schema, { status })`
 
 | Attribute | Values | From |

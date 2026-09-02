@@ -45,7 +45,7 @@ describe('validateSchema', () => {
 
   it('requires CSS length strings for widths', () => {
     expect(paths(withColumn({ width: 200 }))).toEqual(['columns[0].width']);
-    expect(paths(withColumn({ width: '200px', minWidth: '10%', maxWidth: '2fr' }))).toEqual([]);
+    expect(paths(withColumn({ width: '200px', minWidth: '10%', maxWidth: '12rem' }))).toEqual([]);
   });
 
   it('requires visibleUntil to be larger than visibleFrom', () => {
@@ -60,6 +60,19 @@ describe('validateSchema', () => {
     expect(paths(withColumn({ cell: { type: 'text', options: 'x' } }))).toEqual([
       'columns[0].cell.options',
     ]);
+  });
+
+  it('requires grouped columns to share breakpoint visibility', () => {
+    const schema = {
+      rowKey: 'id',
+      columns: [
+        { id: 'a', header: 'A', group: 'G' },
+        { id: 'b', header: 'B', group: 'G', visibleFrom: 'lg' },
+        { id: 'c', header: 'C', group: 'H', visibleFrom: 'md' },
+        { id: 'd', header: 'D', group: 'H', visibleFrom: 'md' },
+      ],
+    };
+    expect(paths(schema)).toEqual(['columns[1].group']);
   });
 
   it('checks feature flags', () => {

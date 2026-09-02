@@ -99,7 +99,7 @@ export function validateSchema(schema: unknown): SchemaIssue[] {
       }
       for (const prop of ['width', 'minWidth', 'maxWidth'] as const) {
         if (column[prop] !== undefined && !isNonEmptyString(column[prop])) {
-          issue(at(prop), 'must be a CSS length string, e.g. "200px" or "2fr"');
+          issue(at(prop), 'must be a CSS length string, e.g. "200px", "20%" or "12rem"');
         }
       }
       if (column.pin !== undefined && !isOneOf(column.pin, PIN_SIDES)) {
@@ -122,6 +122,26 @@ export function validateSchema(schema: unknown): SchemaIssue[] {
       }
       if (column.group !== undefined && typeof column.group !== 'string') {
         issue(at('group'), 'must be a string');
+      }
+    });
+
+    // Header groups render as one cell with a colspan, which cannot respond to container
+    // queries. Grouped columns must therefore agree on breakpoint visibility.
+    const groupVisibility = new Map<string, { from: unknown; until: unknown; index: number }>();
+    schema.columns.forEach((column, index) => {
+      if (!isRecord(column) || typeof column.group !== 'string') return;
+      const seenGroup = groupVisibility.get(column.group);
+      if (!seenGroup) {
+        groupVisibility.set(column.group, {
+          from: column.visibleFrom,
+          until: column.visibleUntil,
+          index,
+        });
+      } else if (seenGroup.from !== column.visibleFrom || seenGroup.until !== column.visibleUntil) {
+        issue(
+          `columns[${index}].group`,
+          `columns in group "${column.group}" must share visibleFrom / visibleUntil (differs from columns[${seenGroup.index}])`
+        );
       }
     });
 

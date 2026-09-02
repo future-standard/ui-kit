@@ -1,0 +1,534 @@
+/*
+ * Table — component styles.
+ *
+ * Follows the kit's CSS-modules contract:
+ *  - `@layer component` so consumer `@layer overrides` always wins.
+ *  - States are data attributes emitted by table-core's DOM contract (see
+ *    docs/components/table/dom-contract.md). Never rely on DOM shape.
+ *  - Colour comes only from `--table-*` theme aliases (packages/theme/src/colors.aliases.css).
+ *    Structure lives in private `--_*` vars the component owns.
+ *  - The old kit's CSS is unlayered and beats this layer, so every property our own anchors,
+ *    buttons and inputs rely on is set explicitly.
+ *
+ * Container breakpoints (fixed; container queries cannot read custom properties):
+ *   sm 480px · md 720px · lg 960px · xl 1200px
+ */
+@layer component {
+  .root {
+    /* Structure — component owned, density reassigns. */
+    --_row-height: 48px;
+    --_cell-padding-x: 12px;
+    --_font-size: 14px;
+    --_header-font-size: 13px;
+    --_utility-width: 40px;
+    --_max-height: none;
+    --_radius: 4px;
+    --_border-width: 1px;
+
+    position: relative;
+    container: table / inline-size;
+    box-sizing: border-box;
+    width: 100%;
+    color: var(--table-text-color);
+    background: var(--table-background);
+    border: var(--_border-width) solid var(--table-border-color);
+    border-radius: var(--_radius);
+    font-family: var(--font-data);
+    font-size: var(--_font-size);
+    line-height: 1.4;
+
+    &[data-density="compact"] {
+      --_row-height: 36px;
+      --_cell-padding-x: 8px;
+      --_font-size: 13px;
+    }
+
+    &[data-density="comfortable"] {
+      --_row-height: 56px;
+      --_cell-padding-x: 16px;
+    }
+
+    &[data-status="loading"] {
+      cursor: progress;
+    }
+  }
+
+  .scroll {
+    overflow: auto;
+    max-height: var(--_max-height);
+    border-radius: inherit;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+  }
+
+  /* ---- Header ---------------------------------------------------------- */
+
+  .head {
+    font-family: var(--font-ui);
+  }
+
+  .headerRow,
+  .groupHeaderRow {
+    background: var(--table-header-background);
+  }
+
+  .headerCell,
+  .groupHeaderCell,
+  .utilityHeader {
+    box-sizing: border-box;
+    height: var(--_row-height);
+    padding: 0 var(--_cell-padding-x);
+    border-bottom: var(--_border-width) solid var(--table-border-color);
+    background: var(--table-header-background);
+    color: var(--table-header-text-color);
+    font-size: var(--_header-font-size);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-align: start;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .groupHeaderCell {
+    height: calc(var(--_row-height) * 0.75);
+    border-bottom: none;
+    color: var(--table-group-header-text-color);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+
+    &:not([data-empty]) {
+      box-shadow: inset 0 calc(-1 * var(--_border-width)) 0 var(--table-header-group-line-color);
+    }
+  }
+
+  .headerCell[data-align="center"] {
+    text-align: center;
+  }
+
+  .headerCell[data-align="end"] {
+    text-align: end;
+  }
+
+  .headerText {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+
+  /* Sortable header: the whole cell content is the button. */
+  .sortButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--table-header-hover-text-color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 2px;
+    }
+  }
+
+  .headerCell[data-align="end"] .sortButton {
+    flex-direction: row-reverse;
+  }
+
+  .sortIcon {
+    flex: none;
+    color: var(--table-sort-icon-color);
+  }
+
+  .sortIconUp,
+  .sortIconDown {
+    opacity: 0.35;
+    transition: opacity var(--speed-fast) var(--easing-primary-out);
+  }
+
+  .headerCell[data-sort="asc"] .sortIconUp,
+  .headerCell[data-sort="desc"] .sortIconDown {
+    opacity: 1;
+    color: var(--table-sort-active-color);
+  }
+
+  /* Sticky header — sticks to the scroll container (set `maxHeight`) or the nearest
+     scrolling ancestor. */
+  .root[data-sticky-header] .headerCell,
+  .root[data-sticky-header] .utilityHeader,
+  .root[data-sticky-header] .groupHeaderCell {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .root[data-sticky-header] .headerRow .headerCell,
+  .root[data-sticky-header] .headerRow .utilityHeader {
+    top: var(--_group-header-offset, 0);
+  }
+
+  .root[data-sticky-header]:has(.groupHeaderRow) .headerRow .headerCell,
+  .root[data-sticky-header]:has(.groupHeaderRow) .headerRow .utilityHeader {
+    --_group-header-offset: calc(var(--_row-height) * 0.75);
+  }
+
+  /* ---- Body ------------------------------------------------------------ */
+
+  .row {
+    --_row-background: var(--table-row-background);
+    background: var(--_row-background);
+    transition: background-color var(--speed-fast) var(--easing-primary-out);
+
+    &:hover {
+      --_row-background: var(--table-row-hover-background);
+    }
+
+    &[data-selected] {
+      --_row-background: var(--table-row-selected-background);
+
+      &:hover {
+        --_row-background: var(--table-row-selected-hover-background);
+      }
+    }
+
+    /* Tones — semantic colouring supplied by the consumer via getRowHints. */
+    &[data-tone="info"] {
+      --_row-background: var(--table-row-tone-info);
+    }
+
+    &[data-tone="success"] {
+      --_row-background: var(--table-row-tone-success);
+    }
+
+    &[data-tone="warning"] {
+      --_row-background: var(--table-row-tone-warning);
+    }
+
+    &[data-tone="danger"] {
+      --_row-background: var(--table-row-tone-danger);
+    }
+
+    /* Lifecycle states — replaces per-cell dimming hacks. */
+    &[data-state="pending"],
+    &[data-state="disabled"] {
+      color: var(--table-text-color-muted);
+    }
+
+    &[data-state="disabled"] {
+      cursor: not-allowed;
+    }
+  }
+
+  /* Zebra: count only data rows so drawers and group rows do not break the rhythm. */
+  .root[data-zebra] .row:nth-child(even of .row) {
+    --_row-background: var(--table-row-alt-background);
+
+    &:hover {
+      --_row-background: var(--table-row-hover-background);
+    }
+
+    &[data-selected] {
+      --_row-background: var(--table-row-selected-background);
+    }
+  }
+
+  .cell,
+  .utilityCell {
+    box-sizing: border-box;
+    height: var(--_row-height);
+    padding: 0 var(--_cell-padding-x);
+    border-bottom: var(--_border-width) solid var(--table-row-divider-color);
+    background: inherit;
+    color: var(--table-text-color);
+    font-weight: 500;
+    text-align: start;
+    vertical-align: middle;
+  }
+
+  .row:last-child .cell,
+  .row:last-child .utilityCell {
+    border-bottom-color: transparent;
+  }
+
+  .cell[data-align="center"] {
+    text-align: center;
+  }
+
+  .cell[data-align="end"] {
+    text-align: end;
+  }
+
+  .cell[data-emphasis="low"] {
+    color: var(--table-text-color-muted);
+    font-style: italic;
+  }
+
+  .cell[data-emphasis="high"] {
+    color: var(--table-text-color-strong);
+    font-weight: 700;
+  }
+
+  /* Our own anchors must not inherit the old kit's unlayered `a {}` rules. */
+  .cell a {
+    color: var(--table-link-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* ---- Utility columns (select / expand) ------------------------------- */
+
+  .utilityHeader,
+  .utilityCell {
+    width: var(--_utility-width);
+    padding: 0;
+    text-align: center;
+  }
+
+  .checkbox {
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    vertical-align: middle;
+    accent-color: var(--table-accent-color);
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 2px;
+    }
+  }
+
+  .expandToggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--table-text-color-muted);
+    cursor: pointer;
+    transition:
+      transform var(--speed-fast) var(--easing-primary-out),
+      color var(--speed-fast) var(--easing-primary-out);
+
+    &:hover {
+      color: var(--table-text-color-strong);
+    }
+
+    &[aria-expanded="true"] {
+      transform: rotate(90deg);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 2px;
+    }
+  }
+
+  /* ---- Group rows ------------------------------------------------------ */
+
+  .groupRow {
+    background: var(--table-group-row-background);
+  }
+
+  .groupCell {
+    box-sizing: border-box;
+    height: calc(var(--_row-height) * 0.8);
+    padding: 0 var(--_cell-padding-x);
+    border-bottom: var(--_border-width) solid var(--table-border-color);
+    color: var(--table-group-row-text-color);
+    font-family: var(--font-ui);
+    font-size: var(--_header-font-size);
+    font-weight: 600;
+  }
+
+  .groupToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: default;
+  }
+
+  button.groupToggle {
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 2px;
+    }
+  }
+
+  .groupChevron {
+    transition: transform var(--speed-fast) var(--easing-primary-out);
+  }
+
+  .groupToggle[aria-expanded="true"] .groupChevron {
+    transform: rotate(90deg);
+  }
+
+  .groupCount {
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--table-badge-background);
+    color: var(--table-badge-text-color);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+  }
+
+  .root[data-sticky-header] .groupCell {
+    position: sticky;
+    top: var(--_row-height);
+    z-index: 1;
+  }
+
+  /* ---- Drawer ---------------------------------------------------------- */
+
+  .drawer {
+    background: var(--table-drawer-background);
+  }
+
+  .drawerCell {
+    padding: var(--_cell-padding-x);
+    border-bottom: var(--_border-width) solid var(--table-row-divider-color);
+    color: var(--table-text-color);
+  }
+
+  /* ---- Status ---------------------------------------------------------- */
+
+  .statusRow {
+    background: var(--table-status-background);
+  }
+
+  .statusCell {
+    padding: calc(var(--_row-height) * 1.5) var(--_cell-padding-x);
+    color: var(--table-text-color-muted);
+    text-align: center;
+  }
+
+  .statusOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    border-radius: inherit;
+    background: var(--table-status-overlay-background);
+    color: var(--table-text-color-muted);
+  }
+
+  /* ---- Responsive column visibility (container queries) --------------- */
+
+  [data-visible-from] {
+    display: none;
+  }
+
+  @container table (min-width: 480px) {
+    [data-visible-from="sm"] {
+      display: table-cell;
+    }
+
+    [data-visible-until="sm"] {
+      display: none;
+    }
+  }
+
+  @container table (min-width: 720px) {
+    [data-visible-from="md"] {
+      display: table-cell;
+    }
+
+    [data-visible-until="md"] {
+      display: none;
+    }
+  }
+
+  @container table (min-width: 960px) {
+    [data-visible-from="lg"] {
+      display: table-cell;
+    }
+
+    [data-visible-until="lg"] {
+      display: none;
+    }
+  }
+
+  @container table (min-width: 1200px) {
+    [data-visible-from="xl"] {
+      display: table-cell;
+    }
+
+    [data-visible-until="xl"] {
+      display: none;
+    }
+  }
+
+  /* ---- Pinned columns (basic; offsets for multiple pins land in Phase 3) */
+
+  [data-pin="start"] {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    box-shadow: inset calc(-1 * var(--_border-width)) 0 0 var(--table-border-color);
+  }
+
+  [data-pin="end"] {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    box-shadow: inset var(--_border-width) 0 0 var(--table-border-color);
+  }
+
+  /* ---- Utilities ------------------------------------------------------- */
+
+  .srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}

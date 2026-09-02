@@ -40,12 +40,12 @@ Types live in `packages/table-core/src/schema.ts`; validation in `validate.ts`.
 | `sortable` | `boolean` | `false` | Header becomes a sort control. |
 | `align` | `'start' \| 'center' \| 'end'` | `'start'` | Logical, RTL-safe. |
 | `emphasis` | `'low' \| 'normal' \| 'high'` | `'normal'` | Replaces the old `cellStyle` importance scale. |
-| `width` | CSS length string | — | `'200px'`, `'2fr'`, `'20%'`. Renderers place it on `<col>`. |
+| `width` | CSS length string | — | `'200px'`, `'20%'`, `'12rem'`. Applied to the header cell; the table uses auto layout so `minWidth` is honoured and overflow scrolls. |
 | `minWidth` / `maxWidth` | CSS length string | — | |
 | `pin` | `'start' \| 'end'` | — | Initial pin; runtime state can change it. |
 | `visibleFrom` | `'sm' \| 'md' \| 'lg' \| 'xl'` | — | Rendered only at this container width and above. |
 | `visibleUntil` | `'sm' \| 'md' \| 'lg' \| 'xl'` | — | Rendered only below this width. Must be larger than `visibleFrom`. |
-| `group` | `string` | — | Header group title. Adjacent columns with the same title merge. |
+| `group` | `string` | — | Header group title. Adjacent columns with the same title merge. Columns in one group must share `visibleFrom` / `visibleUntil` (a merged header's `colspan` cannot respond to container queries). |
 
 ## `TableFeatures`
 

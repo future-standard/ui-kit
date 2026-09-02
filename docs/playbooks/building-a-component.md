@@ -92,15 +92,44 @@ The new kit runs alongside the old one. Before naming anything:
 
 ## 6. Render (React first, contract for others)
 
-_To be written during Phase 2 and 5._
+- **Bind, don't wrap.** `useTable` creates the core instance once, syncs props into it silently
+  during render, and subscribes with `useSyncExternalStore`. The core must return a *stable* state
+  snapshot for this to work — memoise it.
+- **Two API tiers.** A schema-driven component for the common case (`DataTable`) built entirely
+  from composable primitives (`Table.Root` … `Table.Cell`) that consumers can rearrange. Every
+  primitive renders sensible default children when given none, and accepts its native element's
+  props.
+- **Attributes come from the core.** Call the DOM-contract helpers; never hand-write `data-*`.
+  Spread contract attributes before consumer props so consumers can override.
+- **Slots over strings.** Loading / empty / error content and accessible labels are props. English
+  defaults exist only for `aria-label`s that are never displayed.
+- **Registries for the escape hatch.** Cell renderers are looked up by the schema's type name;
+  unknown types degrade to text rather than crash.
+- **Test with Testing Library in jsdom**: roles, labels and `data-*` attributes, not class names.
+  Call `cleanup` in `afterEach` explicitly — Vitest globals are off.
 
 ## 7. Style on the CSS-modules pattern
 
-_To be written during Phase 2._ See the styling contract in the table plan.
+- One module, `@layer component`, states as data attributes, structure in `--_*` vars, colour only
+  via theme aliases you add to `packages/theme/src/colors.aliases.css` (checked against the old kit).
+- **Container queries for responsiveness**, named breakpoints fixed in the module (they cannot read
+  custom properties). Emit the breakpoint on the element (`data-visible-from`) and hide in CSS, so
+  the DOM is identical at every width and non-React renderers get it for free.
+- Set every property your own anchors / buttons / inputs rely on; unlayered old-kit CSS beats
+  this layer.
+- Use `:nth-child(even of .row)` style selectors so interleaved rows (drawers, group rows) don't
+  break rhythm.
+- **Look at it.** Run the dev app and screenshot with the browser tools at two widths and both
+  themes before calling a phase done. Two of the three real bugs in Phase 2 were only visible.
 
 ## 8. Examples
 
-_To be written during Phase 2._
+- One example per API tier and per real consumer pattern: schema-driven with controls that edit the
+  schema; controlled + server-sorted (the list-screen pattern); hand-composed primitives.
+- Mock data shaped like the real consumer's rows, including nulls and nested objects.
+- Hash-routed pages in `apps/dev` so each example has a linkable URL for screenshots and reviews.
+- Build packages first; the dev app resolves workspace packages from `dist`. Rebuilding while the
+  dev server is open produces transient 404s — reload, don't debug.
 
 ## 9. Document
 
@@ -132,3 +161,12 @@ Short, dated notes on what we learned the hard way, to feed back into the steps 
   elements to the end itself. Test comparators on `undefined` directly, not through `sort`.
 - **2026-09-02** — Turbo can report a transient failure when a formatter rewrite invalidates a
   build mid-pipeline. Re-run with `--force` before hunting a phantom error.
+- **2026-09-02** — A merged header `colspan` cannot respond to container queries. A hidden
+  column under a group header left a phantom column. Rule: grouped columns share visibility;
+  enforced in the validator, not just documented.
+- **2026-09-02** — Testing Library does not auto-clean between tests without Vitest globals;
+  14 "failures" were DOM leaking from earlier tests. Add `afterEach(cleanup)` in the setup file.
+- **2026-09-02** — Browser tooling writes artefacts into the repo (`.playwright-mcp/`, screenshots)
+  and macOS drops `.DS_Store` everywhere; `git add -A` swept them into a commit. Read `git status`
+  before every commit, keep the ignore file exhaustive, and check it ends with a newline before
+  appending — a missing one fused two patterns into a bogus entry.

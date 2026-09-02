@@ -154,6 +154,27 @@ describe('createTable', () => {
   });
 
   describe('options and memoisation', () => {
+    it('returns a stable state snapshot until something changes', () => {
+      const table = make({ state: { sorting: [] } });
+      const a = table.getState();
+      expect(table.getState()).toBe(a);
+      table.toggleRowSelected('1');
+      const b = table.getState();
+      expect(b).not.toBe(a);
+      expect(table.getState()).toBe(b);
+    });
+
+    it('setOptions can be silent for callers that are already re-rendering', () => {
+      const table = make();
+      const listener = vi.fn();
+      table.subscribe(listener);
+      table.setOptions({ status: 'loading' }, { silent: true });
+      expect(listener).not.toHaveBeenCalled();
+      expect(table.getRootAttributes()['data-status']).toBe('loading');
+      table.setOptions({ status: 'idle' });
+      expect(listener).toHaveBeenCalledTimes(1);
+    });
+
     it('re-reads data and status through setOptions', () => {
       const table = make({ status: 'loading' });
       expect(table.getRootAttributes()['data-status']).toBe('loading');

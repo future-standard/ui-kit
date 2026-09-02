@@ -216,13 +216,16 @@ Each phase ends with: green `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm b
   selection keyed by `rowKey`, select-all acts on the current row model's keys; empty values sort
   last in both directions.
 
-### Phase 2 — `table`: React renderer v1 (the "basic looking table with focus on features")
-- Primitives + `useTable` + `DataTable`.
-- `Table.module.css` on the CSS-modules pattern; `--table-*` aliases added to theme.
-- Features: fluid layout, column widths via `<colgroup>`, alignment, emphasis, clickable sortable headers, selection with select-all + indeterminate, `status` slot (loading / empty / error), hover highlight, zebra, density, sticky header, row data-attributes for tone/state.
-- Example page: clips-like and users-like tables using mock data shaped like mlit-cctv rows.
-- Validate the `<table>` layout decision (§3) in Chrome, Safari, Firefox.
-- Add the duplicate-`data-ui` check to `pnpm check` now that parts multiply (`table-row`, `table-cell`, …).
+### Phase 2 — `table`: React renderer v1 ✅ 2026-09-02
+- [x] Primitives (`Table.Root/Scroll/Element/Head/HeaderCell/Body/Row/Cell/GroupRow/Drawer/Status`) + `useTable` + `DataTable`.
+- [x] `Table.module.css` on the CSS-modules pattern; `--table-*` aliases added to theme (verified absent from the old kit).
+- [x] Features: fluid layout, column widths on header cells, alignment, emphasis, sortable headers with `aria-sort`, single/multiple selection with select-all + indeterminate, `status` slots (loading overlay / empty / error), hover, zebra (`:nth-child(even of .row)`), density, sticky header, row tone/state hints, expandable drawers, header groups, grouped rows, container-query column visibility, basic pinning.
+- [x] Example pages in `apps/dev` (`#/table-cameras` schema-driven, `#/table-clips` controlled + server-sorted, `#/table-primitives`) with mlit-cctv-shaped mock data.
+- [x] 18 React tests (Testing Library + jsdom) on top of 90 core tests.
+- [x] Duplicate-`data-ui` check in `pnpm check` (`scripts/check-data-ui.mjs`).
+- [x] Visual check in Chromium at 1280 / 760 px: container queries, header groups, pinned column, sort round trip, status overlay. Safari/Firefox pass still to do.
+- Component guide: `docs/components/table/README.md`.
+- Resolved here: **semantic `<table>` with `table-layout: auto`**, widths on `<th>` (so `minWidth` is honoured and overflow scrolls); grid is not needed. **Grouped columns must share breakpoint visibility** (a merged `colspan` cannot respond to container queries) — enforced by the validator. Sticky header sticks to the table's own scroll container (`maxHeight`); page-scroll + horizontal scroll cannot stick to the viewport — Phase 3 question.
 
 ### Phase 3 — Responsive
 - Scroll container with pinned start/end columns.
@@ -284,8 +287,10 @@ Filters and Pagination components · virtualisation (store is designed so the ro
 
 | Decision | Recommendation | Resolve in |
 |---|---|---|
-| `<table>` vs CSS grid | `<table>` + `<colgroup>`; fall back to grid only if sticky/pinned/container queries fight it | Phase 2 |
-| Column visibility: CSS container queries vs JS ResizeObserver | CSS with named breakpoints first (works for vanilla for free); JS only if state needs to know (e.g. sort dropdown lists) | Phase 3 |
+| ~~`<table>` vs CSS grid~~ | Resolved: semantic `<table>`, auto layout, widths on `<th>`; sticky header and pinned columns work inside the scroll container | Phase 2 ✅ |
+| Column visibility: CSS container queries vs JS ResizeObserver | CSS with named breakpoints shipped (sm 480 · md 720 · lg 960 · xl 1200 container px). JS only if state needs to know, or to lift the "grouped columns share visibility" rule | Phase 3 |
+| Sticky header on page-scroll layouts | Horizontal scroll container prevents sticking to the viewport. Options: table-owned `maxHeight` (shipped), `overflow: clip` + custom scrollbar, or JS-measured header clone | Phase 3 |
+| Pinned column offsets | Multiple pins on one side need measured `left`/`right` offsets (JS or `<col>` widths) | Phase 3 |
 | ~~Sort model~~ | Resolved: single column, array-shaped state, `multiSort` / `allowSortClear` opt-in | Phase 1 ✅ |
 | Cell renderer signature (React) | `(ctx: CellContext) => ReactNode`; vanilla returns `Node \| string` | Phase 2 / 5 |
 | ~~Selection identity~~ | Resolved: record of `rowKey` → `true`; select-all operates on the current row model's keys | Phase 1 ✅ |

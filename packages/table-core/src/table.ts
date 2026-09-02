@@ -57,8 +57,12 @@ export type TableOptions<TRow = unknown> = SliceChangeHandlers & {
 export type TableInstance<TRow = unknown> = {
   getSchema: () => TableSchema;
   getOptions: () => TableOptions<TRow>;
-  /** Merge new options (new data, new controlled state, …) and notify subscribers. */
-  setOptions: (patch: Partial<TableOptions<TRow>>) => void;
+  /**
+   * Merge new options (new data, new controlled state, …) and notify subscribers.
+   * Pass `{ silent: true }` when the caller is already re-rendering (React syncing props
+   * during render) and must not be notified again.
+   */
+  setOptions: (patch: Partial<TableOptions<TRow>>, options?: { silent?: boolean }) => void;
 
   /** Resolved state: controlled slices from options, everything else from the internal store. */
   getState: () => TableState;
@@ -120,20 +124,35 @@ export function createTable<TRow = unknown>(
   const listeners = new Set<Listener<TableState>>();
 
   let lastState: TableState | undefined;
+
+  /**
+   * Resolved state = internal state with controlled slices laid over it. Memoised on the identity
+   * of both inputs so repeated reads (e.g. React's `useSyncExternalStore` snapshot) are stable.
+   */
+  let resolvedCache:
+    | { base: TableState; controlled: Partial<TableState> | undefined; value: TableState }
+    | undefined;
   const resolveState = (): TableState => {
     const base = internal.getState();
     const controlled = options.state;
-    if (!controlled) return base;
-    let changed = false;
-    const merged: TableState = { ...base };
-    for (const key of TABLE_STATE_KEYS) {
-      const value = controlled[key];
-      if (value !== undefined) {
-        (merged as Record<string, unknown>)[key] = value;
-        changed = true;
-      }
+    if (resolvedCache && resolvedCache.base === base && resolvedCache.controlled === controlled) {
+      return resolvedCache.value;
     }
-    return changed ? merged : base;
+    let value = base;
+    if (controlled) {
+      const merged: TableState = { ...base };
+      let changed = false;
+      for (const key of TABLE_STATE_KEYS) {
+        const slice = controlled[key];
+        if (slice !== undefined) {
+          (merged as Record<string, unknown>)[key] = slice;
+          changed = true;
+        }
+      }
+      value = changed ? merged : base;
+    }
+    resolvedCache = { base, controlled, value };
+    return value;
   };
 
   const notify = () => {
@@ -216,13 +235,14 @@ export function createTable<TRow = unknown>(
   return {
     getSchema: () => options.schema,
     getOptions: () => options,
-    setOptions: (patch) => {
+    setOptions: (patch, { silent = false } = {}) => {
       const nextSchema = patch.schema ?? options.schema;
       if (patch.schema && patch.schema !== options.schema && !patch.skipValidation) {
         assertSchema(nextSchema);
       }
       options = { ...options, ...patch };
-      notify();
+      if (silent) lastState = resolveState();
+      else notify();
     },
 
     getState: resolveState,

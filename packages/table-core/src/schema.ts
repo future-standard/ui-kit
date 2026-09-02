@@ -58,7 +58,7 @@ export type ColumnSchema = {
   sortable?: boolean;
   align?: Align;
   emphasis?: Emphasis;
-  /** CSS length or `fr` unit, e.g. `'200px'`, `'2fr'`, `'20%'`. */
+  /** CSS length, e.g. `'200px'`, `'20%'`, `'12rem'`. Applied to the header cell; the scroll container absorbs overflow. */
   width?: string;
   minWidth?: string;
   maxWidth?: string;
