@@ -269,7 +269,8 @@ Pulled in from the spec's "later stage" list at Leonard's request.
 - [x] `docs/playbooks/building-a-component.md` v1: research → plan → co-existence → housekeeping → schema-first API → headless core → render → style → examples → document → Figma/Code Connect → release, plus a dated lessons log.
 - [x] `docs/README.md` index; `CLAUDE.md`, `README.md`, `docs/META_PACKAGES.md` updated.
 - [x] `@future-standard-ui/tables` meta-package (the rule of three was met); table exports in the `ui-kit` kitchen sink.
-- Then, outside this experiment: light Storybook setup (reference `origin/add-storybook`), Figma track (§Figma), `llms.txt`, filters + pagination against the §5 contract, Safari/Firefox pass.
+- [x] Follow-up 2026-09-03 (Leonard's review): `#/table-cells` gallery (one column per cell type + its JSON); **agent-ready schema docs** — `schema-quickstart.md` (rules, template, recipes, checklist), `table.schema.json` shipped from `table-core` and kept in sync by test, root `llms.txt`; progress-bar fill fixed (inline span ignored width). Safari pass done by Leonard.
+- Then, outside this experiment: light Storybook setup (reference `origin/add-storybook`), Figma track (§Figma), filters + pagination against the §5 contract, Firefox pass.
 
 ### Figma track — runs alongside Phases 2–7
 

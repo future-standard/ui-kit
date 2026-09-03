@@ -3,6 +3,7 @@ import { useThemeToggle } from '@future-standard-ui/theme';
 import { useEffect, useState } from 'react';
 import { ButtonsExample } from './examples/ButtonsExample';
 import { CamerasExample } from './examples/table/CamerasExample';
+import { CellsGalleryExample } from './examples/table/CellsGalleryExample';
 import { ClipsExample } from './examples/table/ClipsExample';
 import { PrimitivesExample } from './examples/table/PrimitivesExample';
 import { ResponsiveExample } from './examples/table/ResponsiveExample';
@@ -50,6 +51,13 @@ const pages = [
     intro:
       'The mlit-cctv list-screen pattern: the screen owns sorting and selection, a fake server sorts with latency, and the table only reports changes.',
     render: () => <ClipsExample />,
+  },
+  {
+    id: 'table-cells',
+    title: 'Table — cell gallery',
+    intro:
+      'One column per standard cell type with the JSON that produces it. Three rows: typical, threshold-tripping, and empty values.',
+    render: () => <CellsGalleryExample />,
   },
   {
     id: 'table-responsive',

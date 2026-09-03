@@ -9,7 +9,8 @@ source of truth; these pages explain it.
 |---|---|
 | Understand how this kit is built and why | [Building a Component playbook](./playbooks/building-a-component.md) |
 | Use the table | [Table guide](./components/table/README.md) |
-| Write or generate a table schema | [Schema reference](./components/table/schema.md) |
+| Generate a table schema fast (agents start here) | [Schema quickstart](./components/table/schema-quickstart.md) · [JSON Schema](../packages/table-core/schema/table.schema.json) |
+| Look up every schema property | [Schema reference](./components/table/schema.md) |
 | Configure cells from JSON | [Standard cells](./components/table/cells.md) |
 | Style or override a table, or render it without React | [DOM contract](./components/table/dom-contract.md) |
 | See the plan and the decisions behind it | [Table plan](./plans/table.md) |
@@ -39,5 +40,5 @@ docs/
 ## Coming next
 
 Storybook (light setup, pages generated from these docs), Figma library + Code Connect per
-component, `llms.txt` at the repo root pointing here, Filters and Pagination against the
-list-view state contract in the table plan.
+component, Filters and Pagination against the list-view state contract in the table plan.
+`llms.txt` at the repo root points agents here.

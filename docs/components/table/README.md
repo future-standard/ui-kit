@@ -47,8 +47,10 @@ const schema: TableSchema = {
 <DataTable schema={schema} data={cameras} clientSorting cells={{ timestamp: TimestampCell }} />
 ```
 
-The schema is plain JSON — see the [schema reference](./schema.md). Anything that needs code
-(renderers, accessors, comparators) goes in props.
+The schema is plain JSON — see the [schema reference](./schema.md), the
+[quickstart for agents](./schema-quickstart.md), and the machine-readable
+`@future-standard-ui/table-core/schema.json`. Anything that needs code (renderers, accessors,
+comparators) goes in props.
 
 ### Controlled state (the list-screen pattern)
 

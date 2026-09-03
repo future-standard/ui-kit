@@ -218,3 +218,7 @@ Short, dated notes on what we learned the hard way, to feed back into the steps 
   anyway; here explicit ARIA roles moved into `getElementAttributes()` and the lint issue vanished.
 - **2026-09-03** — Give every cell one content wrapper (`.cellContent`). Free-floating text nodes
   cannot be laid out; the wrapper made the card layout's label/value split trivial.
+- **2026-09-03** — A progress bar rendered empty although its computed colour and `width: 85%`
+  were correct: the fill was a `span`, inline, so width was ignored. Computed-style checks are not
+  layout checks; when verifying a visual, measure `getBoundingClientRect()` or look at the pixels
+  at 1:1. Any element that gets a width must have a block-ish display.

@@ -295,6 +295,7 @@
   }
 
   .progressTrack {
+    display: block;
     height: 6px;
     overflow: hidden;
     border-radius: 999px;
@@ -302,6 +303,8 @@
   }
 
   .progressFill {
+    /* Spans are inline by default and ignore width — the bar rendered empty until this. */
+    display: block;
     height: 100%;
     border-radius: inherit;
     background: var(--_fill);
