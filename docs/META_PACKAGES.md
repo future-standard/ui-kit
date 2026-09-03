@@ -18,7 +18,7 @@ Based on the scorer-ui-kit feature set we intend to cover:
 | `@future-standard-ui/buttons` | button, icon-button, loading-button, split-button | 4+ button variants exist |
 | `@future-standard-ui/forms` | input, select, checkbox, radio, switch, textarea, slider, password-field | First form input lands |
 | `@future-standard-ui/layout` | sidebar, topbar, content, main-container, split-layout | First layout primitive lands |
-| `@future-standard-ui/tables` | type-table, edit-cell, table-header | Table package lands |
+| `@future-standard-ui/tables` | table-core, table, table-cells | **Exists** (2026-09-03) |
 | `@future-standard-ui/feedback` | alert-bar, notification, tooltip, modal, confirmation-modal, spinner | 3+ feedback components exist |
 | `@future-standard-ui/filters` | date-picker, filter-dropdown, sort-dropdown, filter-bar | Filter system lands |
 | `@future-standard-ui/tabs` | tabs, tab-list, tab-content | Tab system lands |

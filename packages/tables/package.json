@@ -1,6 +1,7 @@
 {
-  "name": "@future-standard-ui/ui-kit",
+  "name": "@future-standard-ui/tables",
   "version": "0.0.0",
+  "description": "Meta-package: the table engine, React table and standard cells in one install.",
   "type": "module",
   "sideEffects": [
     "**/*.css"
@@ -28,13 +29,9 @@
     "typecheck": "tsc --emitDeclarationOnly"
   },
   "dependencies": {
-    "@future-standard-ui/button": "workspace:*",
-    "@future-standard-ui/icon-button": "workspace:*",
-    "@future-standard-ui/loading-button": "workspace:*",
     "@future-standard-ui/table": "workspace:*",
     "@future-standard-ui/table-cells": "workspace:*",
-    "@future-standard-ui/table-core": "workspace:*",
-    "@future-standard-ui/theme": "workspace:*"
+    "@future-standard-ui/table-core": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0",

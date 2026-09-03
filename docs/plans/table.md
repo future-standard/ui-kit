@@ -1,6 +1,6 @@
 # Table — Experiment Plan
 
-Status: **active** · Branch: `feature/table` · Started: 2026-09-02
+Status: **phases 0–7 complete (2026-09-03)** · Branch: `feature/table` · Started: 2026-09-02 · Next: Storybook-light, Figma track, Filters + Pagination
 
 The first big-hitter component for the new UI Kit, and the vehicle for forming the
 process we will use for every component after it. Spec:
@@ -264,11 +264,12 @@ Pulled in from the spec's "later stage" list at Leonard's request.
 - [x] Docs: `docs/components/table/cells.md`. Examples migrated to the standard cells (clips, cameras, responsive, vanilla-React side); `apps/dev/.../cells.tsx` deleted.
 - Icons are injected (`icons` map); the kit still ships no icon dependency.
 
-### Phase 7 — System: docs, playbook, adoption prep
-- `docs/components/table/*.md(x)`: overview, install, import, schema reference, props tables, examples, DOM contract, override recipes, migration notes from `TypeTable`.
-- `docs/playbooks/building-a-component.md`: the process formed here (research → schema/API → core → renderer → CSS contract → examples → tests → docs → Figma/Code Connect → changeset).
-- Update `CLAUDE.md`, `README.md`, `docs/META_PACKAGES.md` (tables meta-package appears once `table`, `table-core`, `table-cells` exist).
-- Then, outside this experiment: light Storybook setup (reference `origin/add-storybook`), filters + pagination packages against the §5 contract.
+### Phase 7 — System: docs, playbook, adoption prep ✅ 2026-09-03
+- [x] `docs/components/table/`: guide (`README.md`), `schema.md`, `dom-contract.md`, `cells.md` — install, import, usage, props, primitives, overrides, accessibility, limits, migration from `TypeTable`.
+- [x] `docs/playbooks/building-a-component.md` v1: research → plan → co-existence → housekeeping → schema-first API → headless core → render → style → examples → document → Figma/Code Connect → release, plus a dated lessons log.
+- [x] `docs/README.md` index; `CLAUDE.md`, `README.md`, `docs/META_PACKAGES.md` updated.
+- [x] `@future-standard-ui/tables` meta-package (the rule of three was met); table exports in the `ui-kit` kitchen sink.
+- Then, outside this experiment: light Storybook setup (reference `origin/add-storybook`), Figma track (§Figma), `llms.txt`, filters + pagination against the §5 contract, Safari/Firefox pass.
 
 ### Figma track — runs alongside Phases 2–7
 

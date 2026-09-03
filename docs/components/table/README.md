@@ -177,9 +177,10 @@ const table = useTable({ schema, data });
 </Table.Root>
 ```
 
-Parts: `Root`, `Scroll`, `Element`, `Head`, `HeaderCell`, `Body`, `Row`, `Cell`, `GroupRow`,
-`Drawer`, `Status`. Each accepts its native element's props and renders its default children when
-given none.
+Parts: `Table.Root`, `.Scroll`, `.Element`, `.Head`, `.HeaderCell`, `.Body`, `.Row`, `.Cell`,
+`.GroupRow`, `.Drawer`, `.Status`. Each accepts its native element's props and renders its default
+children when given none. They are only exposed through the `Table` namespace so their names never
+collide with the core's `Row` / `Cell` model types.
 
 ## Overriding styles
 

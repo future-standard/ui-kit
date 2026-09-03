@@ -259,6 +259,37 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(jsdom@30.0.1)(vite@8.0.0)
 
+  packages/tables:
+    dependencies:
+      '@future-standard-ui/table':
+        specifier: workspace:*
+        version: link:../table
+      '@future-standard-ui/table-cells':
+        specifier: workspace:*
+        version: link:../table-cells
+      '@future-standard-ui/table-core':
+        specifier: workspace:*
+        version: link:../table-core
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@future-standard-ui/build-config':
+        specifier: workspace:*
+        version: link:../build-config
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vite:
+        specifier: 8.0.0
+        version: 8.0.0
+
   packages/theme:
     dependencies:
       react:
@@ -292,6 +323,15 @@ importers:
       '@future-standard-ui/loading-button':
         specifier: workspace:*
         version: link:../loading-button
+      '@future-standard-ui/table':
+        specifier: workspace:*
+        version: link:../table
+      '@future-standard-ui/table-cells':
+        specifier: workspace:*
+        version: link:../table-cells
+      '@future-standard-ui/table-core':
+        specifier: workspace:*
+        version: link:../table-core
       '@future-standard-ui/theme':
         specifier: workspace:*
         version: link:../theme

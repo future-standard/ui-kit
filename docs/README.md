@@ -1,0 +1,43 @@
+# Documentation
+
+Everything a human or an agent needs to use, extend, or design against this kit. The code is the
+source of truth; these pages explain it.
+
+## Start here
+
+| I want to… | Read |
+|---|---|
+| Understand how this kit is built and why | [Building a Component playbook](./playbooks/building-a-component.md) |
+| Use the table | [Table guide](./components/table/README.md) |
+| Write or generate a table schema | [Schema reference](./components/table/schema.md) |
+| Configure cells from JSON | [Standard cells](./components/table/cells.md) |
+| Style or override a table, or render it without React | [DOM contract](./components/table/dom-contract.md) |
+| See the plan and the decisions behind it | [Table plan](./plans/table.md) |
+| Add a package or meta-package | [Meta-package strategy](./META_PACKAGES.md) |
+
+## Layout
+
+```
+docs/
+  README.md                  ← this index
+  META_PACKAGES.md           package grouping rules
+  playbooks/                 how we build (process, lessons)
+  plans/                     one plan per initiative, with decisions and phases
+  components/<name>/         per-component: README (guide), schema, dom-contract, cells, …
+```
+
+## Conventions
+
+- **Guides follow one format**: installation, import, usage, props, primitives, overrides,
+  accessibility, known limits, migration. The table guide is the template.
+- **Decisions live in plans**, with a *why* per row. When a decision changes, the plan changes.
+- **Lessons live in the playbook** with a date. If something bit us, it is written down.
+- **Schemas are JSON**. Anything documented under "runtime options" is code; everything else
+  should round-trip through `JSON.stringify`.
+- **Examples live in `apps/dev`**, one hash route per example (`pnpm build && pnpm dev`).
+
+## Coming next
+
+Storybook (light setup, pages generated from these docs), Figma library + Code Connect per
+component, `llms.txt` at the repo root pointing here, Filters and Pagination against the
+list-view state contract in the table plan.

@@ -1,8 +1,8 @@
 # Playbook — Building a Component
 
-Status: **draft, being written while building the table.** Each phase of
-[the table plan](../plans/table.md) adds to this document. When the table ships, this becomes the
-process every component follows, for humans and agents alike.
+Status: **v1 — formed while building the table** ([plan](../plans/table.md)). This is the
+process every component follows, for humans and agents alike. It will keep changing; when it does,
+change it here and date the lesson that caused it.
 
 The goal is one loop: **research → decide → design the API → build the core → render → style →
 exemplify → test → document → connect to Figma → release.** A component is done when every step
@@ -138,17 +138,43 @@ The new kit runs alongside the old one. Before naming anything:
 
 ## 9. Document
 
-_To be written during Phase 7._ Target format: install, import, props/schema table, variants,
-code snippets, composition, override recipes, migration notes.
+Write docs *as you build*, not after. Each component owns `docs/components/<name>/`:
+
+- **`README.md` — the guide**, in one fixed order: installation, import, usage (the common case
+  first, then the real consumer pattern), feature sections, props table, primitives, overrides,
+  accessibility, known limits, migration from the old kit. The table guide is the template.
+- **`schema.md`** when the component is schema-driven: every property with type, default and
+  notes, then the runtime-only options separately, then validation behaviour.
+- **`dom-contract.md`** for anything with a non-trivial DOM: parts, attributes, custom
+  properties, and a "writing a renderer" recipe.
+- Feature-specific references as needed (`cells.md`).
+- Update `docs/README.md` (the index) and `CLAUDE.md`/`README.md` package lists.
+
+Rules of thumb: one sentence beats a paragraph; a table beats a list of sentences; every code
+sample must be something the examples actually run. Storybook pages will be generated from these
+docs later, so keep headings stable.
 
 ## 10. Figma and Code Connect
 
-_To be written during the Figma track._ Colours from the old library's variables, everything else
-fresh; Code Connect files live next to the component.
+Definition of done includes the Figma side (see the plan's Figma track):
+
+1. Variables first: the old library's colour variables are reused; spacing, radius, type and
+   component tokens are created fresh from the theme files.
+2. Components mirror the schema-facing props as variant properties (density, zebra, selection,
+   emphasis, align, pinned, sortable, expanded, status, stacked).
+3. Code Connect (`*.figma.tsx` next to the component) maps those properties to props.
+4. Annotations for usage guidance; Blocks for composed patterns (a list page).
+
+Direction is code → Figma; Code Connect is the link back.
 
 ## 11. Release
 
-_To be written._ Changeset per package, meta-package update, README/CLAUDE.md updates.
+- One changeset per package touched, written for a reader who did not see the PR.
+- Meta-packages appear when three individual packages share a category (`tables` did).
+- Add exports to the `ui-kit` kitchen sink.
+- README package table, `CLAUDE.md` structure line, `docs/README.md` index.
+- CI is the gate: `pnpm check` (Biome + `data-ui` uniqueness), `typecheck`, `test`, `build`.
+- Run the dev app and look at every example page in both themes before opening the PR.
 
 ---
 

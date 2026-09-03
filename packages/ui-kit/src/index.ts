@@ -4,5 +4,7 @@ export type { IconButtonProps } from '@future-standard-ui/icon-button';
 export { IconButton } from '@future-standard-ui/icon-button';
 export type { LoadingButtonProps } from '@future-standard-ui/loading-button';
 export { LoadingButton } from '@future-standard-ui/loading-button';
-
+export * from '@future-standard-ui/table';
+export * from '@future-standard-ui/table-cells';
+export * from '@future-standard-ui/table-core';
 export { useThemeToggle } from '@future-standard-ui/theme';

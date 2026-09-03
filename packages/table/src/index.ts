@@ -45,24 +45,15 @@ export {
   useTableContext,
 } from './context';
 export { DataTable, type DataTableProps } from './DataTable';
+// Primitives are exposed through the `Table` namespace (`Table.Root`, `Table.Row`, …) so their
+// names never collide with the core's row-model types when both packages are re-exported together.
 export {
-  Body,
-  Cell,
   type CellProps,
-  Drawer,
   type DrawerProps,
-  Element,
-  GroupRow,
   type GroupRowProps,
-  Head,
-  HeaderCell,
   type HeaderCellProps,
-  Root,
   type RootProps,
-  Row,
   type RowProps,
-  Scroll,
-  Status,
   type StatusProps,
   Table,
 } from './Table';
