@@ -285,6 +285,8 @@ vars in `packages/theme` were ported from — do not recreate them). Everything 
 type scale, component tokens, components) is created fresh in the new file; duplicate from the old
 library only when needed, never wholesale.
 
+Progress 2026-09-03: page structure ✅ · variables (4 collections, 62 variables, colours aliased to the library) ✅ · 9 text styles + 2 effect styles ✅ · Foundations documentation page ✅ · components ✅ Sort Icon, Selection Control, Expand Toggle, Header Cell (Sort × Align), Cell (Align × Emphasis + content slot), Row (State × Tone), Group Row, Table template; cells ✅ Text, Status (Dot/Badge × Tone), Timestamp, Action Button + Actions, Switch · **pending**: remaining 9 cell types, Code Connect, Blocks list page, annotations. Decisions: Modern typography (Noto Sans JP UI / Lato data), code density values, consolidation log at `design-code-consolidation.md`.
+
 | When | Step |
 |---|---|
 | Before anything lands | Page structure: `Foundations`, `Components`, `Blocks`, `Guidelines`. |

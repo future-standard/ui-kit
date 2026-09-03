@@ -222,3 +222,14 @@ Short, dated notes on what we learned the hard way, to feed back into the steps 
   were correct: the fill was a `span`, inline, so width was ignored. Computed-style checks are not
   layout checks; when verifying a visual, measure `getBoundingClientRect()` or look at the pixels
   at 1:1. Any element that gets a width must have a block-ish display.
+- **2026-09-03 (Figma)** — Alias the new file's semantic colour variables to the *library's* variables
+  instead of copying values: light/dark/high-contrast then belong to one collection. The library's
+  default mode was Dark, so pin documentation and component frames to Light explicitly.
+- **2026-09-03 (Figma)** — `resize()` fixes both axes of an auto-layout frame; set `layoutSizingVertical
+  = 'HUG'` afterwards or content is clipped at 1px. Same for swatch cards and restacked rows.
+- **2026-09-03 (Figma)** — Multi-path icons: build from SVG with `createNodeFromSvg` and reparent the
+  vectors. Setting `x/y` on a vector after assigning `vectorPaths` collapses its position.
+- **2026-09-03 (Figma)** — `setBoundVariableForPaint` returns a paint without the `opacity` you passed;
+  spread the paint and set opacity after binding.
+- **2026-09-03 (Figma)** — Screenshot every component set at ≥2× before moving on; three of the
+  fixes above were only visible in pixels.
