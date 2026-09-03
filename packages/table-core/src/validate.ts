@@ -125,6 +125,38 @@ export function validateSchema(schema: unknown): SchemaIssue[] {
       }
     });
 
+    // Pinned columns are always-visible anchors, and sticky offsets are computed from declared
+    // widths: every pinned column except the outermost on its side needs a `width`.
+    const columns: unknown[] = schema.columns;
+    const pinned = (side: 'start' | 'end') =>
+      columns
+        .map((column, index) => ({ column, index }))
+        .filter(({ column }) => isRecord(column) && column.pin === side);
+    for (const { column, index } of [...pinned('start'), ...pinned('end')]) {
+      if (!isRecord(column)) continue;
+      if (column.visibleFrom !== undefined || column.visibleUntil !== undefined) {
+        issue(`columns[${index}].pin`, 'pinned columns cannot have visibleFrom / visibleUntil');
+      }
+    }
+    const startPins = pinned('start');
+    startPins.slice(0, -1).forEach(({ column, index }) => {
+      if (isRecord(column) && !isNonEmptyString(column.width)) {
+        issue(
+          `columns[${index}].width`,
+          'required: a pinned column with pinned columns after it on the same side'
+        );
+      }
+    });
+    const endPins = pinned('end');
+    endPins.slice(1).forEach(({ column, index }) => {
+      if (isRecord(column) && !isNonEmptyString(column.width)) {
+        issue(
+          `columns[${index}].width`,
+          'required: a pinned column with pinned columns before it on the same side'
+        );
+      }
+    });
+
     // Header groups render as one cell with a colspan, which cannot respond to container
     // queries. Grouped columns must therefore agree on breakpoint visibility.
     const groupVisibility = new Map<string, { from: unknown; until: unknown; index: number }>();

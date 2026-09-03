@@ -227,11 +227,13 @@ Each phase ends with: green `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm b
 - Component guide: `docs/components/table/README.md`.
 - Resolved here: **semantic `<table>` with `table-layout: auto`**, widths on `<th>` (so `minWidth` is honoured and overflow scrolls); grid is not needed. **Grouped columns must share breakpoint visibility** (a merged `colspan` cannot respond to container queries) — enforced by the validator. Sticky header sticks to the table's own scroll container (`maxHeight`); page-scroll + horizontal scroll cannot stick to the viewport — Phase 3 question.
 
-### Phase 3 — Responsive
-- Scroll container with pinned start/end columns.
-- Container-query driven column visibility (`visibleFrom` / `visibleUntil`) using a fixed breakpoint set from the theme.
-- `composite` cell type for the combined-on-small case.
-- Example: traffic ingress/egress table from the Notion spec.
+### Phase 3 — Responsive ✅ 2026-09-03
+- [x] Pinned start/end columns with **schema-derived sticky offsets** (`getPinLayout` → `--_pin-offset`), edge shadow on the innermost pinned column, utility columns sticky too. No measurement, no JS.
+- [x] Validator rules: pinned columns have no breakpoint visibility; inner pinned columns declare `width`.
+- [x] Container-query column visibility shipped in Phase 2; `page` / `contained` **layout option** resolves the sticky-header-on-page-scroll question (see §8).
+- [x] `composite` cell type (built into `@future-standard-ui/table`) for the combined-on-small case.
+- [x] Example `#/table-responsive`: traffic ingress/egress from the Notion spec, pinned ID + Device, pinned actions, layout switch, narrow-container toggle.
+- [x] 10 new tests (core pinning/validation, React offsets/layout/composite).
 
 ### Phase 4 — Structure
 - Header groups.
@@ -289,8 +291,8 @@ Filters and Pagination components · virtualisation (store is designed so the ro
 |---|---|---|
 | ~~`<table>` vs CSS grid~~ | Resolved: semantic `<table>`, auto layout, widths on `<th>`; sticky header and pinned columns work inside the scroll container | Phase 2 ✅ |
 | Column visibility: CSS container queries vs JS ResizeObserver | CSS with named breakpoints shipped (sm 480 · md 720 · lg 960 · xl 1200 container px). JS only if state needs to know, or to lift the "grouped columns share visibility" rule | Phase 3 |
-| Sticky header on page-scroll layouts | Horizontal scroll container prevents sticking to the viewport. Options: table-owned `maxHeight` (shipped), `overflow: clip` + custom scrollbar, or JS-measured header clone | Phase 3 |
-| Pinned column offsets | Multiple pins on one side need measured `left`/`right` offsets (JS or `<col>` widths) | Phase 3 |
+| ~~Sticky header on page-scroll layouts~~ | Resolved: `layout: 'page'` drops the scroll wrapper so the header sticks to the page (`stickyTop` offset); `contained` keeps pins + own scroll. A table cannot have both, by CSS physics; the choice is explicit | Phase 3 ✅ |
+| ~~Pinned column offsets~~ | Resolved: computed from declared widths in the core (`calc(var(--_utility-width) * n + 60px + …)`), validator requires widths on inner pins. JS measurement not needed | Phase 3 ✅ |
 | ~~Sort model~~ | Resolved: single column, array-shaped state, `multiSort` / `allowSortClear` opt-in | Phase 1 ✅ |
 | Cell renderer signature (React) | `(ctx: CellContext) => ReactNode`; vanilla returns `Node \| string` | Phase 2 / 5 |
 | ~~Selection identity~~ | Resolved: record of `rowKey` → `true`; select-all operates on the current row model's keys | Phase 1 ✅ |

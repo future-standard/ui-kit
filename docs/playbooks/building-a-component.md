@@ -170,3 +170,11 @@ Short, dated notes on what we learned the hard way, to feed back into the steps 
   and macOS drops `.DS_Store` everywhere; `git add -A` swept them into a commit. Read `git status`
   before every commit, keep the ignore file exhaustive, and check it ends with a newline before
   appending — a missing one fused two patterns into a bogus entry.
+- **2026-09-03** — Prefer a schema-derived value over a measured one. Pinned-column offsets
+  looked like a ResizeObserver job; a `calc()` built from declared widths plus a validator rule
+  ("inner pinned columns need `width`") did it with zero runtime and works for any renderer.
+- **2026-09-03** — When CSS physics forbid a combination (horizontal scroll container + header
+  sticky to the page), make the trade-off an explicit option (`layout: 'contained' | 'page'`)
+  instead of a clever workaround. Document what each mode gives up.
+- **2026-09-03** — TypeScript narrowing does not survive into callbacks. Capture the narrowed
+  value in a `const` before mapping over it.

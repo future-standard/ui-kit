@@ -7,9 +7,9 @@ Schema-driven, responsive data table. Two packages:
 | `@future-standard-ui/table-core` | Schema, state, row model, DOM contract | No |
 | `@future-standard-ui/table` | `DataTable`, composable primitives, `useTable`, CSS module | Yes |
 
-Status: **Phase 2 of the [table plan](../../plans/table.md)** — core features and React renderer.
-Responsive pinning/offsets (Phase 3), the standard cell library (Phase 6) and Storybook pages come
-later. This page follows the format every component page will use.
+Status: **Phase 3 of the [table plan](../../plans/table.md)** — core features, React renderer and
+responsive behaviour. The standard cell library (Phase 6) and Storybook pages come later. This page
+follows the format every component page will use.
 
 ---
 
@@ -88,6 +88,25 @@ getRowHints={(row) =>
 `tone` (`info` `success` `warning` `danger`) and `state` (`pending` `disabled`) are styled by the
 module; projects add more in an override layer via `[data-tone="…"]`.
 
+### Responsive columns
+
+```tsx
+{ id: 'ingress', header: 'Ingress', accessor: 'traffic.ingress', visibleFrom: 'lg', group: 'Traffic' },
+{ id: 'egress',  header: 'Egress',  accessor: 'traffic.egress',  visibleFrom: 'lg', group: 'Traffic' },
+{
+  id: 'traffic', header: 'Traffic', accessor: 'traffic.total', visibleUntil: 'lg',
+  cell: { type: 'composite', options: { parts: [
+    { accessor: 'traffic.ingress', label: '↓', unit: 'Mb/s' },
+    { accessor: 'traffic.egress',  label: '↑', unit: 'Mb/s' },
+  ] } },
+},
+```
+
+Visibility is driven by the table's own width (container queries), not the viewport, with
+breakpoints sm 480 · md 720 · lg 960 · xl 1200 px. Pinned columns (`pin: 'start' | 'end'`) stay
+in view while the rest scroll; their sticky offsets are computed from the declared widths of
+their pinned neighbours, so those neighbours must declare `width`.
+
 ### Drawers, grouping, header groups
 
 - `features.expandable: true` + `renderDrawer={(row) => …}` gives each row a toggle and a drawer.
@@ -107,7 +126,9 @@ All [`TableOptions`](./schema.md#runtime-options-that-are-not-schema) plus:
 | `getRowHints` | `(row) => { tone?, state? }` | Row-level presentation hints. |
 | `renderDrawer` | `(row) => ReactNode` | Drawer content for expanded rows. |
 | `renderGroupHeader` | `(group) => ReactNode` | Custom group section label. |
-| `maxHeight` | `string` | Caps height; the table scrolls internally and a sticky header sticks to it. |
+| `maxHeight` | `string` | Caps height; the table scrolls internally and a sticky header sticks to it (`contained` layout). |
+| `layout` | `'contained' \| 'page'` | `contained` (default) wraps the table in its own horizontal scroll container so pinned columns work. `page` renders no wrapper: the header sticks to the page or nearest scrolling ancestor and pins are ignored. |
+| `stickyTop` | `string` | Offset below the scrolling ancestor's edge where a sticky header rests, e.g. the app bar height. `page` layout. |
 | `className`, `style`, `id`, … | `div` props | Forwarded to the root. |
 
 ### Cell renderer signature
@@ -181,14 +202,14 @@ Semantic `<table>`, `<th scope>`, `aria-sort` on sortable headers, `aria-selecte
 `aria-expanded` on rows, `aria-busy` on the body while loading, labelled selection and expand
 controls, `:focus-visible` rings on every interactive part.
 
-## Known limits (this phase)
+## Known limits
 
-- Sticky header sticks to the table's own scroll container (`maxHeight`) or the nearest scrolling
-  ancestor. A horizontally scrollable table on a page-scrolling layout cannot stick its header to
-  the viewport; revisited in Phase 3.
-- Multiple pinned columns on one side overlap; per-column offsets land in Phase 3.
-- Columns sharing a header group must share `visibleFrom` / `visibleUntil`.
+- A table cannot both scroll horizontally *and* stick its header to the page: pick `contained`
+  (pins, own scroll area, sticky header via `maxHeight`) or `page` (sticky to the page, no pins).
+- Columns sharing a header group must share `visibleFrom` / `visibleUntil`; pinned columns have
+  neither, and inner pinned columns need `width`. The validator enforces all three.
 - Widths are CSS lengths (`px`, `%`, `rem`); there is no `fr`.
+- Verified in Chromium; Safari and Firefox passes are pending.
 
 ## Migration from `TypeTable` (scorer-ui-kit)
 

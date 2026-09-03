@@ -19,6 +19,7 @@ const CORE_OPTION_KEYS = [
   'onColumnPinningChange',
   'onCollapsedGroupsChange',
   'status',
+  'layout',
   'clientSorting',
   'comparators',
   'accessors',
@@ -43,19 +44,24 @@ function splitProps<TRow>(props: DataTableProps<TRow>) {
  * The schema-driven table for the common case: pass a schema and data, wire up the state you
  * want to control, and get a full table. Compose the primitives directly when you need a
  * different structure.
+ *
+ * `layout: 'page'` drops the horizontal scroll wrapper so a sticky header can stick to the page
+ * (or any scrolling ancestor); pinned columns are ignored in that mode.
  */
 export function DataTable<TRow>(props: DataTableProps<TRow>) {
   const { core, root } = splitProps(props);
   const table = useTable<TRow>(core);
 
+  const element = (
+    <Table.Element>
+      <Table.Head />
+      <Table.Body />
+    </Table.Element>
+  );
+
   return (
     <Table.Root table={table} {...root}>
-      <Table.Scroll>
-        <Table.Element>
-          <Table.Head />
-          <Table.Body />
-        </Table.Element>
-      </Table.Scroll>
+      {core.layout === 'page' ? element : <Table.Scroll>{element}</Table.Scroll>}
     </Table.Root>
   );
 }

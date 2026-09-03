@@ -40,9 +40,9 @@ Types live in `packages/table-core/src/schema.ts`; validation in `validate.ts`.
 | `sortable` | `boolean` | `false` | Header becomes a sort control. |
 | `align` | `'start' \| 'center' \| 'end'` | `'start'` | Logical, RTL-safe. |
 | `emphasis` | `'low' \| 'normal' \| 'high'` | `'normal'` | Replaces the old `cellStyle` importance scale. |
-| `width` | CSS length string | — | `'200px'`, `'20%'`, `'12rem'`. Applied to the header cell; the table uses auto layout so `minWidth` is honoured and overflow scrolls. |
-| `minWidth` / `maxWidth` | CSS length string | — | |
-| `pin` | `'start' \| 'end'` | — | Initial pin; runtime state can change it. |
+| `width` | CSS length string | — | `'200px'`, `'20%'`, `'12rem'`. Acts as the column's **floor**: the table grows past its container and scrolls rather than squeezing declared columns. Surplus space is shared among columns. |
+| `minWidth` / `maxWidth` | CSS length string | — | `minWidth` defaults to `width`. Set `maxWidth` to stop a column absorbing surplus; pinned columns are locked to `width` automatically. |
+| `pin` | `'start' \| 'end'` | — | Initial pin; runtime state can change it. Pinned columns cannot have `visibleFrom` / `visibleUntil`, and every pinned column except the outermost on its side must declare `width` (sticky offsets are computed from those widths). Ignored in `layout: 'page'`. |
 | `visibleFrom` | `'sm' \| 'md' \| 'lg' \| 'xl'` | — | Rendered only at this container width and above. |
 | `visibleUntil` | `'sm' \| 'md' \| 'lg' \| 'xl'` | — | Rendered only below this width. Must be larger than `visibleFrom`. |
 | `group` | `string` | — | Header group title. Adjacent columns with the same title merge. Columns in one group must share `visibleFrom` / `visibleUntil` (a merged header's `colspan` cannot respond to container queries). |
@@ -60,6 +60,16 @@ Types live in `packages/table-core/src/schema.ts`; validation in `validate.ts`.
 
 Grouping groups **adjacent** rows by the column's value. Rows are expected to arrive sorted by that
 column; unsorted data yields fragmented groups by design rather than reordering the consumer's data.
+
+## Built-in cell types
+
+| `cell.type` | Options | Renders |
+|---|---|---|
+| `text` (default) | — | The value as text; empty for `null` / `undefined`. |
+| `composite` | `parts: [{ accessor, label?, unit? }]`, `separator?` | Several values from the row in one cell. Pair with `visibleUntil` on this column and `visibleFrom` on the individual columns for the "combined on small" layout. |
+
+Everything else (`timestamp`, `status`, `thumbnail`, …) is registered at runtime; the standard set
+lands in `@future-standard-ui/table-cells`.
 
 ## Data ingestion
 
@@ -81,6 +91,7 @@ Supplied to `createTable` / `useTable`, never serialised:
 | `state` / `on<Slice>Change` | Controlled state slices (`sorting`, `rowSelection`, `expanded`, `columnVisibility`, `columnPinning`, `collapsedGroups`). |
 | `initialState` | Seeds for uncontrolled slices. |
 | `status` | `'idle' \| 'loading' \| 'empty' \| 'error'`. |
+| `layout` | `'contained'` (default: own horizontal scroll container, pins work, sticky header needs `maxHeight`) or `'page'` (no wrapper, header sticks to the page / nearest scrolling ancestor, pins ignored). |
 | `clientSorting`, `comparators`, `accessors` | Data processing. |
 | `multiSort`, `allowSortClear` | Header click behaviour. Defaults: single column, asc → desc → asc. |
 | Cell renderer registry | Phase 2 (React) and Phase 6 (`table-cells`). |

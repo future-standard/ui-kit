@@ -5,6 +5,7 @@ import { ButtonsExample } from './examples/ButtonsExample';
 import { CamerasExample } from './examples/table/CamerasExample';
 import { ClipsExample } from './examples/table/ClipsExample';
 import { PrimitivesExample } from './examples/table/PrimitivesExample';
+import { ResponsiveExample } from './examples/table/ResponsiveExample';
 
 const MoonIcon = () => (
   <svg
@@ -48,6 +49,13 @@ const pages = [
     intro:
       'The mlit-cctv list-screen pattern: the screen owns sorting and selection, a fake server sorts with latency, and the table only reports changes.',
     render: () => <ClipsExample />,
+  },
+  {
+    id: 'table-responsive',
+    title: 'Table — responsive',
+    intro:
+      'Pinned start/end columns with schema-derived offsets, ingress/egress collapsing into one composite column below the lg breakpoint, and a header that sticks to the table or to the page.',
+    render: () => <ResponsiveExample />,
   },
   {
     id: 'table-primitives',

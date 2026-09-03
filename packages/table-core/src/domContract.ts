@@ -11,7 +11,7 @@
  * Renderers must drop attributes whose value is `undefined`.
  */
 
-import { getColumnPin } from './columns';
+import { getColumnPin, type PinLayout } from './columns';
 import type { Row } from './rowModel';
 import { type ColumnSchema, resolveFeatures, type TableSchema } from './schema';
 import { getColumnSort } from './sorting';
@@ -48,17 +48,28 @@ export type Attributes = Record<string, string | undefined>;
 
 const flag = (on: boolean | undefined): 'true' | undefined => (on ? 'true' : undefined);
 
+/**
+ * How the table relates to scrolling. `contained` (default) wraps the table in its own
+ * horizontal scroll container, which enables pinned columns but means a sticky header can only
+ * stick to that container (give it a max height). `page` renders no wrapper: the table takes part
+ * in the page's scroll, the header sticks to the nearest scrolling ancestor (offset by
+ * `--_sticky-top`), and pinned columns are ignored.
+ */
+export type TableLayout = 'contained' | 'page';
+
 export type RootAttributeOptions = {
   status?: TableStatus;
+  layout?: TableLayout;
 };
 
 export function getRootAttributes(
   schema: TableSchema,
-  { status = 'idle' }: RootAttributeOptions = {}
+  { status = 'idle', layout = 'contained' }: RootAttributeOptions = {}
 ): Attributes {
   const features = resolveFeatures(schema);
   return {
     'data-ui': PARTS.root,
+    'data-layout': layout,
     'data-table-id': schema.id,
     'data-density': features.density,
     'data-selection': features.selection === 'none' ? undefined : features.selection,
@@ -73,13 +84,15 @@ export function getRootAttributes(
 /** Attributes shared by a column's header cell and body cells. */
 function getColumnAttributes(
   column: ColumnSchema,
-  pinning: TableState['columnPinning']
+  pinning: TableState['columnPinning'],
+  pin: PinLayout | undefined
 ): Attributes {
   return {
     'data-column': column.id,
     'data-align': column.align ?? 'start',
     'data-emphasis': column.emphasis ?? 'normal',
-    'data-pin': getColumnPin(column.id, pinning),
+    'data-pin': pin?.side ?? getColumnPin(column.id, pinning),
+    'data-pin-edge': flag(pin?.edge),
     'data-visible-from': column.visibleFrom,
     'data-visible-until': column.visibleUntil,
   };
@@ -87,13 +100,14 @@ function getColumnAttributes(
 
 export function getHeaderCellAttributes(
   column: ColumnSchema,
-  state: Pick<TableState, 'sorting' | 'columnPinning'>
+  state: Pick<TableState, 'sorting' | 'columnPinning'>,
+  pin?: PinLayout
 ): Attributes {
   const sort = getColumnSort(state.sorting, column.id);
   const direction = sort ? (sort.desc ? 'desc' : 'asc') : undefined;
   return {
     'data-ui': PARTS.headerCell,
-    ...getColumnAttributes(column, state.columnPinning),
+    ...getColumnAttributes(column, state.columnPinning, pin),
     'data-sortable': flag(column.sortable),
     'data-sort': direction,
     'aria-sort': column.sortable
@@ -108,11 +122,12 @@ export function getHeaderCellAttributes(
 
 export function getCellAttributes(
   column: ColumnSchema,
-  state: Pick<TableState, 'columnPinning'>
+  state: Pick<TableState, 'columnPinning'>,
+  pin?: PinLayout
 ): Attributes {
   return {
     'data-ui': PARTS.cell,
-    ...getColumnAttributes(column, state.columnPinning),
+    ...getColumnAttributes(column, state.columnPinning, pin),
     'data-cell-type': column.cell?.type ?? 'text',
   };
 }

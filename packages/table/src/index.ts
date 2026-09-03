@@ -17,13 +17,14 @@ export type {
   SortingState,
   TableFeatures,
   TableInstance,
+  TableLayout,
   TableOptions,
   TableSchema,
   TableState,
   TableStatus,
 } from '@future-standard-ui/table-core';
 export { assertSchema, SchemaError, validateSchema } from '@future-standard-ui/table-core';
-export { defaultCellRenderers, resolveCellRenderer, textCell } from './cells';
+export { compositeCell, defaultCellRenderers, resolveCellRenderer, textCell } from './cells';
 export {
   type CellContext,
   type CellRenderer,

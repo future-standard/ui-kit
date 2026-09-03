@@ -1,6 +1,7 @@
 import {
   type ColumnSchema,
   compactAttributes,
+  getPinStyle,
   hasHeaderGroups,
   PARTS,
   type RowGroup,
@@ -47,6 +48,19 @@ function sharedVisibility(columns: Array<ColumnSchema | undefined>) {
   return { visibleFrom: same('visibleFrom'), visibleUntil: same('visibleUntil') };
 }
 
+/**
+ * Utility (select / expand) cells stick to the start edge like pinned columns; their offset is a
+ * multiple of the utility width the CSS module owns.
+ */
+function utilityAttributes(kind: 'select' | 'expand' | 'group', index: number) {
+  return {
+    'data-utility': kind,
+    style: {
+      '--_pin-offset': index === 0 ? '0px' : `calc(var(--_utility-width) * ${index})`,
+    } as CSSProperties,
+  };
+}
+
 /** Number of leading utility columns (selection, expand) for colSpan maths. */
 function useUtilityColumnCount(): number {
   const { table } = useTableContext();
@@ -78,6 +92,11 @@ export type RootProps<TRow> = Omit<ComponentPropsWithRef<'div'>, 'children'> & {
    * sticks to it. Without a cap the page scrolls and the header cannot stick (see plan §8).
    */
   maxHeight?: string;
+  /**
+   * Distance from the top of the scrolling ancestor at which a sticky header rests — the height
+   * of a fixed app bar, for example. Only meaningful with `layout: 'page'`.
+   */
+  stickyTop?: string;
 };
 
 export function Root<TRow>({
@@ -89,6 +108,7 @@ export function Root<TRow>({
   renderDrawer,
   renderGroupHeader,
   maxHeight,
+  stickyTop,
   className,
   style,
   children,
@@ -119,7 +139,9 @@ export function Root<TRow>({
         ref={ref}
         {...attrs}
         className={cx(styles.root, className)}
-        style={{ ...style, '--_max-height': maxHeight } as CSSProperties}
+        style={
+          { ...style, '--_max-height': maxHeight, '--_sticky-top': stickyTop } as CSSProperties
+        }
         {...props}
       >
         {children}
@@ -162,7 +184,13 @@ export function Head({ children, className, ...props }: ComponentPropsWithRef<'t
         <>
           {hasHeaderGroups(columns) && (
             <tr data-ui={PARTS.groupHeaderRow} className={styles.groupHeaderRow}>
-              {utilityCount > 0 && <th colSpan={utilityCount} className={styles.utilityHeader} />}
+              {utilityCount > 0 && (
+                <th
+                  colSpan={utilityCount}
+                  className={styles.utilityHeader}
+                  {...utilityAttributes('group', 0)}
+                />
+              )}
               {groups.map((group) => {
                 const visibility = sharedVisibility(
                   group.columnIds.map((id) => columns.find((c) => c.id === id))
@@ -186,12 +214,16 @@ export function Head({ children, className, ...props }: ComponentPropsWithRef<'t
           )}
           <tr data-ui={PARTS.headerRow} className={styles.headerRow}>
             {features.selection !== 'none' && (
-              <th scope='col' className={styles.utilityHeader}>
+              <th scope='col' className={styles.utilityHeader} {...utilityAttributes('select', 0)}>
                 {features.selection === 'multiple' && <SelectAll />}
               </th>
             )}
             {features.expandable && (
-              <th scope='col' className={styles.utilityHeader}>
+              <th
+                scope='col'
+                className={styles.utilityHeader}
+                {...utilityAttributes('expand', features.selection !== 'none' ? 1 : 0)}
+              >
                 <span className={styles.srOnly}>{labels.expandColumn}</span>
               </th>
             )}
@@ -212,6 +244,7 @@ export type HeaderCellProps = ComponentPropsWithRef<'th'> & {
 export function HeaderCell({ column, children, className, style, ...props }: HeaderCellProps) {
   const { table } = useTableContext();
   const attrs = compactAttributes(table.getHeaderCellAttributes(column.id));
+  const pin = table.getColumnPinLayout(column.id);
   const content = children ?? column.header;
 
   return (
@@ -221,8 +254,12 @@ export function HeaderCell({ column, children, className, style, ...props }: Hea
       className={cx(styles.headerCell, className)}
       style={{
         width: column.width,
-        minWidth: column.minWidth,
-        maxWidth: column.maxWidth,
+        // A declared width is a floor: the table grows past its container and scrolls rather than
+        // squeezing columns. Pinned columns are locked exactly, since neighbours' offsets depend
+        // on them.
+        minWidth: column.minWidth ?? column.width,
+        maxWidth: column.maxWidth ?? (pin ? column.width : undefined),
+        ...getPinStyle(pin),
         ...style,
       }}
       {...props}
@@ -355,12 +392,15 @@ export function Row<TRow>({ row, children, className, ...props }: RowProps<TRow>
       {children ?? (
         <>
           {features.selection !== 'none' && (
-            <td className={styles.utilityCell}>
+            <td className={styles.utilityCell} {...utilityAttributes('select', 0)}>
               <SelectRow row={row} mode={features.selection} />
             </td>
           )}
           {features.expandable && (
-            <td className={styles.utilityCell}>
+            <td
+              className={styles.utilityCell}
+              {...utilityAttributes('expand', features.selection !== 'none' ? 1 : 0)}
+            >
               <ExpandToggle row={row} />
             </td>
           )}
@@ -421,9 +461,10 @@ export type CellProps<TRow> = ComponentPropsWithRef<'td'> & {
   column: ColumnSchema;
 };
 
-export function Cell<TRow>({ row, column, children, className, ...props }: CellProps<TRow>) {
+export function Cell<TRow>({ row, column, children, className, style, ...props }: CellProps<TRow>) {
   const { table, cells } = useTableContext<TRow>();
   const attrs = compactAttributes(table.getCellAttributes(column.id));
+  const pinStyle = getPinStyle(table.getColumnPinLayout(column.id));
   const render = resolveCellRenderer(cells, column.cell?.type ?? 'text');
   const content =
     children ??
@@ -436,7 +477,12 @@ export function Cell<TRow>({ row, column, children, className, ...props }: CellP
     });
 
   return (
-    <td {...attrs} className={cx(styles.cell, className)} {...props}>
+    <td
+      {...attrs}
+      className={cx(styles.cell, className)}
+      style={pinStyle || style ? { ...pinStyle, ...style } : undefined}
+      {...props}
+    >
       {content}
     </td>
   );

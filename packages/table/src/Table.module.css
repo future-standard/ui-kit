@@ -22,6 +22,8 @@
     --_header-font-size: 13px;
     --_utility-width: 40px;
     --_max-height: none;
+    --_sticky-top: 0px;
+    --_header-height: var(--_row-height);
     --_radius: 4px;
     --_border-width: 1px;
 
@@ -171,24 +173,23 @@
     color: var(--table-sort-active-color);
   }
 
-  /* Sticky header — sticks to the scroll container (set `maxHeight`) or the nearest
-     scrolling ancestor. */
+  /* Sticky header — sticks to the scroll container (`contained` layout with `maxHeight`) or to
+     the nearest scrolling ancestor (`page` layout), resting `--_sticky-top` below its edge. */
+  .root:has(.groupHeaderRow) {
+    --_header-height: calc(var(--_row-height) * 1.75);
+  }
+
   .root[data-sticky-header] .headerCell,
   .root[data-sticky-header] .utilityHeader,
   .root[data-sticky-header] .groupHeaderCell {
     position: sticky;
-    top: 0;
+    top: var(--_sticky-top);
     z-index: 2;
   }
 
   .root[data-sticky-header] .headerRow .headerCell,
   .root[data-sticky-header] .headerRow .utilityHeader {
-    top: var(--_group-header-offset, 0);
-  }
-
-  .root[data-sticky-header]:has(.groupHeaderRow) .headerRow .headerCell,
-  .root[data-sticky-header]:has(.groupHeaderRow) .headerRow .utilityHeader {
-    --_group-header-offset: calc(var(--_row-height) * 0.75);
+    top: calc(var(--_sticky-top) + var(--_header-height) - var(--_row-height));
   }
 
   /* ---- Body ------------------------------------------------------------ */
@@ -301,9 +302,16 @@
 
   .utilityHeader,
   .utilityCell {
+    position: sticky;
+    left: var(--_pin-offset, 0px);
+    z-index: 1;
     width: var(--_utility-width);
     padding: 0;
     text-align: center;
+  }
+
+  .root[data-sticky-header] .utilityHeader {
+    z-index: 3;
   }
 
   .checkbox {
@@ -417,7 +425,7 @@
 
   .root[data-sticky-header] .groupCell {
     position: sticky;
-    top: var(--_row-height);
+    top: calc(var(--_sticky-top) + var(--_header-height));
     z-index: 1;
   }
 
@@ -502,20 +510,76 @@
     }
   }
 
-  /* ---- Pinned columns (basic; offsets for multiple pins land in Phase 3) */
+  /* ---- Pinned columns ---------------------------------------------------
+     Offsets come from the schema via `--_pin-offset` (see table-core getPinLayout); the edge
+     column on each side draws the divider and shadow. In `page` layout there is no horizontal
+     scroll container, so pins are neutralised. */
 
   [data-pin="start"] {
     position: sticky;
-    left: 0;
+    left: var(--_pin-offset, 0px);
     z-index: 1;
-    box-shadow: inset calc(-1 * var(--_border-width)) 0 0 var(--table-border-color);
   }
 
   [data-pin="end"] {
     position: sticky;
-    right: 0;
+    right: var(--_pin-offset, 0px);
     z-index: 1;
-    box-shadow: inset var(--_border-width) 0 0 var(--table-border-color);
+  }
+
+  [data-pin="start"][data-pin-edge] {
+    box-shadow:
+      inset calc(-1 * var(--_border-width)) 0 0 var(--table-border-color),
+      6px 0 8px -6px var(--table-pinned-shadow-color);
+  }
+
+  [data-pin="end"][data-pin-edge] {
+    box-shadow:
+      inset var(--_border-width) 0 0 var(--table-border-color),
+      -6px 0 8px -6px var(--table-pinned-shadow-color);
+  }
+
+  /* Pinned header cells sit above both the sticky header and pinned body cells. */
+  .root[data-sticky-header] .headerCell[data-pin] {
+    z-index: 3;
+  }
+
+  .root[data-layout="page"] [data-pin],
+  .root[data-layout="page"] .utilityHeader,
+  .root[data-layout="page"] .utilityCell {
+    left: auto;
+    right: auto;
+    box-shadow: none;
+  }
+
+  /* ---- Composite cell --------------------------------------------------- */
+
+  .composite {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 10px;
+  }
+
+  .compositePart {
+    white-space: nowrap;
+  }
+
+  .compositeLabel {
+    margin-inline-end: 4px;
+    color: var(--table-text-color-muted);
+    font-size: 0.85em;
+  }
+
+  .compositeSeparator {
+    color: var(--table-text-color-muted);
+  }
+
+  .unit {
+    margin-inline-start: 3px;
+    color: var(--table-text-color-muted);
+    font-size: 0.85em;
+    font-style: italic;
   }
 
   /* ---- Utilities ------------------------------------------------------- */

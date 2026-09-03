@@ -612,4 +612,5 @@
   --table-drawer-background: var(--grey-2);
   --table-status-background: var(--grey-1);
   --table-status-overlay-background: color-mix(in srgb, var(--grey-1) 70%, transparent);
+  --table-pinned-shadow-color: var(--black-a4);
 }

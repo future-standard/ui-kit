@@ -49,6 +49,7 @@ ungrouped columns.
 
 | Attribute | Values | From |
 |---|---|---|
+| `data-layout` | `contained` `page` | `TableOptions.layout` (default `contained`) |
 | `data-table-id` | schema `id` | `schema.id` |
 | `data-density` | `compact` `normal` `comfortable` | `features.density` (default `normal`) |
 | `data-selection` | `single` `multiple` (omitted for `none`) | `features.selection` |
@@ -66,6 +67,7 @@ ungrouped columns.
 | `data-align` | `start` `center` `end` | `column.align` (default `start`) |
 | `data-emphasis` | `low` `normal` `high` | `column.emphasis` (default `normal`) |
 | `data-pin` | `start` `end` (omitted when unpinned) | runtime `columnPinning` state, seeded from `column.pin` |
+| `data-pin-edge` | presence | innermost pinned column on its side; where the divider/shadow is drawn. Absent in `page` layout. |
 | `data-visible-from` | `sm` `md` `lg` `xl` | `column.visibleFrom` — CSS hides below this container breakpoint |
 | `data-visible-until` | `sm` `md` `lg` `xl` | `column.visibleUntil` — CSS hides at and above this breakpoint |
 
@@ -95,6 +97,16 @@ Body cells add:
 | `data-state` | consumer string, e.g. `pending` `disabled` | lifecycle hint; replaces per-cell dimming hacks |
 | `aria-selected` | `true` `false` | only when selection is enabled |
 | `aria-expanded` | `true` `false` | only when `expandable` |
+
+## Custom properties renderers must set
+
+| Property | On | Value | From |
+|---|---|---|---|
+| `--_pin-offset` | pinned header/body cells, utility cells | CSS length expression for `left` (start) / `right` (end) | `table.getColumnPinLayout(id)` → `getPinStyle()`; utility cells use `0px` / `calc(var(--_utility-width) * n)` |
+| `--_max-height` | root | CSS length | `maxHeight` prop |
+| `--_sticky-top` | root | CSS length | `stickyTop` prop (page layout) |
+
+Utility cells (select / expand) additionally carry `data-utility="select" \| "expand" \| "group"`.
 
 ## Responsive visibility is CSS
 

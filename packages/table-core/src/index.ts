@@ -3,20 +3,26 @@
 export type { Accessor } from './accessor';
 // Accessors
 export { createAccessor, getRowKey, resolvePath } from './accessor';
-export type { HeaderGroup } from './columns';
+export type { HeaderGroup, PinLayout } from './columns';
 // Columns
 export {
   getColumnById,
   getColumnPin,
   getHeaderGroups,
+  getPinLayout,
+  getPinStyle,
+  getUtilityColumnCount,
   getVisibleColumns,
   hasHeaderGroups,
+  PIN_OFFSET_VAR,
+  UTILITY_WIDTH_VAR,
 } from './columns';
 export type {
   Attributes,
   Part,
   RootAttributeOptions,
   RowAttributeOptions,
+  TableLayout,
   TableStatus,
 } from './domContract';
 // DOM contract

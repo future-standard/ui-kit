@@ -2,9 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { cameraSchema } from './table.fixtures';
 import { assertSchema, SchemaError, validateSchema } from './validate';
 
+// Column 0 is pinned in the fixture; unpin it so pin-specific rules do not interfere.
 const withColumn = (patch: Record<string, unknown>) => ({
   ...cameraSchema,
-  columns: [{ ...cameraSchema.columns[0], ...patch }, ...cameraSchema.columns.slice(1)],
+  columns: [
+    { ...cameraSchema.columns[0], pin: undefined, ...patch },
+    ...cameraSchema.columns.slice(1),
+  ],
 });
 
 const paths = (schema: unknown) => validateSchema(schema).map((issue) => issue.path);

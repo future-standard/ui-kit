@@ -15,6 +15,7 @@ describe('getRootAttributes', () => {
   it('emits feature flags as presence attributes and enums as values', () => {
     expect(compactAttributes(getRootAttributes(cameraSchema, { status: 'loading' }))).toEqual({
       'data-ui': 'table',
+      'data-layout': 'contained',
       'data-table-id': 'cameras',
       'data-density': 'normal',
       'data-selection': 'multiple',

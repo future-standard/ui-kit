@@ -1,5 +1,11 @@
 import type { Accessor } from './accessor';
-import { getHeaderGroups, getVisibleColumns, type HeaderGroup } from './columns';
+import {
+  getHeaderGroups,
+  getPinLayout,
+  getVisibleColumns,
+  type HeaderGroup,
+  type PinLayout,
+} from './columns';
 import {
   type Attributes,
   getCellAttributes,
@@ -7,6 +13,7 @@ import {
   getRootAttributes,
   getRowAttributes,
   type RowAttributeOptions,
+  type TableLayout,
   type TableStatus,
 } from './domContract';
 import { buildRowModel, type Row, type RowModel } from './rowModel';
@@ -42,6 +49,8 @@ export type TableOptions<TRow = unknown> = SliceChangeHandlers & {
   onStateChange?: (state: TableState) => void;
   /** Async status of `data`, surfaced as `data-status` on the root. */
   status?: TableStatus;
+  /** Scroll relationship, surfaced as `data-layout` on the root. Default `contained`. */
+  layout?: TableLayout;
   /** Sort `data` in the core from `state.sorting`. Default `false` (consumer sorts). */
   clientSorting?: boolean;
   comparators?: Record<string, Comparator>;
@@ -74,6 +83,9 @@ export type TableInstance<TRow = unknown> = {
   getVisibleColumns: () => ColumnSchema[];
   getHeaderGroups: () => HeaderGroup[];
   getColumn: (columnId: string) => ColumnSchema | undefined;
+  /** Sticky offsets for pinned columns (empty in `page` layout, where pinning is ignored). */
+  getPinLayout: () => Map<string, PinLayout>;
+  getColumnPinLayout: (columnId: string) => PinLayout | undefined;
 
   // Sorting
   getColumnSort: (columnId: string) => ColumnSort | undefined;
@@ -224,6 +236,19 @@ export function createTable<TRow = unknown>(
     return value;
   };
 
+  let pinCache: { deps: readonly unknown[]; value: Map<string, PinLayout> } | undefined;
+  const getPinLayoutMemo = (): Map<string, PinLayout> => {
+    const state = resolveState();
+    const deps = [options.schema, options.layout, state.columnVisibility, state.columnPinning];
+    if (pinCache?.deps.every((dep, i) => Object.is(dep, deps[i]))) return pinCache.value;
+    const value =
+      options.layout === 'page'
+        ? new Map<string, PinLayout>()
+        : getPinLayout(options.schema, state);
+    pinCache = { deps, value };
+    return value;
+  };
+
   const requireColumn = (columnId: string): ColumnSchema => {
     const column = options.schema.columns.find((c) => c.id === columnId);
     if (!column) throw new Error(`Unknown column "${columnId}"`);
@@ -264,6 +289,8 @@ export function createTable<TRow = unknown>(
     getVisibleColumns: getVisibleColumnsMemo,
     getHeaderGroups: () => getHeaderGroups(getVisibleColumnsMemo()),
     getColumn: (columnId) => options.schema.columns.find((c) => c.id === columnId),
+    getPinLayout: getPinLayoutMemo,
+    getColumnPinLayout: (columnId) => getPinLayoutMemo().get(columnId),
 
     getColumnSort: (columnId) => getColumnSort(resolveState().sorting, columnId),
     toggleSort: (columnId) => {
@@ -341,10 +368,16 @@ export function createTable<TRow = unknown>(
       });
     },
 
-    getRootAttributes: () => getRootAttributes(options.schema, { status: options.status }),
+    getRootAttributes: () =>
+      getRootAttributes(options.schema, { status: options.status, layout: options.layout }),
     getHeaderCellAttributes: (columnId) =>
-      getHeaderCellAttributes(requireColumn(columnId), resolveState()),
-    getCellAttributes: (columnId) => getCellAttributes(requireColumn(columnId), resolveState()),
+      getHeaderCellAttributes(
+        requireColumn(columnId),
+        resolveState(),
+        getPinLayoutMemo().get(columnId)
+      ),
+    getCellAttributes: (columnId) =>
+      getCellAttributes(requireColumn(columnId), resolveState(), getPinLayoutMemo().get(columnId)),
     getRowAttributes: (row, rowOptions) => getRowAttributes(row, options.schema, rowOptions),
   };
 }
