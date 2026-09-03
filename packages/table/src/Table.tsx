@@ -1,7 +1,10 @@
 import {
   type ColumnSchema,
   compactAttributes,
+  getBodyAttributes,
   getEffectiveStatus,
+  getElementAttributes,
+  getHeadAttributes,
   getPinStyle,
   hasHeaderGroups,
   PARTS,
@@ -164,7 +167,7 @@ export function Scroll({ className, ...props }: ComponentPropsWithRef<'div'>) {
 }
 
 export function Element({ className, ...props }: ComponentPropsWithRef<'table'>) {
-  return <table data-ui={PARTS.element} className={cx(styles.table, className)} {...props} />;
+  return <table {...getElementAttributes()} className={cx(styles.table, className)} {...props} />;
 }
 
 // ---------------------------------------------------------------------------
@@ -179,7 +182,7 @@ export function Head({ children, className, ...props }: ComponentPropsWithRef<'t
   const groups = table.getHeaderGroups();
 
   return (
-    <thead data-ui={PARTS.head} className={cx(styles.head, className)} {...props}>
+    <thead {...getHeadAttributes()} className={cx(styles.head, className)} {...props}>
       {children ?? (
         <>
           {hasHeaderGroups(columns) && (
@@ -333,9 +336,8 @@ export function Body<TRow>({ children, className, ...props }: ComponentPropsWith
 
   return (
     <tbody
-      data-ui={PARTS.body}
+      {...compactAttributes(getBodyAttributes({ busy: status === 'loading' }))}
       className={cx(styles.body, className)}
-      aria-busy={status === 'loading' || undefined}
       {...props}
     >
       {content}
@@ -483,7 +485,7 @@ export function Cell<TRow>({ row, column, children, className, style, ...props }
       style={pinStyle || style ? { ...pinStyle, ...style } : undefined}
       {...props}
     >
-      {content}
+      <span className={styles.cellContent}>{content}</span>
     </td>
   );
 }

@@ -5,8 +5,9 @@ anything else) emits the same **parts** and **state attributes**, so one CSS mod
 them and consumer overrides written once work everywhere.
 
 The source of truth is `packages/table-core/src/domContract.ts`. Renderers must call its helpers
-(`getRootAttributes`, `getHeaderCellAttributes`, `getCellAttributes`, `getRowAttributes`) rather
-than hand-writing attributes.
+(`getRootAttributes`, `getElementAttributes`, `getHeadAttributes`, `getBodyAttributes`,
+`getHeaderCellAttributes`, `getCellAttributes`, `getRowAttributes`) rather than hand-writing
+attributes.
 
 ## Rules
 
@@ -15,7 +16,10 @@ than hand-writing attributes.
 2. **Booleans are presence attributes.** `data-zebra="true"` when on, attribute omitted when off.
    Select with `[data-zebra]`.
 3. **Enumerations are values.** `data-align="end"`, `data-density="compact"`.
-4. **`aria-*` ships with the contract.** Renderers do not invent their own accessibility.
+4. **`aria-*` and explicit `role`s ship with the contract.** Renderers do not invent their own
+   accessibility. Roles are explicit because the stacked layout changes `display` on table parts,
+   which strips implicit table semantics in some browsers. The helpers emit `table`, `rowgroup`,
+   `columnheader`, `row` and `cell`.
 5. **Renderers drop `undefined`.** `compactAttributes()` does this for you.
 
 ## Parts
@@ -58,6 +62,7 @@ ungrouped columns.
 | `data-expandable` | presence | `features.expandable` |
 | `data-grouped` | presence | `features.grouping` set |
 | `data-sticky-group-header` | presence | `features.grouping.stickyGroupHeader` |
+| `data-stacked-below` | `sm` `md` `lg` `xl` | `features.stacked.below` — CSS stacks rows into cards under this container width |
 | `data-status` | `idle` `loading` `empty` `error` | `TableOptions.status` (default `idle`) |
 
 ## Column attributes — on header cells **and** body cells
@@ -76,6 +81,7 @@ Header cells add:
 
 | Attribute | Values |
 |---|---|
+| `role` | `columnheader` |
 | `data-sortable` | presence |
 | `data-sort` | `asc` `desc` (omitted when unsorted) |
 | `aria-sort` | `ascending` `descending` `none` (omitted when not sortable) |
@@ -85,11 +91,14 @@ Body cells add:
 | Attribute | Values |
 |---|---|
 | `data-cell-type` | the cell type name (`text` by default) |
+| `data-label` | the column header text; shown beside the value in the stacked layout via `attr(data-label)` |
+| `role` | `cell` |
 
 ## Row attributes — `getRowAttributes(row, schema, { tone, state })`
 
 | Attribute | Values | Notes |
 |---|---|---|
+| `role` | `row` | |
 | `data-key` | row key | from `schema.rowKey` |
 | `data-index` | render index | |
 | `data-selected` | presence | |
@@ -127,7 +136,8 @@ implementations are the React package and `apps/dev/src/examples/table-vanilla/m
 2. Import `tableClasses` for the hashed class names; importing the core injects the stylesheet.
 3. Walk `getVisibleColumns()`, `getHeaderGroups()`, `getRowModel()` (`rows`, or `groups` when
    grouping is on) and emit the parts in the table above.
-4. Spread the attribute helpers — `getRootAttributes()`, `getHeaderCellAttributes(id)`,
+4. Spread the attribute helpers — `getRootAttributes()`, `getElementAttributes()`,
+   `getHeadAttributes()`, `getBodyAttributes({ busy })`, `getHeaderCellAttributes(id)`,
    `getCellAttributes(id)`, `getRowAttributes(row, hints)` — and drop `undefined` values.
    Set `data-status` from `getEffectiveStatus(table)`.
 5. Set the custom properties: `getPinStyle(getColumnPinLayout(id))` on pinned cells, utility

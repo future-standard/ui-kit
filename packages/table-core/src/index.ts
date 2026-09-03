@@ -28,7 +28,10 @@ export type {
 // DOM contract
 export {
   compactAttributes,
+  getBodyAttributes,
   getCellAttributes,
+  getElementAttributes,
+  getHeadAttributes,
   getHeaderCellAttributes,
   getRootAttributes,
   getRowAttributes,
@@ -47,6 +50,7 @@ export type {
   GroupingSchema,
   PinSide,
   SelectionMode,
+  StackedSchema,
   TableFeatures,
   TableSchema,
 } from './schema';

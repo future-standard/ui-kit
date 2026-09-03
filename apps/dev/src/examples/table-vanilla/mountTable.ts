@@ -11,7 +11,10 @@ import {
   tableClasses as c,
   compactAttributes,
   createTable,
+  getBodyAttributes,
   getEffectiveStatus,
+  getElementAttributes,
+  getHeadAttributes,
   getPinStyle,
   getUtilityColumnCount,
   hasHeaderGroups,
@@ -123,7 +126,7 @@ export function mountTable<TRow>(container: HTMLElement, initial: MountOptions<T
     const features = resolveFeatures(schema);
     const columns = table.getVisibleColumns();
     const utility = getUtilityColumnCount(schema);
-    const head = el('thead', { 'data-ui': PARTS.head, class: c.head });
+    const head = el('thead', { ...getHeadAttributes(), class: c.head });
 
     if (hasHeaderGroups(columns)) {
       const row = el('tr', { 'data-ui': PARTS.groupHeaderRow, class: c.groupHeaderRow });
@@ -217,7 +220,8 @@ export function mountTable<TRow>(container: HTMLElement, initial: MountOptions<T
     const td = el('td', { ...table.getCellAttributes(column.id), class: c.cell });
     setVars(td, getPinStyle(table.getColumnPinLayout(column.id)));
     const render = cells[column.cell?.type ?? 'text'] ?? cells.text ?? text;
-    td.append(
+    const content = el('span', { class: c.cellContent });
+    content.append(
       render({
         value: row.getValue(column.id),
         row,
@@ -226,6 +230,7 @@ export function mountTable<TRow>(container: HTMLElement, initial: MountOptions<T
         options: column.cell?.options ?? {},
       })
     );
+    td.append(content);
     return td;
   };
 
@@ -311,9 +316,8 @@ export function mountTable<TRow>(container: HTMLElement, initial: MountOptions<T
     const model = table.getRowModel();
     const status = getEffectiveStatus(table);
     const body = el('tbody', {
-      'data-ui': PARTS.body,
+      ...getBodyAttributes({ busy: status === 'loading' }),
       class: c.body,
-      'aria-busy': status === 'loading' ? 'true' : undefined,
     });
     if (status === 'error' || (status !== 'idle' && model.rows.length === 0)) {
       body.append(renderStatusRow(status, slots[status as keyof typeof slots]));
@@ -334,7 +338,7 @@ export function mountTable<TRow>(container: HTMLElement, initial: MountOptions<T
     if (maxHeight) root.style.setProperty('--_max-height', maxHeight);
     const tableEl = el(
       'table',
-      { 'data-ui': PARTS.element, class: c.table },
+      { ...getElementAttributes(), class: c.table },
       renderHead(),
       renderBody()
     );

@@ -254,6 +254,9 @@
 
   .cell,
   .utilityCell {
+    /* Display is a variable so the stacked layout can switch cells to flex without outranking
+       the breakpoint-visibility rules further down. */
+    display: var(--_cell-display, table-cell);
     box-sizing: border-box;
     height: var(--_row-height);
     padding: 0 var(--_cell-padding-x);
@@ -477,7 +480,7 @@
 
   @container table (min-width: 480px) {
     [data-visible-from="sm"] {
-      display: table-cell;
+      display: var(--_cell-display, table-cell);
     }
 
     [data-visible-until="sm"] {
@@ -487,7 +490,7 @@
 
   @container table (min-width: 720px) {
     [data-visible-from="md"] {
-      display: table-cell;
+      display: var(--_cell-display, table-cell);
     }
 
     [data-visible-until="md"] {
@@ -497,7 +500,7 @@
 
   @container table (min-width: 960px) {
     [data-visible-from="lg"] {
-      display: table-cell;
+      display: var(--_cell-display, table-cell);
     }
 
     [data-visible-until="lg"] {
@@ -507,7 +510,7 @@
 
   @container table (min-width: 1200px) {
     [data-visible-from="xl"] {
-      display: table-cell;
+      display: var(--_cell-display, table-cell);
     }
 
     [data-visible-until="xl"] {
@@ -585,6 +588,436 @@
     color: var(--table-text-color-muted);
     font-size: 0.85em;
     font-style: italic;
+  }
+
+  /* ---- Stacked (card) layout ---------------------------------------------
+     `features.stacked.below` turns each row into a card under that container breakpoint. Column
+     headers become inline labels via `attr(data-label)`; the high-emphasis column is the card
+     title; select / expand controls sit in the card header. The visually hidden header row and
+     the explicit ARIA roles keep the table navigable. Pins are meaningless here and reset. */
+
+  @container table (max-width: 479.98px) {
+    .root[data-stacked-below="sm"] {
+      .table,
+      .body {
+        display: block;
+      }
+
+      .head {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .row {
+        --_cell-display: flex;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px var(--_cell-padding-x);
+        padding: var(--_cell-padding-x);
+        border-bottom: var(--_border-width) solid var(--table-row-divider-color);
+      }
+
+      .utilityCell {
+        position: static;
+        order: -3;
+        width: auto;
+        height: auto;
+        padding: 0;
+        border: none;
+        left: auto;
+      }
+
+      .cell {
+        flex: 1 1 100%;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: var(--_cell-padding-x);
+        height: auto;
+        padding: 0;
+        border-bottom: none;
+        background: transparent;
+        text-align: end;
+        position: static;
+        left: auto;
+        right: auto;
+        box-shadow: none;
+      }
+
+      .cellContent {
+        min-width: 0;
+      }
+
+      .cell::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: var(--table-text-color-muted);
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-align: start;
+      }
+
+      .cell[data-label=""] {
+        justify-content: flex-end;
+      }
+
+      .cell[data-label=""]::before,
+      .cell[data-emphasis="high"]::before {
+        display: none;
+      }
+
+      /* The high-emphasis column is the card title, sharing the header line with the controls. */
+      .cell[data-emphasis="high"] {
+        order: -2;
+        flex: 1 1 auto;
+        justify-content: flex-start;
+        font-size: 1.07em;
+        text-align: start;
+      }
+
+      .groupCell,
+      .drawerCell,
+      .statusCell {
+        display: block;
+        height: auto;
+        position: static;
+      }
+
+      .groupRow,
+      .drawer,
+      .statusRow {
+        display: block;
+      }
+
+      .statusOverlay {
+        position: absolute;
+      }
+    }
+  }
+
+  @container table (max-width: 719.98px) {
+    .root[data-stacked-below="md"] {
+      .table,
+      .body {
+        display: block;
+      }
+
+      .head {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .row {
+        --_cell-display: flex;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px var(--_cell-padding-x);
+        padding: var(--_cell-padding-x);
+        border-bottom: var(--_border-width) solid var(--table-row-divider-color);
+      }
+
+      .utilityCell {
+        position: static;
+        order: -3;
+        width: auto;
+        height: auto;
+        padding: 0;
+        border: none;
+        left: auto;
+      }
+
+      .cell {
+        flex: 1 1 100%;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: var(--_cell-padding-x);
+        height: auto;
+        padding: 0;
+        border-bottom: none;
+        background: transparent;
+        text-align: end;
+        position: static;
+        left: auto;
+        right: auto;
+        box-shadow: none;
+      }
+
+      .cellContent {
+        min-width: 0;
+      }
+
+      .cell::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: var(--table-text-color-muted);
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-align: start;
+      }
+
+      .cell[data-label=""] {
+        justify-content: flex-end;
+      }
+
+      .cell[data-label=""]::before,
+      .cell[data-emphasis="high"]::before {
+        display: none;
+      }
+
+      /* The high-emphasis column is the card title, sharing the header line with the controls. */
+      .cell[data-emphasis="high"] {
+        order: -2;
+        flex: 1 1 auto;
+        justify-content: flex-start;
+        font-size: 1.07em;
+        text-align: start;
+      }
+
+      .groupCell,
+      .drawerCell,
+      .statusCell {
+        display: block;
+        height: auto;
+        position: static;
+      }
+
+      .groupRow,
+      .drawer,
+      .statusRow {
+        display: block;
+      }
+
+      .statusOverlay {
+        position: absolute;
+      }
+    }
+  }
+
+  @container table (max-width: 959.98px) {
+    .root[data-stacked-below="lg"] {
+      .table,
+      .body {
+        display: block;
+      }
+
+      .head {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .row {
+        --_cell-display: flex;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px var(--_cell-padding-x);
+        padding: var(--_cell-padding-x);
+        border-bottom: var(--_border-width) solid var(--table-row-divider-color);
+      }
+
+      .utilityCell {
+        position: static;
+        order: -3;
+        width: auto;
+        height: auto;
+        padding: 0;
+        border: none;
+        left: auto;
+      }
+
+      .cell {
+        flex: 1 1 100%;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: var(--_cell-padding-x);
+        height: auto;
+        padding: 0;
+        border-bottom: none;
+        background: transparent;
+        text-align: end;
+        position: static;
+        left: auto;
+        right: auto;
+        box-shadow: none;
+      }
+
+      .cellContent {
+        min-width: 0;
+      }
+
+      .cell::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: var(--table-text-color-muted);
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-align: start;
+      }
+
+      .cell[data-label=""] {
+        justify-content: flex-end;
+      }
+
+      .cell[data-label=""]::before,
+      .cell[data-emphasis="high"]::before {
+        display: none;
+      }
+
+      /* The high-emphasis column is the card title, sharing the header line with the controls. */
+      .cell[data-emphasis="high"] {
+        order: -2;
+        flex: 1 1 auto;
+        justify-content: flex-start;
+        font-size: 1.07em;
+        text-align: start;
+      }
+
+      .groupCell,
+      .drawerCell,
+      .statusCell {
+        display: block;
+        height: auto;
+        position: static;
+      }
+
+      .groupRow,
+      .drawer,
+      .statusRow {
+        display: block;
+      }
+
+      .statusOverlay {
+        position: absolute;
+      }
+    }
+  }
+
+  @container table (max-width: 1199.98px) {
+    .root[data-stacked-below="xl"] {
+      .table,
+      .body {
+        display: block;
+      }
+
+      .head {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .row {
+        --_cell-display: flex;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px var(--_cell-padding-x);
+        padding: var(--_cell-padding-x);
+        border-bottom: var(--_border-width) solid var(--table-row-divider-color);
+      }
+
+      .utilityCell {
+        position: static;
+        order: -3;
+        width: auto;
+        height: auto;
+        padding: 0;
+        border: none;
+        left: auto;
+      }
+
+      .cell {
+        flex: 1 1 100%;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: var(--_cell-padding-x);
+        height: auto;
+        padding: 0;
+        border-bottom: none;
+        background: transparent;
+        text-align: end;
+        position: static;
+        left: auto;
+        right: auto;
+        box-shadow: none;
+      }
+
+      .cellContent {
+        min-width: 0;
+      }
+
+      .cell::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: var(--table-text-color-muted);
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-align: start;
+      }
+
+      .cell[data-label=""] {
+        justify-content: flex-end;
+      }
+
+      .cell[data-label=""]::before,
+      .cell[data-emphasis="high"]::before {
+        display: none;
+      }
+
+      /* The high-emphasis column is the card title, sharing the header line with the controls. */
+      .cell[data-emphasis="high"] {
+        order: -2;
+        flex: 1 1 auto;
+        justify-content: flex-start;
+        font-size: 1.07em;
+        text-align: start;
+      }
+
+      .groupCell,
+      .drawerCell,
+      .statusCell {
+        display: block;
+        height: auto;
+        position: static;
+      }
+
+      .groupRow,
+      .drawer,
+      .statusRow {
+        display: block;
+      }
+
+      .statusOverlay {
+        position: absolute;
+      }
+    }
   }
 
   /* ---- Utilities ------------------------------------------------------- */

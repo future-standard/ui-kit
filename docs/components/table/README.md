@@ -107,6 +107,17 @@ breakpoints sm 480 · md 720 · lg 960 · xl 1200 px. Pinned columns (`pin: 'sta
 in view while the rest scroll; their sticky offsets are computed from the declared widths of
 their pinned neighbours, so those neighbours must declare `width`.
 
+### Stacked cards on small containers
+
+```tsx
+features: { stacked: { below: 'md' } }
+```
+
+Under the `md` container width every row becomes a card: the column header appears as a label
+beside each value, the `emphasis: 'high'` column is the card title, and the checkbox and expand
+toggle sit in the card header. It is CSS only, so it works in any renderer and with any cell type.
+Pinning is meaningless in a stack and is switched off while stacked.
+
 ### Drawers, grouping, header groups
 
 - `features.expandable: true` + `renderDrawer={(row) => …}` gives each row a toggle and a drawer.

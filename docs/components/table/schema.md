@@ -57,6 +57,12 @@ Types live in `packages/table-core/src/schema.ts`; validation in `validate.ts`.
 | `zebra` | `boolean` | `false` |
 | `density` | `'compact' \| 'normal' \| 'comfortable'` | `'normal'` |
 | `grouping` | `{ by: columnId, collapsible?, stickyGroupHeader? }` | — |
+| `stacked` | `{ below: 'sm' \| 'md' \| 'lg' \| 'xl' }` | — |
+
+`stacked` turns each row into a card below the given **container** breakpoint (mobile layout):
+column headers become inline labels, the `emphasis: 'high'` column becomes the card title, and
+select / expand controls move into the card header. Pins are neutralised while stacked. Pure CSS, so
+every renderer gets it.
 
 Grouping groups **adjacent** rows by the column's value. Rows are expected to arrive sorted by that
 column; unsorted data yields fragmented groups by design rather than reordering the consumer's data.

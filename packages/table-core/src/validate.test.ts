@@ -82,14 +82,22 @@ describe('validateSchema', () => {
   it('checks feature flags', () => {
     const bad = {
       ...cameraSchema,
-      features: { selection: 'many', density: 'tight', zebra: 'yes', grouping: { by: 'nope' } },
+      features: {
+        selection: 'many',
+        density: 'tight',
+        zebra: 'yes',
+        stacked: { below: 'xs' },
+        grouping: { by: 'nope' },
+      },
     };
     expect(paths(bad)).toEqual([
       'features.selection',
       'features.density',
       'features.zebra',
+      'features.stacked.below',
       'features.grouping.by',
     ]);
+    expect(paths({ ...cameraSchema, features: { stacked: { below: 'md' } } })).toEqual([]);
   });
 
   it('ignores unknown properties for forward compatibility', () => {

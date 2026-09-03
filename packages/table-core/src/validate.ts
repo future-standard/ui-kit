@@ -190,6 +190,11 @@ export function validateSchema(schema: unknown): SchemaIssue[] {
           issue(`features.${prop}`, 'must be a boolean');
         }
       }
+      if (f.stacked !== undefined) {
+        if (!isRecord(f.stacked) || !isOneOf(f.stacked.below, BREAKPOINTS)) {
+          issue('features.stacked.below', `must be one of ${BREAKPOINTS.join(', ')}`);
+        }
+      }
       if (f.grouping !== undefined) {
         if (!isRecord(f.grouping) || !isNonEmptyString(f.grouping.by)) {
           issue('features.grouping.by', 'must be a column id');

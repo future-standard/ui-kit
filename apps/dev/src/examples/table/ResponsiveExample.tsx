@@ -141,6 +141,7 @@ export function ResponsiveExample() {
   const [layout, setLayout] = useState<TableLayout>('contained');
   const [contained, setContained] = useState(true);
   const [narrow, setNarrow] = useState(false);
+  const [stacked, setStacked] = useState(false);
 
   return (
     <div style={{ display: 'grid', gap: 16 }}>
@@ -175,11 +176,19 @@ export function ResponsiveExample() {
           <input type='checkbox' checked={narrow} onChange={(e) => setNarrow(e.target.checked)} />{' '}
           Narrow container (640px)
         </label>
+        <label>
+          <input type='checkbox' checked={stacked} onChange={(e) => setStacked(e.target.checked)} />{' '}
+          Stack into cards below md
+        </label>
       </fieldset>
 
       <div style={{ maxWidth: narrow ? 640 : undefined }}>
         <DataTable<Device>
-          schema={schema}
+          schema={
+            stacked
+              ? { ...schema, features: { ...schema.features, stacked: { below: 'md' } } }
+              : schema
+          }
           data={devices}
           layout={layout}
           maxHeight={layout === 'contained' && contained ? '360px' : undefined}

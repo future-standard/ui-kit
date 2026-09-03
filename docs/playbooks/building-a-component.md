@@ -183,3 +183,12 @@ Short, dated notes on what we learned the hard way, to feed back into the steps 
   instead of a clever workaround. Document what each mode gives up.
 - **2026-09-03** — TypeScript narrowing does not survive into callbacks. Capture the narrowed
   value in a `const` before mapping over it.
+- **2026-09-03** — A layout mode that rewrites `display` (the stacked card layout) silently
+  out-ranked the breakpoint-visibility rules and showed every column at once. Route the property
+  through a custom property (`display: var(--_cell-display, table-cell)`) that the mode switches,
+  so the later, lower-specificity visibility rules keep winning. Screenshot caught it; tests didn't.
+- **2026-09-03** — Biome suppressions cannot target an attribute on a multi-line JSX tag. When a
+  linter fights a deliberate attribute, ask whether the attribute belongs in the contract helpers
+  anyway; here explicit ARIA roles moved into `getElementAttributes()` and the lint issue vanished.
+- **2026-09-03** — Give every cell one content wrapper (`.cellContent`). Free-floating text nodes
+  cannot be laid out; the wrapper made the card layout's label/value split trivial.

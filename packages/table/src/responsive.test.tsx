@@ -131,3 +131,20 @@ describe('composite cell', () => {
     expect(traffic.textContent).toContain('—');
   });
 });
+
+describe('stacked layout', () => {
+  it('emits the breakpoint on the root and labels on every cell', () => {
+    const stacked = {
+      ...schema,
+      features: { ...schema.features, stacked: { below: 'md' as const } },
+    };
+    render(<DataTable schema={stacked} data={devices} />);
+    const root = screen.getByRole('table').closest('[data-ui="table"]') as HTMLElement;
+    expect(root).toHaveAttribute('data-stacked-below', 'md');
+    const cells = within(rows()[0]).getAllByRole('cell');
+    expect(cells.find((c) => c.dataset.column === 'site')).toHaveAttribute('data-label', 'Site');
+    expect(cells.find((c) => c.dataset.column === 'actions')).toHaveAttribute('data-label', '');
+    expect(screen.getByRole('table')).toHaveAttribute('role', 'table');
+    expect(rows()[0]).toHaveAttribute('role', 'row');
+  });
+});

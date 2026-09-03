@@ -81,8 +81,15 @@ export type GroupingSchema = {
   stickyGroupHeader?: boolean;
 };
 
+/** Below this container breakpoint each row renders as a stacked card (mobile layout). */
+export type StackedSchema = {
+  below: Breakpoint;
+};
+
 export type TableFeatures = {
   selection?: SelectionMode;
+  /** Stack rows into cards below a container breakpoint. */
+  stacked?: StackedSchema;
   /** Rows can open a drawer beneath them. */
   expandable?: boolean;
   stickyHeader?: boolean;
@@ -103,7 +110,7 @@ export type TableSchema = {
 /** The cell schema applied when a column declares none. */
 export const DEFAULT_CELL: CellSchema = { type: 'text' };
 
-export const DEFAULT_FEATURES: Required<Omit<TableFeatures, 'grouping'>> = {
+export const DEFAULT_FEATURES: Required<Omit<TableFeatures, 'grouping' | 'stacked'>> = {
   selection: 'none',
   expandable: false,
   stickyHeader: false,

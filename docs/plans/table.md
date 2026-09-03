@@ -248,6 +248,14 @@ Each phase ends with: green `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm b
 - [x] `#/table-vanilla`: React and vanilla side by side from one schema, with an in-page DOM-contract parity check.
 - [x] "Writing a renderer" recipe in the DOM contract doc.
 
+### Phase 5b — Stacked (mobile) layout ✅ 2026-09-03
+Pulled in from the spec's "later stage" list at Leonard's request.
+- [x] `features.stacked: { below: Breakpoint }` → `data-stacked-below` on the root; validator rule.
+- [x] CSS-only card layout under the container breakpoint: `attr(data-label)` labels (the contract now emits `data-label` on cells), high-emphasis column as title, select/expand in the card header, pins neutralised, group/drawer/status rows flow as blocks.
+- [x] Explicit ARIA roles in the contract (`table`, `rowgroup`, `columnheader`, `row`, `cell`) so semantics survive the display change.
+- [x] Toggle on `#/table-responsive`; both renderers get it for free.
+- Not done: showing `visibleFrom` columns inside cards (a card could afford them). Design question for Phase 7 / Figma.
+
 ### Phase 6 — `table-cells` v1
 - Registered by name: `text`, `number` (unit), `multiline`, `timestamp`, `link`, `status`, `thumbnail`, `icon`, `actions`, `switch`, `progress`, `truncate`, `composite`.
 - Each with a docs entry and example row.
@@ -284,7 +292,7 @@ library only when needed, never wholesale.
 
 ## 7. Out of scope (this experiment)
 
-Filters and Pagination components · virtualisation (store is designed so the row model can be windowed later) · mobile card layout (Notion: "later stage") · inline editing · user-driven column resize/reorder · saved-view persistence helper · migration adapter from the `TypeTable` API (a migration *guide* is in phase 7) · Storybook setup (after the API settles).
+Filters and Pagination components · virtualisation (store is designed so the row model can be windowed later) · inline editing · user-driven column resize/reorder · saved-view persistence helper · migration adapter from the `TypeTable` API (a migration *guide* is in phase 7) · Storybook setup (after the API settles).
 
 ---
 

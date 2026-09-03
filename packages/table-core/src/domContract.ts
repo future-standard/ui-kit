@@ -6,7 +6,10 @@
  *  - `data-ui` names the part and is never hashed. It is the documented override hook.
  *  - Booleans are presence attributes: `'true'` when on, `undefined` (omitted) when off.
  *  - Enumerations are string values (`data-align="end"`).
- *  - `aria-*` is emitted alongside so accessibility is not left to each renderer.
+ *  - `aria-*` and explicit `role`s are emitted alongside so accessibility is not left to each
+ *    renderer. Roles matter because the stacked (card) layout changes `display` on table parts,
+ *    which strips implicit table semantics in some browsers. Renderers set `role="table"` on the
+ *    table element and `role="rowgroup"` on head and body themselves.
  *
  * Renderers must drop attributes whose value is `undefined`.
  */
@@ -78,8 +81,24 @@ export function getRootAttributes(
     'data-expandable': flag(features.expandable),
     'data-grouped': flag(features.grouping !== undefined),
     'data-sticky-group-header': flag(features.grouping?.stickyGroupHeader),
+    'data-stacked-below': features.stacked?.below,
     'data-status': status,
   };
+}
+
+/** The `<table>` element. */
+export function getElementAttributes(): Attributes {
+  return { 'data-ui': PARTS.element, role: 'table' };
+}
+
+/** The `<thead>`. */
+export function getHeadAttributes(): Attributes {
+  return { 'data-ui': PARTS.head, role: 'rowgroup' };
+}
+
+/** The `<tbody>`; `busy` while data is loading. */
+export function getBodyAttributes({ busy = false }: { busy?: boolean } = {}): Attributes {
+  return { 'data-ui': PARTS.body, role: 'rowgroup', 'aria-busy': flag(busy) };
 }
 
 /** Attributes shared by a column's header cell and body cells. */
@@ -108,6 +127,7 @@ export function getHeaderCellAttributes(
   const direction = sort ? (sort.desc ? 'desc' : 'asc') : undefined;
   return {
     'data-ui': PARTS.headerCell,
+    role: 'columnheader',
     ...getColumnAttributes(column, state.columnPinning, pin),
     'data-sortable': flag(column.sortable),
     'data-sort': direction,
@@ -128,8 +148,11 @@ export function getCellAttributes(
 ): Attributes {
   return {
     'data-ui': PARTS.cell,
+    role: 'cell',
     ...getColumnAttributes(column, state.columnPinning, pin),
     'data-cell-type': column.cell?.type ?? 'text',
+    // Stacked (card) layout shows this beside the value via CSS `attr(data-label)`.
+    'data-label': column.header,
   };
 }
 
@@ -151,6 +174,7 @@ export function getRowAttributes<TRow>(
   const selectable = resolveFeatures(schema).selection !== 'none';
   return {
     'data-ui': PARTS.row,
+    role: 'row',
     'data-key': row.key,
     'data-index': String(row.index),
     'data-selected': flag(row.isSelected),

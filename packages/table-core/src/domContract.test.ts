@@ -25,6 +25,12 @@ describe('getRootAttributes', () => {
     });
   });
 
+  it('emits the stacked breakpoint', () => {
+    const stacked = { ...cameraSchema, features: { stacked: { below: 'md' as const } } };
+    expect(getRootAttributes(stacked)['data-stacked-below']).toBe('md');
+    expect(getRootAttributes(cameraSchema)['data-stacked-below']).toBeUndefined();
+  });
+
   it('flags grouping and sticky group headers', () => {
     const grouped = {
       ...cameraSchema,
@@ -82,10 +88,12 @@ describe('getCellAttributes', () => {
     const state = createInitialState(cameraSchema);
     expect(compactAttributes(getCellAttributes(cameraSchema.columns[2], state))).toEqual({
       'data-ui': PARTS.cell,
+      role: 'cell',
       'data-column': 'kmPost',
       'data-align': 'end',
       'data-emphasis': 'normal',
       'data-cell-type': 'number',
+      'data-label': 'KM Post',
     });
     expect(getCellAttributes(cameraSchema.columns[1], state)['data-cell-type']).toBe('text');
   });
@@ -101,6 +109,7 @@ describe('getRowAttributes', () => {
     });
     expect(compactAttributes(attrs)).toEqual({
       'data-ui': PARTS.row,
+      role: 'row',
       'data-key': '3',
       'data-index': '0',
       'data-selected': 'true',
