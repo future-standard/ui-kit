@@ -8,8 +8,10 @@ export type Camera = {
   name: string;
   location: { route: string; kmPost: number | null; office: string };
   status: 'online' | 'offline' | 'degraded';
+  kind: 'fixed' | 'ptz';
   ptz: boolean;
   counts: { clips: number; snapshots: number };
+  storage: { usedGb: number; totalGb: number };
   lastSeen: string | null;
 };
 
@@ -40,7 +42,9 @@ export const cameras: Camera[] = Array.from({ length: 28 }, (_, i) => {
       office: offices[i % offices.length],
     },
     status: statuses[i % statuses.length],
+    kind: i % 3 === 0 ? 'ptz' : 'fixed',
     ptz: i % 3 === 0,
+    storage: { usedGb: (i * 37) % 100, totalGb: 100 },
     counts: { clips: (i * 7) % 23, snapshots: (i * 5) % 31 },
     lastSeen:
       i % 5 === 4

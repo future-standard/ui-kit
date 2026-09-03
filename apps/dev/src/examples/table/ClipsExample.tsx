@@ -1,15 +1,21 @@
 import { Button } from '@future-standard-ui/button';
 import {
+  type CellActionEvent,
   DataTable,
   type RowSelectionState,
   type SortingState,
   type TableSchema,
   type TableStatus,
 } from '@future-standard-ui/table';
+import { createTableCells } from '@future-standard-ui/table-cells';
 import { useEffect, useMemo, useState } from 'react';
-import { exampleCells } from './cells';
 import { type Clip, fetchClips } from './data';
+import { icons } from './icons';
 
+/**
+ * Every column uses a standard cell type from @future-standard-ui/table-cells, configured in JSON.
+ * Row actions reach the screen through one `onCellAction` handler instead of per-row closures.
+ */
 const schema: TableSchema = {
   id: 'clips',
   rowKey: 'id',
@@ -18,31 +24,51 @@ const schema: TableSchema = {
       id: 'thumbnail',
       header: '',
       accessor: 'thumbnailUrl',
-      cell: { type: 'thumbnail' },
+      cell: { type: 'thumbnail', options: { altAccessor: 'displayName' } },
       width: '80px',
     },
-    { id: 'displayName', header: 'Clip name', sortable: true, emphasis: 'high', minWidth: '160px' },
+    {
+      id: 'displayName',
+      header: 'Clip name',
+      cell: { type: 'truncate', options: { maxWidth: '220px' } },
+      sortable: true,
+      emphasis: 'high',
+      minWidth: '160px',
+    },
     {
       id: 'camera',
       header: 'Camera',
       accessor: 'camera.displayName',
+      cell: { type: 'link', options: { href: '/cameras/{camera.id}/overview' } },
       sortable: true,
       minWidth: '140px',
     },
-    { id: 'fileStatus', header: 'Status', cell: { type: 'status' }, width: '130px' },
+    {
+      id: 'fileStatus',
+      header: 'Status',
+      cell: {
+        type: 'status',
+        options: {
+          variant: 'badge',
+          tones: { completed: 'success', processing: 'info', failed: 'danger' },
+          labels: { completed: 'Ready', processing: 'Processing', failed: 'Failed' },
+        },
+      },
+      width: '130px',
+    },
     {
       id: 'startTime',
       header: 'Clip start',
-      cell: { type: 'timestamp', options: { boldTime: true } },
+      cell: { type: 'timestamp', options: { bold: true } },
       sortable: true,
       width: '130px',
     },
     {
       id: 'createdTime',
       header: 'Created',
-      cell: { type: 'timestamp' },
+      cell: { type: 'timestamp', options: { secondary: 'relative' } },
       sortable: true,
-      width: '130px',
+      width: '140px',
       visibleFrom: 'xl',
     },
     {
@@ -66,15 +92,45 @@ const schema: TableSchema = {
     },
     {
       id: 'actions',
-      header: 'Actions',
-      cell: { type: 'clipActions' },
+      header: '',
+      cell: {
+        type: 'actions',
+        options: {
+          actions: [
+            {
+              id: 'play',
+              label: 'Play',
+              icon: 'play',
+              iconOnly: true,
+              enabledWhen: { accessor: 'fileStatus', equals: 'completed' },
+            },
+            {
+              id: 'download',
+              label: 'Download',
+              icon: 'download',
+              iconOnly: true,
+              enabledWhen: { accessor: 'fileStatus', equals: 'completed' },
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              icon: 'delete',
+              iconOnly: true,
+              design: 'danger',
+              visibleWhen: { accessor: 'fileStatus', not: 'processing' },
+            },
+          ],
+        },
+      },
       align: 'end',
-      width: '120px',
+      width: '110px',
       pin: 'end',
     },
   ],
   features: { selection: 'multiple', stickyHeader: true },
 };
+
+const cells = createTableCells<Clip>({ locale: 'ja-JP', timeZone: 'Asia/Tokyo', icons });
 
 /**
  * The mlit-cctv pattern: sorting and selection are owned by the screen, the server sorts, and
@@ -85,6 +141,7 @@ export function ClipsExample() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [data, setData] = useState<Clip[]>([]);
   const [status, setStatus] = useState<TableStatus>('loading');
+  const [lastAction, setLastAction] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -102,23 +159,9 @@ export function ClipsExample() {
 
   const selectedCount = Object.keys(rowSelection).length;
 
-  const cells = useMemo(
-    () => ({
-      ...exampleCells,
-      clipActions: ({ row }: { row: { original: unknown } }) => {
-        const clip = row.original as Clip;
-        return (
-          <span style={{ display: 'inline-flex', gap: 4 }}>
-            <Button size='xsmall' design='text-only' disabled={clip.fileStatus !== 'completed'}>
-              Play
-            </Button>
-            <Button size='xsmall' design='text-only' disabled={clip.fileStatus !== 'completed'}>
-              Download
-            </Button>
-          </span>
-        );
-      },
-    }),
+  const onCellAction = useMemo(
+    () => (event: CellActionEvent<Clip>) =>
+      setLastAction(`${event.action} → ${event.row.original.displayName}`),
     []
   );
 
@@ -139,6 +182,12 @@ export function ClipsExample() {
           <span style={{ opacity: 0.7 }}>
             Sorted by <code>{sorting[0]?.id}</code> {sorting[0]?.desc ? 'desc' : 'asc'} ·
             server-side, 600 ms latency
+            {lastAction && (
+              <>
+                {' '}
+                · last action: <code>{lastAction}</code>
+              </>
+            )}
           </span>
         )}
       </div>
@@ -150,6 +199,7 @@ export function ClipsExample() {
         state={{ sorting, rowSelection }}
         onSortingChange={setSorting}
         onRowSelectionChange={setRowSelection}
+        onCellAction={onCellAction}
         cells={cells}
         slots={{
           loading: 'Loading clips…',

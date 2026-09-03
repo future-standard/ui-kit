@@ -25,6 +25,7 @@ import {
 } from 'react';
 import { defaultCellRenderers, resolveCellRenderer } from './cells';
 import {
+  type CellActionEvent,
   type CellRenderers,
   defaultLabels,
   type RowHints,
@@ -90,6 +91,8 @@ export type RootProps<TRow> = Omit<ComponentPropsWithRef<'div'>, 'children'> & {
   renderDrawer?: (row: RowModelRow<TRow>) => ReactNode;
   /** Custom group header content. Defaults to the group value as text. */
   renderGroupHeader?: (group: RowGroup<TRow>) => ReactNode;
+  /** Receives actions emitted by cells (action buttons, switches, links without a URL). */
+  onCellAction?: (event: CellActionEvent<TRow>) => void;
   /**
    * Cap the table's height; the scroll container then scrolls vertically and a sticky header
    * sticks to it. Without a cap the page scrolls and the header cannot stick (see plan §8).
@@ -110,6 +113,7 @@ export function Root<TRow>({
   getRowHints,
   renderDrawer,
   renderGroupHeader,
+  onCellAction,
   maxHeight,
   stickyTop,
   className,
@@ -127,8 +131,9 @@ export function Root<TRow>({
       getRowHints,
       renderDrawer,
       renderGroupHeader,
+      onCellAction,
     }),
-    [table, cells, slots, labels, getRowHints, renderDrawer, renderGroupHeader]
+    [table, cells, slots, labels, getRowHints, renderDrawer, renderGroupHeader, onCellAction]
   );
 
   const status = getEffectiveStatus(table);
@@ -464,7 +469,7 @@ export type CellProps<TRow> = ComponentPropsWithRef<'td'> & {
 };
 
 export function Cell<TRow>({ row, column, children, className, style, ...props }: CellProps<TRow>) {
-  const { table, cells } = useTableContext<TRow>();
+  const { table, cells, onCellAction } = useTableContext<TRow>();
   const attrs = compactAttributes(table.getCellAttributes(column.id));
   const pinStyle = getPinStyle(table.getColumnPinLayout(column.id));
   const render = resolveCellRenderer(cells, column.cell?.type ?? 'text');
@@ -476,6 +481,7 @@ export function Cell<TRow>({ row, column, children, className, style, ...props }
       column,
       table,
       options: column.cell?.options ?? {},
+      emit: (action, detail) => onCellAction?.({ action, row, column, detail }),
     });
 
   return (

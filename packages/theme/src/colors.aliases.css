@@ -613,4 +613,16 @@
   --table-status-background: var(--grey-1);
   --table-status-overlay-background: color-mix(in srgb, var(--grey-1) 70%, transparent);
   --table-pinned-shadow-color: var(--black-a4);
+
+  /* Standard cells (@future-standard-ui/table-cells) */
+  --table-cell-tone-neutral: var(--grey-9);
+  --table-cell-tone-info: var(--info-9);
+  --table-cell-tone-success: var(--success-9);
+  --table-cell-tone-warning: var(--caution-9);
+  --table-cell-tone-danger: var(--warning-9);
+  --table-cell-badge-background: var(--grey-a3);
+  --table-cell-progress-track: var(--grey-4);
+  --table-cell-progress-fill: var(--primary-9);
+  --table-cell-thumbnail-background: var(--grey-4);
+  --table-cell-action-hover-background: var(--grey-a3);
 }

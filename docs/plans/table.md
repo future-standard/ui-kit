@@ -256,9 +256,13 @@ Pulled in from the spec's "later stage" list at Leonard's request.
 - [x] Toggle on `#/table-responsive`; both renderers get it for free.
 - Not done: showing `visibleFrom` columns inside cards (a card could afford them). Design question for Phase 7 / Figma.
 
-### Phase 6 — `table-cells` v1
-- Registered by name: `text`, `number` (unit), `multiline`, `timestamp`, `link`, `status`, `thumbnail`, `icon`, `actions`, `switch`, `progress`, `truncate`, `composite`.
-- Each with a docs entry and example row.
+### Phase 6 — `table-cells` v1 ✅ 2026-09-03
+- [x] `@future-standard-ui/table-cells`: `createTableCells({ locale, timeZone, icons, placeholder, now })` → `number`, `bytes`, `duration`, `boolean`, `timestamp`, `multiline`, `status`, `thumbnail`, `link`, `actions`, `switch`, `progress`, `truncate`, `icon` (+ `text`, `composite` from the table package). All configured from JSON `cell.options`; JSON-safe **conditions** (`enabledWhen` / `visibleWhen`).
+- [x] **`onCellAction`** channel on the React table (`emit` in the cell context): action buttons, switches and URL-less links report `{ action, row, column, detail }` — one handler per screen replaces per-row closures.
+- [x] Locale-aware formatting via `Intl` (numbers, bytes, durations, times, relative times), `<time datetime>` for timestamps, `role="switch"`, `role="progressbar"`.
+- [x] `Cells.module.css` with `data-ui="cell-*"` parts and `--table-cell-*` aliases; reuses the theme's `--switch-*`.
+- [x] Docs: `docs/components/table/cells.md`. Examples migrated to the standard cells (clips, cameras, responsive, vanilla-React side); `apps/dev/.../cells.tsx` deleted.
+- Icons are injected (`icons` map); the kit still ships no icon dependency.
 
 ### Phase 7 — System: docs, playbook, adoption prep
 - `docs/components/table/*.md(x)`: overview, install, import, schema reference, props tables, examples, DOM contract, override recipes, migration notes from `TypeTable`.

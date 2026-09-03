@@ -11,6 +11,7 @@ A React 19 component library built as independently versioned, individually inst
 | `@future-standard-ui/icon-button` | Icon-only button (requires `aria-label`) |
 | `@future-standard-ui/table-core` | Framework-free table engine: schema, state, row model, DOM contract |
 | `@future-standard-ui/table` | React table: schema-driven `DataTable` and composable primitives |
+| `@future-standard-ui/table-cells` | Standard cell renderers configured from schema options |
 | `@future-standard-ui/theme` | Design tokens, fonts, colors, and dark mode support |
 | `@future-standard-ui/ui-kit` | Kitchen-sink re-export of all components |
 
@@ -110,6 +111,7 @@ packages/
   theme/            # @future-standard-ui/theme
   table-core/       # @future-standard-ui/table-core (no React)
   table/            # @future-standard-ui/table (React)
+  table-cells/      # @future-standard-ui/table-cells (React)
   ui-kit/           # @future-standard-ui/ui-kit
 ```
 

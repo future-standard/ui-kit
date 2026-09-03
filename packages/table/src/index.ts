@@ -32,6 +32,7 @@ export {
 } from '@future-standard-ui/table-core';
 export { compositeCell, defaultCellRenderers, resolveCellRenderer, textCell } from './cells';
 export {
+  type CellActionEvent,
   type CellContext,
   type CellRenderer,
   type CellRenderers,

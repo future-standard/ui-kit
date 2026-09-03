@@ -1,7 +1,8 @@
-import { DataTable, type TableSchema } from '@future-standard-ui/table';
+import { type CellActionEvent, DataTable, type TableSchema } from '@future-standard-ui/table';
+import { createTableCells } from '@future-standard-ui/table-cells';
 import { useMemo, useState } from 'react';
-import { exampleCells } from './cells';
 import { type Camera, cameras } from './data';
+import { icons } from './icons';
 
 type Controls = {
   density: 'compact' | 'normal' | 'comfortable';
@@ -12,6 +13,8 @@ type Controls = {
   grouped: boolean;
   status: 'idle' | 'loading' | 'empty' | 'error';
 };
+
+const cells = createTableCells<Camera>({ icons });
 
 /**
  * Uncontrolled, client-sorted table. Everything visible here is driven by the JSON schema
@@ -27,12 +30,27 @@ export function CamerasExample() {
     grouped: false,
     status: 'idle',
   });
+  const [ptz, setPtz] = useState<Record<number, boolean>>({});
+  const [lastAction, setLastAction] = useState<string | null>(null);
 
   const schema = useMemo<TableSchema>(
     () => ({
       id: 'cameras',
       rowKey: 'id',
       columns: [
+        {
+          id: 'kind',
+          header: '',
+          cell: {
+            type: 'icon',
+            options: {
+              icons: { fixed: 'camera', ptz: 'ptz' },
+              labels: { fixed: 'Fixed camera', ptz: 'PTZ camera' },
+            },
+          },
+          width: '44px',
+          pin: 'start',
+        },
         {
           id: 'name',
           header: 'Camera',
@@ -44,7 +62,10 @@ export function CamerasExample() {
         {
           id: 'status',
           header: 'Status',
-          cell: { type: 'status' },
+          cell: {
+            type: 'status',
+            options: { tones: { online: 'success', degraded: 'warning', offline: 'danger' } },
+          },
           sortable: true,
           width: '140px',
         },
@@ -74,6 +95,25 @@ export function CamerasExample() {
           width: '100px',
         },
         {
+          id: 'storage',
+          header: 'Storage',
+          accessor: 'storage.usedGb',
+          cell: {
+            type: 'progress',
+            options: {
+              maxAccessor: 'storage.totalGb',
+              thresholds: [
+                { from: 75, tone: 'warning' },
+                { from: 90, tone: 'danger' },
+              ],
+              label: 'Storage used',
+            },
+          },
+          sortable: true,
+          width: '150px',
+          visibleFrom: 'md',
+        },
+        {
           id: 'clips',
           header: 'Clips',
           accessor: 'counts.clips',
@@ -82,29 +122,19 @@ export function CamerasExample() {
           width: '90px',
         },
         {
-          id: 'snapshots',
-          header: 'Snapshots',
-          accessor: 'counts.snapshots',
-          align: 'end',
-          sortable: true,
-          width: '110px',
-          visibleFrom: 'md',
-        },
-        {
           id: 'ptz',
           header: 'PTZ',
-          cell: { type: 'boolean', options: { yes: 'PTZ' } },
+          cell: { type: 'switch', options: { label: 'PTZ enabled' } },
           align: 'center',
-          width: '70px',
-          emphasis: 'low',
+          width: '80px',
         },
         {
           id: 'lastSeen',
           header: 'Last seen',
-          cell: { type: 'timestamp', options: { relative: true } },
+          cell: { type: 'timestamp', options: { secondary: 'relative' } },
           sortable: true,
           visibleFrom: 'xl',
-          width: '140px',
+          width: '150px',
         },
       ],
       features: {
@@ -121,12 +151,20 @@ export function CamerasExample() {
     [controls]
   );
 
-  // Grouping wants rows sorted by the group column; a real screen would sort on the server.
-  const data = useMemo(
-    () =>
-      controls.grouped ? [...cameras].sort((a, b) => a.status.localeCompare(b.status)) : cameras,
-    [controls.grouped]
-  );
+  // The switch cell is controlled by the screen: apply the emitted state to the data.
+  const data = useMemo(() => {
+    const withPtz = cameras.map((c) => (ptz[c.id] === undefined ? c : { ...c, ptz: ptz[c.id] }));
+    return controls.grouped
+      ? [...withPtz].sort((a, b) => a.status.localeCompare(b.status))
+      : withPtz;
+  }, [controls.grouped, ptz]);
+
+  const onCellAction = ({ action, row, detail }: CellActionEvent<Camera>) => {
+    if (action === 'switch') setPtz((prev) => ({ ...prev, [row.original.id]: Boolean(detail) }));
+    setLastAction(
+      `${action} → ${row.original.name}${detail !== undefined ? ` (${String(detail)})` : ''}`
+    );
+  };
 
   const set = <K extends keyof Controls>(key: K, value: Controls[K]) =>
     setControls((c) => ({ ...c, [key]: value }));
@@ -217,7 +255,8 @@ export function CamerasExample() {
         data={controls.status === 'empty' ? [] : data}
         status={controls.status === 'empty' ? 'idle' : controls.status}
         clientSorting
-        cells={exampleCells}
+        cells={cells}
+        onCellAction={onCellAction}
         maxHeight='420px'
         slots={{
           loading: 'Loading cameras…',
@@ -237,6 +276,12 @@ export function CamerasExample() {
           </div>
         )}
       />
+
+      {lastAction && (
+        <p style={{ margin: 0, opacity: 0.7 }}>
+          Last cell action: <code>{lastAction}</code>
+        </p>
+      )}
 
       <details>
         <summary>Schema (JSON)</summary>

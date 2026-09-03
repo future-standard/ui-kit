@@ -1,6 +1,16 @@
 import type { ColumnSchema, Row, RowGroup, TableInstance } from '@future-standard-ui/table-core';
 import { createContext, type ReactNode, useContext } from 'react';
 
+/** Something a cell wants the screen to do — an action button, a switch flip, a link without a URL. */
+export type CellActionEvent<TRow = unknown> = {
+  /** Action id from the cell's schema options (e.g. `'delete'`), or the cell type for implicit ones (`'switch'`). */
+  action: string;
+  row: Row<TRow>;
+  column: ColumnSchema;
+  /** Action-specific payload, e.g. the new checked state of a switch. */
+  detail?: unknown;
+};
+
 /** Everything a cell renderer can see. */
 export type CellContext<TRow = unknown> = {
   value: unknown;
@@ -9,6 +19,8 @@ export type CellContext<TRow = unknown> = {
   table: TableInstance<TRow>;
   /** `column.cell.options` from the schema, or `{}`. */
   options: Record<string, unknown>;
+  /** Report an action to the screen's `onCellAction`. No-op when none is registered. */
+  emit: (action: string, detail?: unknown) => void;
 };
 
 export type CellRenderer<TRow = unknown> = (context: CellContext<TRow>) => ReactNode;
@@ -57,6 +69,7 @@ export type TableContextValue<TRow = unknown> = {
   getRowHints?: (row: Row<TRow>) => RowHints | undefined;
   renderDrawer?: (row: Row<TRow>) => ReactNode;
   renderGroupHeader?: (group: RowGroup<TRow>) => ReactNode;
+  onCellAction?: (event: CellActionEvent<TRow>) => void;
 };
 
 // biome-ignore lint/suspicious/noExplicitAny: the row type is erased at the context boundary and re-applied by useTableContext<TRow>().

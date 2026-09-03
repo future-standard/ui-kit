@@ -1,6 +1,7 @@
 import { DataTable, type TableLayout, type TableSchema } from '@future-standard-ui/table';
+import { createTableCells } from '@future-standard-ui/table-cells';
 import { useState } from 'react';
-import { exampleCells } from './cells';
+import { icons } from './icons';
 
 type Device = {
   id: string;
@@ -52,7 +53,15 @@ const schema: TableSchema = {
     },
     { id: 'site', header: 'Site', width: '110px', sortable: true },
     { id: 'model', header: 'Model', width: '110px', visibleFrom: 'md' },
-    { id: 'status', header: 'Status', cell: { type: 'status' }, width: '130px' },
+    {
+      id: 'status',
+      header: 'Status',
+      cell: {
+        type: 'status',
+        options: { tones: { online: 'success', degraded: 'warning', offline: 'danger' } },
+      },
+      width: '130px',
+    },
     {
       id: 'ingress',
       header: 'Ingress',
@@ -114,7 +123,15 @@ const schema: TableSchema = {
     {
       id: 'actions',
       header: '',
-      cell: { type: 'deviceActions' },
+      cell: {
+        type: 'actions',
+        options: {
+          actions: [
+            { id: 'edit', label: 'Edit', icon: 'edit', iconOnly: true },
+            { id: 'more', label: 'More', icon: 'more', iconOnly: true },
+          ],
+        },
+      },
       align: 'end',
       pin: 'end',
       width: '96px',
@@ -123,19 +140,7 @@ const schema: TableSchema = {
   features: { selection: 'multiple', stickyHeader: true, zebra: true },
 };
 
-const cells = {
-  ...exampleCells,
-  deviceActions: () => (
-    <span style={{ display: 'inline-flex', gap: 6 }}>
-      <button type='button' style={{ font: 'inherit', fontSize: 12 }}>
-        Edit
-      </button>
-      <button type='button' style={{ font: 'inherit', fontSize: 12 }}>
-        ⋯
-      </button>
-    </span>
-  ),
-};
+const cells = createTableCells<Device>({ icons });
 
 export function ResponsiveExample() {
   const [layout, setLayout] = useState<TableLayout>('contained');

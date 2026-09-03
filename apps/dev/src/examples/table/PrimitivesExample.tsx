@@ -1,12 +1,19 @@
 import { Table, type TableSchema, useTable } from '@future-standard-ui/table';
-import { exampleCells } from './cells';
+import { createTableCells } from '@future-standard-ui/table-cells';
 import { type Camera, cameras } from './data';
 
 const schema: TableSchema = {
   rowKey: 'id',
   columns: [
     { id: 'name', header: 'Camera', emphasis: 'high' },
-    { id: 'status', header: 'Status', cell: { type: 'status' } },
+    {
+      id: 'status',
+      header: 'Status',
+      cell: {
+        type: 'status',
+        options: { tones: { online: 'success', degraded: 'warning', offline: 'danger' } },
+      },
+    },
     { id: 'clips', header: 'Clips', accessor: 'counts.clips', align: 'end' },
   ],
   features: { density: 'compact' },
@@ -17,13 +24,15 @@ const schema: TableSchema = {
  * header-only table plus headerless tables. Here each office gets its own body with a group
  * row, inside one table, with one header.
  */
+const cells = createTableCells<Camera>();
+
 export function PrimitivesExample() {
   const table = useTable<Camera>({ schema, data: cameras.slice(0, 12) });
   const model = table.getRowModel();
   const offices = [...new Set(model.rows.map((r) => r.original.location.office))];
 
   return (
-    <Table.Root table={table} cells={exampleCells}>
+    <Table.Root table={table} cells={cells}>
       <Table.Scroll>
         <Table.Element>
           <Table.Head />

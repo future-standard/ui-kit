@@ -1,4 +1,5 @@
 import { DataTable, type TableSchema } from '@future-standard-ui/table';
+import { createTableCells } from '@future-standard-ui/table-cells';
 import { useEffect, useRef, useState } from 'react';
 import { type Camera, cameras } from '../table/data';
 import { mountTable, type VanillaCellRenderer } from './mountTable';
@@ -15,7 +16,16 @@ const schema: TableSchema = {
       pin: 'start',
       width: '160px',
     },
-    { id: 'status', header: 'Status', cell: { type: 'status' }, sortable: true, width: '130px' },
+    {
+      id: 'status',
+      header: 'Status',
+      cell: {
+        type: 'status',
+        options: { tones: { online: 'success', degraded: 'warning', offline: 'danger' } },
+      },
+      sortable: true,
+      width: '130px',
+    },
     { id: 'route', header: 'Route', accessor: 'location.route', group: 'Location', width: '90px' },
     { id: 'office', header: 'Office', accessor: 'location.office', group: 'Location' },
     {
@@ -56,28 +66,7 @@ const vanillaCells: Record<string, VanillaCellRenderer<Camera>> = {
   },
 };
 
-const reactCells = {
-  status: ({ value }: { value: unknown }) => (
-    <span
-      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textTransform: 'capitalize' }}
-    >
-      <span
-        aria-hidden='true'
-        style={{
-          width: 8,
-          height: 8,
-          borderRadius: 999,
-          background: {
-            online: 'var(--success)',
-            degraded: 'var(--warning)',
-            offline: 'var(--error)',
-          }[String(value)],
-        }}
-      />
-      {String(value)}
-    </span>
-  ),
-};
+const reactCells = createTableCells<Camera>();
 
 /** Every contract attribute on every part, in document order, for both renderers. */
 function contractSignature(root: Element): string[] {

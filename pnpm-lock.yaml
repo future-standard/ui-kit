@@ -38,6 +38,9 @@ importers:
       '@future-standard-ui/table':
         specifier: workspace:*
         version: link:../../packages/table
+      '@future-standard-ui/table-cells':
+        specifier: workspace:*
+        version: link:../../packages/table-cells
       '@future-standard-ui/table-core':
         specifier: workspace:*
         version: link:../../packages/table-core
@@ -154,6 +157,52 @@ importers:
 
   packages/table:
     dependencies:
+      '@future-standard-ui/table-core':
+        specifier: workspace:*
+        version: link:../table-core
+    devDependencies:
+      '@future-standard-ui/build-config':
+        specifier: workspace:*
+        version: link:../build-config
+      '@testing-library/dom':
+        specifier: 10.4.1
+        version: 10.4.1
+      '@testing-library/jest-dom':
+        specifier: 7.0.1
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@4.1.11(jsdom@30.0.1)(vite@8.0.0))
+      '@testing-library/react':
+        specifier: 16.3.3
+        version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      jsdom:
+        specifier: 30.0.1
+        version: 30.0.1
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vite:
+        specifier: 8.0.0
+        version: 8.0.0
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(jsdom@30.0.1)(vite@8.0.0)
+
+  packages/table-cells:
+    dependencies:
+      '@future-standard-ui/table':
+        specifier: workspace:*
+        version: link:../table
       '@future-standard-ui/table-core':
         specifier: workspace:*
         version: link:../table-core
