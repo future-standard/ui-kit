@@ -91,10 +91,15 @@ export type {
 } from './state';
 // State
 export { createInitialState, TABLE_STATE_KEYS } from './state';
+// Status
+export { getEffectiveStatus } from './status';
 export type { Listener, Store, Updater } from './store';
 // Store
 export { createStore, resolveUpdater } from './store';
+// Styles
+export { tableClasses } from './styles';
 export type { TableInstance, TableOptions } from './table';
+
 // Table instance
 export { createTable } from './table';
 export type { SchemaIssue } from './validate';

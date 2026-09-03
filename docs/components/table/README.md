@@ -4,7 +4,7 @@ Schema-driven, responsive data table. Two packages:
 
 | Package | What it is | React? |
 |---|---|---|
-| `@future-standard-ui/table-core` | Schema, state, row model, DOM contract | No |
+| `@future-standard-ui/table-core` | Schema, state, row model, DOM contract, **the CSS module** | No |
 | `@future-standard-ui/table` | `DataTable`, composable primitives, `useTable`, CSS module | Yes |
 
 Status: **Phase 3 of the [table plan](../../plans/table.md)** — core features, React renderer and
@@ -195,6 +195,13 @@ Target the un-hashed parts from the [DOM contract](./dom-contract.md) in an `ove
   }
 }
 ```
+
+## Without React
+
+Everything a renderer needs lives in `table-core`: state, derived data, attribute helpers and the
+stylesheet (`tableClasses`). The [DOM contract](./dom-contract.md#writing-a-renderer) has the
+recipe; `apps/dev/src/examples/table-vanilla/` is a working plain-DOM renderer, and the
+`#/table-vanilla` example page proves it emits the same contract as `DataTable`.
 
 ## Accessibility
 

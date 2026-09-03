@@ -1,9 +1,11 @@
 {
   "name": "@future-standard-ui/table-core",
   "version": "0.0.0",
-  "description": "Framework-free table engine: schema, state, row model and DOM contract.",
+  "description": "Framework-free table engine: schema, state, row model, DOM contract and the shared CSS module.",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "import": {

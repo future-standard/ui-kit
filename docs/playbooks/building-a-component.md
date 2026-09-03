@@ -107,6 +107,11 @@ The new kit runs alongside the old one. Before naming anything:
   unknown types degrade to text rather than crash.
 - **Test with Testing Library in jsdom**: roles, labels and `data-*` attributes, not class names.
   Call `cleanup` in `afterEach` explicitly — Vitest globals are off.
+- **The CSS module lives with the core, not the React package.** A second renderer must get the
+  same hashed class names and the same stylesheet from a framework-free import. Write the
+  non-React renderer early (a few hundred lines of plain DOM) and put a parity check in the dev
+  app: render both from one schema and diff every contract attribute. It finds contract leaks
+  (attributes one renderer emits and the other forgets) that unit tests miss.
 
 ## 7. Style on the CSS-modules pattern
 

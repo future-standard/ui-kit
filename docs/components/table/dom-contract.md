@@ -116,6 +116,32 @@ cells with container queries. The core does **not** drop these columns from the 
 same DOM serves every width and the vanilla renderer gets responsiveness for free. Named breakpoint
 widths are defined in the CSS module and mirrored in Figma.
 
+## Writing a renderer
+
+A renderer for any framework needs only `@future-standard-ui/table-core`. The reference
+implementations are the React package and `apps/dev/src/examples/table-vanilla/mountTable.ts`
+(plain DOM, ~300 lines). The recipe:
+
+1. `createTable(options)` and `subscribe(render)`. Push new props with `setOptions(patch)`
+   (`{ silent: true }` if your framework is already re-rendering).
+2. Import `tableClasses` for the hashed class names; importing the core injects the stylesheet.
+3. Walk `getVisibleColumns()`, `getHeaderGroups()`, `getRowModel()` (`rows`, or `groups` when
+   grouping is on) and emit the parts in the table above.
+4. Spread the attribute helpers — `getRootAttributes()`, `getHeaderCellAttributes(id)`,
+   `getCellAttributes(id)`, `getRowAttributes(row, hints)` — and drop `undefined` values.
+   Set `data-status` from `getEffectiveStatus(table)`.
+5. Set the custom properties: `getPinStyle(getColumnPinLayout(id))` on pinned cells, utility
+   cells at `0px` / `calc(var(--_utility-width) * n)`, `--_max-height` and `--_sticky-top` on the root.
+6. Wire controls to the instance: sort button → `toggleSort(id)`; row checkbox →
+   `toggleRowSelected(key, checked)`; select-all → `toggleAllRowsSelected(checked)` with
+   `indeterminate` from `getSelectionSummary() === 'some'`; expand → `toggleExpanded(key)`;
+   group toggle → `toggleGroupCollapsed(key)`.
+7. Cell renderers are per framework: look up `column.cell.type` in your registry and fall back
+   to text.
+
+The dev app's `#/table-vanilla` page renders both implementations from one schema and compares
+every contract attribute they emit.
+
 ## Override example
 
 ```css

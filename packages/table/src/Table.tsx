@@ -1,12 +1,14 @@
 import {
   type ColumnSchema,
   compactAttributes,
+  getEffectiveStatus,
   getPinStyle,
   hasHeaderGroups,
   PARTS,
   type RowGroup,
   type Row as RowModelRow,
   resolveFeatures,
+  tableClasses as styles,
   type TableInstance,
   type TableStatus,
 } from '@future-standard-ui/table-core';
@@ -30,8 +32,6 @@ import {
   useTableContext,
 } from './context';
 import { SortIcon } from './SortIcon';
-import { getEffectiveStatus } from './status';
-import styles from './Table.module.css';
 
 const cx = (...classes: Array<string | undefined | false>) => classes.filter(Boolean).join(' ');
 

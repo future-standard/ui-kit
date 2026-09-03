@@ -23,7 +23,13 @@ export type {
   TableState,
   TableStatus,
 } from '@future-standard-ui/table-core';
-export { assertSchema, SchemaError, validateSchema } from '@future-standard-ui/table-core';
+export {
+  assertSchema,
+  getEffectiveStatus,
+  SchemaError,
+  tableClasses,
+  validateSchema,
+} from '@future-standard-ui/table-core';
 export { compositeCell, defaultCellRenderers, resolveCellRenderer, textCell } from './cells';
 export {
   type CellContext,
@@ -38,7 +44,6 @@ export {
   useTableContext,
 } from './context';
 export { DataTable, type DataTableProps } from './DataTable';
-export { getEffectiveStatus } from './status';
 export {
   Body,
   Cell,

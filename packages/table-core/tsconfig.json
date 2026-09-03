@@ -4,6 +4,6 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": ["src"],
+  "include": ["src", "../build-config/css-modules.d.ts"],
   "exclude": ["src/**/*.test.ts", "src/**/*.fixtures.ts"]
 }

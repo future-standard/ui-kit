@@ -69,6 +69,7 @@ packages/theme/
 
 ### `table-core` (framework-free)
 
+- **CSS module** — `Table.module.css` ships with the core; `tableClasses` exposes the hashed names. Renderers of any framework style identically.
 - **Schema types** — `TableSchema`, `ColumnSchema`, `CellSchema` (see §4). JSON-serialisable; validated at runtime with clear errors.
 - **Store** — a tiny observable state container (`getState`, `setState`, `subscribe`). Feature slices: `sorting`, `rowSelection`, `expanded`, `columnVisibility`, `columnPinning`, `grouping`. Each slice is controllable from outside (the React layer maps them to props).
 - **Row model** — `createRowModel(data, schema, state)` → rows with `key`, `original`, `cells[]` (value resolved via accessor), `depth`, `groupKey`. Opt-in helpers: `applySorting`, `applyGrouping` (client-side only when asked).
@@ -241,9 +242,11 @@ Each phase ends with: green `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm b
 - [x] Expandable row drawer (`Table.Drawer`, `<td colspan>`), controlled via `expanded`.
 - [x] Examples: `#/table-cameras` "Group by status"; `#/table-primitives` hand-composed one-header/many-bodies layout replacing mlit-cctv's header-only + headerless hack.
 
-### Phase 5 — Vanilla renderer proof
-- `apps/dev/src/examples/table-vanilla/`: same schema + same CSS module, plain DOM, driven by `table-core`'s store.
-- Confirms the DOM contract and CSS work without React. Document what a framework renderer must implement.
+### Phase 5 — Vanilla renderer proof ✅ 2026-09-03
+- [x] **CSS module and `getEffectiveStatus` moved into `table-core`** (`tableClasses` export; importing the core injects the stylesheet). The React package consumes them from there — "headless core + CSS contract" is now literally true.
+- [x] `apps/dev/src/examples/table-vanilla/mountTable.ts`: plain-DOM renderer on `table-core` only (sorting, selection, expansion, grouping, pins, status, layouts).
+- [x] `#/table-vanilla`: React and vanilla side by side from one schema, with an in-page DOM-contract parity check.
+- [x] "Writing a renderer" recipe in the DOM contract doc.
 
 ### Phase 6 — `table-cells` v1
 - Registered by name: `text`, `number` (unit), `multiline`, `timestamp`, `link`, `status`, `thumbnail`, `icon`, `actions`, `switch`, `progress`, `truncate`, `composite`.

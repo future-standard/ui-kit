@@ -1,4 +1,5 @@
-import type { TableInstance, TableStatus } from '@future-standard-ui/table-core';
+import type { TableStatus } from './domContract';
+import type { TableInstance } from './table';
 
 /**
  * The status the table should *show*. `options.status` wins; with no explicit status an empty

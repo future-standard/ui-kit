@@ -1,7 +1,6 @@
-import { resolvePath } from '@future-standard-ui/table-core';
+import { resolvePath, tableClasses as styles } from '@future-standard-ui/table-core';
 import { Fragment } from 'react';
 import type { CellRenderer, CellRenderers } from './context';
-import styles from './Table.module.css';
 
 /** Default renderer: the value as text, empty for `null` / `undefined`. */
 export const textCell: CellRenderer = ({ value }) =>

@@ -6,6 +6,7 @@ import { CamerasExample } from './examples/table/CamerasExample';
 import { ClipsExample } from './examples/table/ClipsExample';
 import { PrimitivesExample } from './examples/table/PrimitivesExample';
 import { ResponsiveExample } from './examples/table/ResponsiveExample';
+import { VanillaExample } from './examples/table-vanilla/VanillaExample';
 
 const MoonIcon = () => (
   <svg
@@ -56,6 +57,13 @@ const pages = [
     intro:
       'Pinned start/end columns with schema-derived offsets, ingress/egress collapsing into one composite column below the lg breakpoint, and a header that sticks to the table or to the page.',
     render: () => <ResponsiveExample />,
+  },
+  {
+    id: 'table-vanilla',
+    title: 'Table — vanilla DOM',
+    intro:
+      'The same schema rendered by React and by a plain-DOM renderer that imports only table-core. Sort, select and expand either; then compare the DOM contract both emit.',
+    render: () => <VanillaExample />,
   },
   {
     id: 'table-primitives',

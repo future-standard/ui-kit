@@ -1,5 +1,4 @@
-import styles from './Table.module.css';
-
+import { tableClasses as styles } from '@future-standard-ui/table-core';
 /**
  * Two stacked chevrons; the active one is emphasised via `[data-sort]` on the header cell.
  * Inline SVG keeps the package free of an icon dependency.
