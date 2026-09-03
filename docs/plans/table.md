@@ -235,11 +235,11 @@ Each phase ends with: green `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm b
 - [x] Example `#/table-responsive`: traffic ingress/egress from the Notion spec, pinned ID + Device, pinned actions, layout switch, narrow-container toggle.
 - [x] 10 new tests (core pinning/validation, React offsets/layout/composite).
 
-### Phase 4 — Structure
-- Header groups.
-- Foldable grouping when sorted by a category (collapsible sections, sticky group header under the main header).
-- Expandable row drawer (`Table.Drawer`, `<td colspan>`), controlled via `expanded`.
-- Example: grouped cameras (replacing the header-only/headerless composition in mlit-cctv).
+### Phase 4 — Structure ✅ 2026-09-03 (largely delivered inside Phase 2)
+- [x] Header groups (adjacent `group` titles merge; visibility rule enforced).
+- [x] Foldable grouping (`features.grouping`, collapsible sections, count badge); `stickyGroupHeader` rests the section header under the sticky column header.
+- [x] Expandable row drawer (`Table.Drawer`, `<td colspan>`), controlled via `expanded`.
+- [x] Examples: `#/table-cameras` "Group by status"; `#/table-primitives` hand-composed one-header/many-bodies layout replacing mlit-cctv's header-only + headerless hack.
 
 ### Phase 5 — Vanilla renderer proof
 - `apps/dev/src/examples/table-vanilla/`: same schema + same CSS module, plain DOM, driven by `table-core`'s store.

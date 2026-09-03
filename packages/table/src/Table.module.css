@@ -423,10 +423,15 @@
     line-height: 18px;
   }
 
-  .root[data-sticky-header] .groupCell {
+  /* Group section headers rest under the (sticky) column header when the schema asks for it. */
+  .root[data-sticky-group-header] .groupCell {
     position: sticky;
-    top: calc(var(--_sticky-top) + var(--_header-height));
+    top: var(--_sticky-top);
     z-index: 1;
+  }
+
+  .root[data-sticky-header][data-sticky-group-header] .groupCell {
+    top: calc(var(--_sticky-top) + var(--_header-height));
   }
 
   /* ---- Drawer ---------------------------------------------------------- */

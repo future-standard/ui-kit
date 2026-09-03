@@ -113,7 +113,9 @@ export function CamerasExample() {
         stickyHeader: controls.stickyHeader,
         selection: controls.selection,
         expandable: controls.expandable,
-        grouping: controls.grouped ? { by: 'status', collapsible: true } : undefined,
+        grouping: controls.grouped
+          ? { by: 'status', collapsible: true, stickyGroupHeader: true }
+          : undefined,
       },
     }),
     [controls]

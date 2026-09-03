@@ -25,6 +25,17 @@ describe('getRootAttributes', () => {
     });
   });
 
+  it('flags grouping and sticky group headers', () => {
+    const grouped = {
+      ...cameraSchema,
+      features: { grouping: { by: 'route', stickyGroupHeader: true } },
+    };
+    const attrs = getRootAttributes(grouped);
+    expect(attrs['data-grouped']).toBe('true');
+    expect(attrs['data-sticky-group-header']).toBe('true');
+    expect(getRootAttributes(cameraSchema)['data-sticky-group-header']).toBeUndefined();
+  });
+
   it('omits selection when none and defaults status to idle', () => {
     const attrs = getRootAttributes({ rowKey: 'id', columns: [{ id: 'a', header: 'A' }] });
     expect(attrs['data-selection']).toBeUndefined();

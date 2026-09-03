@@ -57,6 +57,7 @@ ungrouped columns.
 | `data-sticky-header` | presence | `features.stickyHeader` |
 | `data-expandable` | presence | `features.expandable` |
 | `data-grouped` | presence | `features.grouping` set |
+| `data-sticky-group-header` | presence | `features.grouping.stickyGroupHeader` |
 | `data-status` | `idle` `loading` `empty` `error` | `TableOptions.status` (default `idle`) |
 
 ## Column attributes — on header cells **and** body cells

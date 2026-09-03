@@ -77,6 +77,7 @@ export function getRootAttributes(
     'data-sticky-header': flag(features.stickyHeader),
     'data-expandable': flag(features.expandable),
     'data-grouped': flag(features.grouping !== undefined),
+    'data-sticky-group-header': flag(features.grouping?.stickyGroupHeader),
     'data-status': status,
   };
 }
