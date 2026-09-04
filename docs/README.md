@@ -13,6 +13,8 @@ source of truth; these pages explain it.
 | Look up every schema property | [Schema reference](./components/table/schema.md) |
 | Configure cells from JSON | [Standard cells](./components/table/cells.md) |
 | Style or override a table, or render it without React | [DOM contract](./components/table/dom-contract.md) |
+| Build a table in Figma with an agent | [Figma table workflow](./playbooks/figma-table-workflow.md) · [Figma build state](./figma/table-build-state.json) |
+| Reconcile design and code values | [Consolidation log](./plans/design-code-consolidation.md) |
 | See the plan and the decisions behind it | [Table plan](./plans/table.md) |
 | Add a package or meta-package | [Meta-package strategy](./META_PACKAGES.md) |
 
@@ -25,6 +27,7 @@ docs/
   playbooks/                 how we build (process, lessons)
   plans/                     one plan per initiative, with decisions and phases
   components/<name>/         per-component: README (guide), schema, dom-contract, cells, …
+  figma/                     Figma build state (node/variable IDs) for agents resuming Figma work
 ```
 
 ## Conventions

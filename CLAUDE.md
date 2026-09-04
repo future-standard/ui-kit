@@ -33,6 +33,6 @@ Always use `pnpm` — never `npx`.
 - `apps/dev/` — dev app for testing components
 - Scope: `@future-standard-ui`
 - Shared Vite build config in `packages/build-config`
-- Docs index: `docs/README.md`. Table docs in `docs/components/table/` (guide, schema, DOM contract, cells); plan in `docs/plans/table.md`; process in `docs/playbooks/building-a-component.md` — follow the playbook when adding a component
+- Docs index: `docs/README.md`. Table docs in `docs/components/table/` (guide, schema, DOM contract, cells); plan in `docs/plans/table.md`; process in `docs/playbooks/building-a-component.md` — follow the playbook when adding a component. Figma work: `docs/playbooks/figma-table-workflow.md` + `docs/figma/table-build-state.json` (IDs; load figma-use and figma-generate-library skills first)
 - `pnpm dev` serves `apps/dev` example pages (hash routes, e.g. `#/table-cameras`); build packages first, the app resolves workspace packages from `dist`
 - CSS modules with `vite-plugin-lib-inject-css` (CSS auto-injected on import — no separate style.css import needed for component packages)
