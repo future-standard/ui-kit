@@ -270,7 +270,22 @@ Pulled in from the spec's "later stage" list at Leonard's request.
 - [x] `docs/README.md` index; `CLAUDE.md`, `README.md`, `docs/META_PACKAGES.md` updated.
 - [x] `@future-standard-ui/tables` meta-package (the rule of three was met); table exports in the `ui-kit` kitchen sink.
 - [x] Follow-up 2026-09-03 (Leonard's review): `#/table-cells` gallery (one column per cell type + its JSON); **agent-ready schema docs** — `schema-quickstart.md` (rules, template, recipes, checklist), `table.schema.json` shipped from `table-core` and kept in sync by test, root `llms.txt`; progress-bar fill fixed (inline span ignored width). Safari pass done by Leonard.
-- Then, outside this experiment: light Storybook setup (reference `origin/add-storybook`), Figma track (§Figma), filters + pagination against the §5 contract, Firefox pass.
+- Firefox pass still pending.
+
+## 9. Next up (agreed 2026-09-04, in order)
+
+1. **Remaining 11 Figma cell components**: number, bytes, duration, boolean, multiline, composite, thumbnail, link, progress, truncate, icon — same recipe as the five built.
+2. **`Table Columns` width variables + starting-frame pattern** in Figma (per-column width bound once; the Table template becomes a frame designers copy).
+3. **Schema → Figma generator prototype** (`use_figma` script from the cameras schema in `apps/dev`, using the kit components; the designer-mockup input path) — see `docs/playbooks/figma-table-workflow.md`.
+4. **Code Connect** (`*.figma.tsx` next to components, `@figma/code-connect` dev dep), **Blocks** page (list page), **Getting Started / Guidelines** pages, **publish the file as a team library**.
+5. **Rough documentation pass**: the agent guide for building tables (Figma + code), tidy the docs index, Storybook-ready headings.
+6. **Storybook**, as its own step: first inspect Josh's provisional `origin/add-storybook` (Storybook 10, pre-theme, old scope) and decide reuse vs fresh; light setup; stories from the dev-app examples and pages from the docs.
+
+## 10. Futures (deliberately not now)
+
+- Filters and Pagination against the §5 list-view contract — crosses into other component streams; pick up when those libraries are in scope.
+- Standard sample data package (`@future-standard-ui/sample-data`) — nice to have; the dev app's mock data serves for now. Task notes in `docs/playbooks/figma-table-workflow.md`.
+- Trial adoption in mlit-cctv (users list first), `llms.txt` growth per component, virtualisation, inline editing, saved views.
 
 ### Figma track — runs alongside Phases 2–7
 

@@ -272,12 +272,12 @@
   ],
   "readme": "State ledger for the Figma build of the table (run fsui-table-001). File: https://www.figma.com/design/vQuMH0DtHatIYqkv5A4BVO/UI-Kit--v4-AIN-. Node/variable/style IDs are stable; re-read this file at the start of any Figma session and verify IDs with a read-only use_figma before mutating. Update it after every Figma write.",
   "nextSteps": [
-    "Convert the Table template into a starting frame pattern (frame, not instance) and document it",
-    "Add a Table Columns collection: column/1..8 width variables; bind header + cells per column",
-    "Prototype the schema -> Figma table generator (use_figma script) using apps/dev cameras schema + standard sample data",
-    "Designer mockup workflow: designer places Cell Content components in a rough row; agent reads it, asks for data descriptions, builds the full Table + Figma sample data + (optionally) the code schema",
-    "Model remaining 11 cell types: number, bytes, duration, boolean, multiline, composite, thumbnail, link, progress, truncate, icon",
-    "Code Connect (*.figma.tsx) after publishing the file as a library",
-    "Blocks page (list page), Getting Started, Guidelines"
+    "1. Model remaining 11 cell types: number, bytes, duration, boolean, multiline, composite, thumbnail, link, progress, truncate, icon",
+    "2. Table Columns collection (column/1..8/width) bound on header + cells; Table template -> starting frame pattern",
+    "3. Schema -> Figma generator prototype (cameras schema, kit components, sample rows); designer-mockup input path",
+    "4. Code Connect, Blocks page, Getting Started / Guidelines pages, publish as team library",
+    "5. Rough documentation pass (agent guide)",
+    "6. Storybook (inspect origin/add-storybook first)",
+    "FUTURES: sample-data package; Filters/Pagination; mlit-cctv adoption"
   ]
 }

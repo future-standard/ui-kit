@@ -1,6 +1,7 @@
 # Playbook — Building Tables in Figma (with an agent)
 
-Status: **decided 2026-09-04, not yet built.** Tables are classically hard to assemble in Figma:
+Status: **decided 2026-09-04, not yet built.** Build order: remaining cell components → column-width
+variables + starting frame → generator prototype (see the plan §9). Tables are classically hard to assemble in Figma:
 instances cannot gain or lose columns, and column widths must be edited cell by cell. We solve
 this with a workflow rather than a cleverer component. The table components in the Figma file
 are the vocabulary; an agent, guided by a person, does the assembly from the same JSON schema
@@ -62,8 +63,8 @@ Storybook story, Figma frame and test speak the same language. Decide and record
 - One home for it consumed by dev app, tests, Figma generator and Storybook (a small package,
   e.g. `@future-standard-ui/sample-data`, JSON with a generator for volume).
 
-Owner and timing: after the generator prototype proves what shape it needs; treat as a
-standing asset from then on.
+Timing: **futures list** (decided 2026-09-04) — not needed for the current work; the dev app's mock
+data (`apps/dev/src/examples/table/data.ts`) is the interim sample set for the generator and stories.
 
 ## Prompts
 
