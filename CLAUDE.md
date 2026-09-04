@@ -10,6 +10,7 @@ pnpm monorepo (Turborepo) for `@future-standard-ui` React 19 component library.
 pnpm install          # Install deps
 pnpm run build        # Build all packages
 pnpm run typecheck    # Type-check all packages
+pnpm run test         # Vitest across packages (Turbo)
 pnpm run check        # Biome: lint + format + import sorting
 pnpm run check:fix    # Biome: auto-fix all
 pnpm run lint         # Lint only
@@ -28,8 +29,10 @@ Always use `pnpm` — never `npx`.
 
 ## Structure
 
-- `packages/` — published packages (`button`, `icon-button`, `loading-button`, `theme`, `ui-kit`, `build-config`)
+- `packages/` — published packages (`button`, `icon-button`, `loading-button`, `theme`, `table-core`, `table`, `table-cells`, `tables`, `ui-kit`, `build-config`)
 - `apps/dev/` — dev app for testing components
 - Scope: `@future-standard-ui`
 - Shared Vite build config in `packages/build-config`
+- Docs index: `docs/README.md`. Table docs in `docs/components/table/` (guide, schema, DOM contract, cells); plan in `docs/plans/table.md`; process in `docs/playbooks/building-a-component.md` — follow the playbook when adding a component. Figma work: `docs/playbooks/figma-table-workflow.md` + `docs/figma/table-build-state.json` (IDs; load figma-use and figma-generate-library skills first)
+- `pnpm dev` serves `apps/dev` example pages (hash routes, e.g. `#/table-cameras`); build packages first, the app resolves workspace packages from `dist`
 - CSS modules with `vite-plugin-lib-inject-css` (CSS auto-injected on import — no separate style.css import needed for component packages)

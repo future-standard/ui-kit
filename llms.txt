@@ -1,0 +1,49 @@
+# @future-standard-ui
+
+> React 19 component library from Future Standard, published as individually installable packages
+> under the `@future-standard-ui` scope. Schema-driven, framework-agnostic cores with React
+> renderers on top; CSS modules with a data-attribute contract; design tokens as CSS custom
+> properties from `@future-standard-ui/theme`.
+
+Conventions: pnpm monorepo (Turborepo), Biome for lint/format, Vitest for tests. Never `npx`.
+Components are styled through `@layer component` and overridden in `@layer overrides` via the
+un-hashed `data-ui="<part>"` attributes each component emits.
+
+## Docs
+
+- [Documentation index](docs/README.md): where everything lives and the conventions.
+- [Building a Component playbook](docs/playbooks/building-a-component.md): the process every
+  component follows, with a dated lessons log.
+- [Meta-package strategy](docs/META_PACKAGES.md): how packages group.
+
+## Table
+
+- [Schema quickstart for agents](docs/components/table/schema-quickstart.md): produce a valid
+  table schema quickly — rules, template, recipes, checklist.
+- [Schema reference](docs/components/table/schema.md): every property, default and runtime option.
+- [JSON Schema](packages/table-core/schema/table.schema.json): machine-readable definition
+  (`@future-standard-ui/table-core/schema.json`).
+- [Standard cells](docs/components/table/cells.md): cell types and their JSON options; the
+  `onCellAction` channel.
+- [Table guide](docs/components/table/README.md): install, usage, props, primitives, overrides,
+  accessibility, migration from the old kit's `TypeTable`.
+- [DOM contract](docs/components/table/dom-contract.md): parts and attributes; how to write a
+  renderer for another framework.
+- [Plan and decisions](docs/plans/table.md): why the table is built this way.
+- [Figma table workflow](docs/playbooks/figma-table-workflow.md): how an agent builds a table in
+  Figma from a designer's mockup or a description, using the kit components and the schema.
+- [Figma build state](docs/figma/table-build-state.json): component/variable IDs in the Figma file.
+- [Design/code consolidation log](docs/plans/design-code-consolidation.md).
+
+## Packages
+
+- `@future-standard-ui/theme`: tokens (colours, fonts, spacing) as CSS custom properties, light/dark.
+- `@future-standard-ui/button`, `icon-button`, `loading-button`.
+- `@future-standard-ui/table-core` (no React), `table` (React), `table-cells`, `tables` (meta).
+- `@future-standard-ui/ui-kit`: kitchen-sink re-export of everything.
+
+## Examples
+
+`pnpm build && pnpm dev` serves `apps/dev`; each example is a hash route
+(`#/table-cameras`, `#/table-clips`, `#/table-responsive`, `#/table-cells`, `#/table-vanilla`,
+`#/table-primitives`).

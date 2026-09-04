@@ -1,0 +1,40 @@
+{
+  "name": "@future-standard-ui/table-core",
+  "version": "0.0.0",
+  "description": "Framework-free table engine: schema, state, row model, DOM contract and the shared CSS module.",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./schema.json": "./schema/table.schema.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "schema"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --emitDeclarationOnly",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@future-standard-ui/build-config": "workspace:*",
+    "typescript": "5.9.3",
+    "vite": "8.0.0",
+    "vitest": "4.1.11"
+  }
+}

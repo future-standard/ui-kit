@@ -1,4 +1,48 @@
-node_modules
-dist
-.turbo
+# Dependencies
+node_modules/
+
+# Build output
+dist/
 *.tsbuildinfo
+.turbo/
+
+# Package manager
+.pnpm-store/
+.pnpm-debug.log*
+npm-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Test & coverage
+coverage/
+.vitest/
+*.lcov
+
+# Tooling artefacts
+.playwright-mcp/
+playwright-report/
+test-results/
+*.log
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+Desktop.ini
+
+# Local tool state
+.claude/settings.local.json
+.claude/.DS_Store

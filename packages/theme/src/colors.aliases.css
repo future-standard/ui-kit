@@ -333,10 +333,10 @@
   --button-gradient-end: var(--primary-gradient-end);
 }
 
-.light-theme .button-design-secondary,
-[data-theme="light"] .button-design-secondary,
-.dark-theme .button-design-secondary,
-[data-theme="dark"] .button-design-secondary {
+.light-theme [data-design="secondary"],
+[data-theme="light"] [data-design="secondary"],
+.dark-theme [data-design="secondary"],
+[data-theme="dark"] [data-design="secondary"] {
   --button-background-color: var(--grey-9);
   --button-border-color: var(--grey-6);
   --button-inner-shadow-color: transparent;
@@ -364,14 +364,14 @@
   --button-gradient-end: var(--secondary-gradient-end);
 }
 
-.light-theme .button-design-danger,
-[data-theme="light"] .button-design-danger,
-.dark-theme .button-design-danger,
-[data-theme="dark"] .button-design-danger,
-.light-theme .button-design-warning,
-[data-theme="light"] .button-design-warning,
-.dark-theme .button-design-warning,
-[data-theme="dark"] .button-design-warning {
+.light-theme [data-design="danger"],
+[data-theme="light"] [data-design="danger"],
+.dark-theme [data-design="danger"],
+[data-theme="dark"] [data-design="danger"],
+.light-theme [data-design="warning"],
+[data-theme="light"] [data-design="warning"],
+.dark-theme [data-design="warning"],
+[data-theme="dark"] [data-design="warning"] {
   --button-background-color: var(--warning-9);
   --button-border-color: var(--warning-9);
   --button-inner-shadow-color: transparent;
@@ -399,10 +399,10 @@
   --button-gradient-end: var(--warning-gradient-end);
 }
 
-.light-theme .button-design-text-only,
-[data-theme="light"] .button-design-text-only,
-.dark-theme .button-design-text-only,
-[data-theme="dark"] .button-design-text-only {
+.light-theme [data-design="text-only"],
+[data-theme="light"] [data-design="text-only"],
+.dark-theme [data-design="text-only"],
+[data-theme="dark"] [data-design="text-only"] {
   --button-background-color: transparent;
   --button-border-color: transparent;
   --button-inner-shadow-color: transparent;
@@ -431,10 +431,10 @@
   --button-active-text-color: var(--primary-10);
 }
 
-.light-theme .button-design-outline,
-[data-theme="light"] .button-design-outline,
-.dark-theme .button-design-outline,
-[data-theme="dark"] .button-design-outline {
+.light-theme [data-design="outline"],
+[data-theme="light"] [data-design="outline"],
+.dark-theme [data-design="outline"],
+[data-theme="dark"] [data-design="outline"] {
   --button-background-color: transparent;
   --button-border-color: var(--grey-11);
   --button-border-width: 2px;
@@ -565,4 +565,64 @@
   --switch-special-locked-border: var(--grey-8);
   --switch-special-locked-inner: transparent;
   --switch-special-locked-icon: var(--grey-11);
+}
+
+/* --- Tables --- */
+/* Read by @future-standard-ui/table. Names are deliberately absent from the old kit so the
+   two can share a page. Structure (row height, padding) lives in the component. */
+
+.light-theme,
+[data-theme="light"],
+.dark-theme,
+[data-theme="dark"] {
+  --table-background: var(--grey-1);
+  --table-border-color: var(--grey-5);
+  --table-text-color: var(--grey-11);
+  --table-text-color-strong: var(--grey-12);
+  --table-text-color-muted: var(--grey-9);
+  --table-link-color: var(--primary-11);
+  --table-accent-color: var(--primary-9);
+  --table-focus-ring-color: var(--primary-8);
+
+  --table-header-background: var(--grey-2);
+  --table-header-text-color: var(--grey-11);
+  --table-header-hover-text-color: var(--grey-12);
+  --table-header-group-line-color: var(--grey-6);
+  --table-group-header-text-color: var(--grey-a11);
+  --table-sort-icon-color: var(--grey-9);
+  --table-sort-active-color: var(--primary-9);
+
+  --table-row-background: var(--grey-1);
+  --table-row-alt-background: var(--grey-2);
+  --table-row-hover-background: var(--grey-3);
+  --table-row-selected-background: var(--primary-3);
+  --table-row-selected-hover-background: var(--primary-4);
+  --table-row-divider-color: var(--grey-4);
+
+  --table-row-tone-info: var(--info-3);
+  --table-row-tone-success: var(--success-3);
+  --table-row-tone-warning: var(--caution-3);
+  --table-row-tone-danger: var(--warning-3);
+
+  --table-group-row-background: var(--grey-2);
+  --table-group-row-text-color: var(--grey-11);
+  --table-badge-background: var(--grey-a4);
+  --table-badge-text-color: var(--grey-11);
+
+  --table-drawer-background: var(--grey-2);
+  --table-status-background: var(--grey-1);
+  --table-status-overlay-background: color-mix(in srgb, var(--grey-1) 70%, transparent);
+  --table-pinned-shadow-color: var(--black-a4);
+
+  /* Standard cells (@future-standard-ui/table-cells) */
+  --table-cell-tone-neutral: var(--grey-9);
+  --table-cell-tone-info: var(--info-9);
+  --table-cell-tone-success: var(--success-9);
+  --table-cell-tone-warning: var(--caution-9);
+  --table-cell-tone-danger: var(--warning-9);
+  --table-cell-badge-background: var(--grey-a3);
+  --table-cell-progress-track: var(--grey-4);
+  --table-cell-progress-fill: var(--primary-9);
+  --table-cell-thumbnail-background: var(--grey-4);
+  --table-cell-action-hover-background: var(--grey-a3);
 }

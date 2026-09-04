@@ -6,7 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "check": "biome check .",
+    "check": "biome check . && node scripts/check-data-ui.mjs",
     "check:fix": "biome check --write .",
     "format": "biome format --write .",
     "lint": "biome lint .",
@@ -14,7 +14,8 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
-    "dev": "pnpm --filter @future-standard-ui/dev dev"
+    "dev": "pnpm --filter @future-standard-ui/dev dev",
+    "test": "turbo run test"
   },
   "engines": {
     "node": ">=24"
@@ -23,6 +24,7 @@
     "@biomejs/biome": "2.4.12",
     "@changesets/cli": "2.30.0",
     "turbo": "2.8.17",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
   }
 }

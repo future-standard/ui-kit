@@ -4,11 +4,30 @@ import { defineConfig } from 'vite';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
 /**
- * @param {{ entry?: string; dirname: string; additionalExternal?: string[] }} options
+ * Shared Vite library config for every published package.
+ *
+ * @param {{
+ *   entry?: string;
+ *   dirname: string;
+ *   additionalExternal?: string[];
+ *   react?: boolean;
+ *   test?: Record<string, unknown>;
+ * }} options
+ *   - `react` (default `true`): include the React plugin and externalise React. Set to
+ *     `false` for framework-free packages such as `table-core`.
+ *   - `test`: extra Vitest options merged over the defaults (e.g. `setupFiles`).
  */
-export function createLibraryConfig({ entry = 'src/index.ts', dirname, additionalExternal = [] }) {
+export function createLibraryConfig({
+  entry = 'src/index.ts',
+  dirname,
+  additionalExternal = [],
+  react: withReact = true,
+  test = {},
+}) {
+  const reactExternal = withReact ? ['react', 'react-dom', 'react/jsx-runtime'] : [];
+
   return defineConfig({
-    plugins: [react(), libInjectCss()],
+    plugins: [withReact && react(), libInjectCss()].filter(Boolean),
     css: {
       modules: {
         localsConvention: 'camelCaseOnly',
@@ -22,8 +41,15 @@ export function createLibraryConfig({ entry = 'src/index.ts', dirname, additiona
       },
 
       rolldownOptions: {
-        external: ['react', 'react-dom', 'react/jsx-runtime', ...additionalExternal],
+        external: [...reactExternal, ...additionalExternal],
       },
+    },
+    // Vitest reads this block when a package runs `vitest run` against its vite.config.
+    test: {
+      environment: withReact ? 'jsdom' : 'node',
+      include: ['src/**/*.test.{ts,tsx}'],
+      passWithNoTests: true,
+      ...test,
     },
   });
 }

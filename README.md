@@ -9,6 +9,10 @@ A React 19 component library built as independently versioned, individually inst
 | `@future-standard-ui/button` | Base button with `primary`/`secondary` variants |
 | `@future-standard-ui/loading-button` | Button with a loading spinner state |
 | `@future-standard-ui/icon-button` | Icon-only button (requires `aria-label`) |
+| `@future-standard-ui/table-core` | Framework-free table engine: schema, state, row model, DOM contract |
+| `@future-standard-ui/table` | React table: schema-driven `DataTable` and composable primitives |
+| `@future-standard-ui/table-cells` | Standard cell renderers configured from schema options |
+| `@future-standard-ui/tables` | Meta-package: `table` + `table-cells` + `table-core` |
 | `@future-standard-ui/theme` | Design tokens, fonts, colors, and dark mode support |
 | `@future-standard-ui/ui-kit` | Kitchen-sink re-export of all components |
 
@@ -43,6 +47,9 @@ import { Button, LoadingButton, IconButton } from '@future-standard-ui/ui-kit';
 ```
 
 CSS is automatically injected when you import a component — no separate style import needed.
+
+Documentation lives in [`docs/`](./docs/README.md): component guides, schema references, the
+build playbook and plans.
 
 ## Development
 
@@ -106,6 +113,10 @@ packages/
   loading-button/   # @future-standard-ui/loading-button
   icon-button/      # @future-standard-ui/icon-button
   theme/            # @future-standard-ui/theme
+  table-core/       # @future-standard-ui/table-core (no React)
+  table/            # @future-standard-ui/table (React)
+  table-cells/      # @future-standard-ui/table-cells (React)
+  tables/           # @future-standard-ui/tables (meta-package)
   ui-kit/           # @future-standard-ui/ui-kit
 ```
 

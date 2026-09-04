@@ -1,0 +1,283 @@
+{
+  "runId": "fsui-table-001",
+  "fileKey": "vQuMH0DtHatIYqkv5A4BVO",
+  "phase": "phase4",
+  "step": "review",
+  "entities": {
+    "collections": {
+      "Table": "VariableCollectionId:39:2",
+      "Table Structure": "VariableCollectionId:39:3",
+      "Breakpoints": "VariableCollectionId:39:4",
+      "Table Colors": "VariableCollectionId:39:5"
+    },
+    "variables": {
+      "table/row-height": "VariableID:40:2",
+      "table/cell-padding-x": "VariableID:40:3",
+      "table/font-size": "VariableID:40:4",
+      "table/header-font-size": "VariableID:40:5",
+      "table/utility-width": "VariableID:40:6",
+      "table/border-width": "VariableID:40:7",
+      "table/radius": "VariableID:40:8",
+      "table/group-header-height": "VariableID:40:9",
+      "table/checkbox-size": "VariableID:40:10",
+      "table/toggle-size": "VariableID:40:11",
+      "table/icon-size": "VariableID:40:12",
+      "table/status-dot-size": "VariableID:40:13",
+      "table/progress-height": "VariableID:40:14",
+      "table/thumbnail-width": "VariableID:40:15",
+      "table/thumbnail-height": "VariableID:40:16",
+      "breakpoint/sm": "VariableID:40:17",
+      "breakpoint/md": "VariableID:40:18",
+      "breakpoint/lg": "VariableID:40:19",
+      "breakpoint/xl": "VariableID:40:20",
+      "table/background": "VariableID:41:4",
+      "table/border": "VariableID:41:6",
+      "table/text/default": "VariableID:41:8",
+      "table/text/strong": "VariableID:41:10",
+      "table/text/muted": "VariableID:41:12",
+      "table/text/link": "VariableID:41:14",
+      "table/accent": "VariableID:41:16",
+      "table/focus-ring": "VariableID:41:18",
+      "table/header/background": "VariableID:41:20",
+      "table/header/text": "VariableID:41:21",
+      "table/header/text-hover": "VariableID:41:22",
+      "table/header/group-line": "VariableID:41:24",
+      "table/header/group-text": "VariableID:41:26",
+      "table/header/sort-icon": "VariableID:41:27",
+      "table/header/sort-active": "VariableID:41:28",
+      "table/row/background": "VariableID:41:29",
+      "table/row/background-alt": "VariableID:41:30",
+      "table/row/background-hover": "VariableID:41:32",
+      "table/row/background-selected": "VariableID:41:34",
+      "table/row/background-selected-hover": "VariableID:41:36",
+      "table/row/divider": "VariableID:41:38",
+      "table/row/tone-info": "VariableID:41:40",
+      "table/row/tone-success": "VariableID:41:43",
+      "table/row/tone-warning": "VariableID:41:46",
+      "table/row/tone-danger": "VariableID:41:49",
+      "table/group-row/background": "VariableID:41:50",
+      "table/group-row/text": "VariableID:41:51",
+      "table/badge/background": "VariableID:41:53",
+      "table/badge/text": "VariableID:41:54",
+      "table/drawer/background": "VariableID:41:55",
+      "table/status/background": "VariableID:41:56",
+      "table/status/overlay": "VariableID:41:57",
+      "table/pinned-shadow": "VariableID:41:59",
+      "table/cell/tone-neutral": "VariableID:41:60",
+      "table/cell/tone-info": "VariableID:41:62",
+      "table/cell/tone-success": "VariableID:41:65",
+      "table/cell/tone-warning": "VariableID:41:68",
+      "table/cell/tone-danger": "VariableID:41:71",
+      "table/cell/badge-background": "VariableID:41:73",
+      "table/cell/progress-track": "VariableID:41:74",
+      "table/cell/progress-fill": "VariableID:41:75",
+      "table/cell/thumbnail-background": "VariableID:41:76",
+      "table/cell/action-hover-background": "VariableID:41:77"
+    },
+    "pages": {
+      "Cover": "0:1",
+      "Getting Started": "45:2",
+      "Foundations": "45:3",
+      "---": "45:4",
+      "Components": "45:5",
+      "Table": "45:6",
+      "Table Cells": "45:7",
+      "--- ": "45:8",
+      "Blocks": "45:9",
+      "Guidelines": "45:10"
+    },
+    "components": {
+      "Table/Sort Icon": {
+        "setId": "53:14",
+        "variants": {
+          "None": "53:2",
+          "Ascending": "53:6",
+          "Descending": "53:10"
+        }
+      },
+      "Table/Selection Control": {
+        "setId": "54:10",
+        "variants": {
+          "Unchecked": "54:2",
+          "Checked": "54:3",
+          "Indeterminate": "54:6",
+          "Disabled": "54:9"
+        }
+      },
+      "Table/Expand Toggle": {
+        "setId": "55:10",
+        "variants": {
+          "False": "55:2",
+          "True": "55:6"
+        }
+      },
+      ".Icon/Placeholder": {
+        "id": "55:11"
+      },
+      "Cell Content/Text": {
+        "id": "56:2"
+      },
+      "Cell Content/Status": {
+        "setId": "56:34"
+      },
+      "Cell Content/Timestamp": {
+        "setId": "57:20"
+      },
+      "Cell Content/Action Button": {
+        "setId": "58:26"
+      },
+      "Cell Content/Actions": {
+        "id": "58:27"
+      },
+      "Cell Content/Switch": {
+        "setId": "59:43"
+      },
+      "Table/Header Cell": {
+        "setId": "60:47",
+        "variants": {
+          "Sort=None, Align=Start": "60:2",
+          "Sort=Ascending, Align=Start": "60:7",
+          "Sort=Descending, Align=Start": "60:12",
+          "Sort=None, Align=Center": "60:17",
+          "Sort=None, Align=End": "60:32"
+        }
+      },
+      "Table/Cell": {
+        "setId": "61:65",
+        "variants": {
+          "Align=Start, Emphasis=Normal": "61:35",
+          "Align=Start, Emphasis=High": "61:50",
+          "Align=End, Emphasis=Normal": "61:45",
+          "Align=Start, Emphasis=Low": "61:20"
+        }
+      },
+      "Table/Row": {
+        "setId": "62:438",
+        "firstVariant": "62:20"
+      },
+      "Table/Group Row": {
+        "setId": "63:189",
+        "variants": {
+          "False": "63:175",
+          "True": "63:182"
+        }
+      },
+      "Table": {
+        "id": "65:175"
+      }
+    },
+    "styles": {
+      "Table/Header": "S:4b758f35571ecf6de93cdda35d4c7e2a3f05ec8e,",
+      "Table/Header Group": "S:3542bebf810da9e4b169518680cc7b1632c4a699,",
+      "Table/Group Row": "S:4d6ce70f22ba21872076dbddf733261c3f99cf0e,",
+      "Table/Badge": "S:b7324f4b33771c1681b0a1971945c0a5f08a16c9,",
+      "Table/Cell/Default": "S:8ae8459aa494832ac932d1e0b65e6779d87e5634,",
+      "Table/Cell/Low": "S:80851839a1aeb275bcd2ce68d28127df369bf7cd,",
+      "Table/Cell/High": "S:67703536883ba6e16a9307644e51726276ae0065,",
+      "Table/Cell/Secondary": "S:d6fad7e998b7b7658ed39cd6b49808c990111365,",
+      "Table/Cell/Unit": "S:fa06d2b8cf239a10c890fa1041bc3c6d46561b2a,",
+      "Table/Pinned Edge/Start": "S:7340d50f9c254a7df295722ff2994dcc211b8b51,",
+      "Table/Pinned Edge/End": "S:e4a16260707440fc1a4c5445849f2413b0de32cb,"
+    },
+    "modes": {
+      "Table": {
+        "Normal": "39:0",
+        "Compact": "39:1",
+        "Comfortable": "39:2"
+      },
+      "Table Structure": {
+        "Value": "39:3"
+      },
+      "Breakpoints": {
+        "Value": "39:4"
+      },
+      "Table Colors": {
+        "Value": "39:5"
+      }
+    },
+    "nodes": {
+      "coverFrame": "45:11",
+      "foundationsRoot": "46:2",
+      "foundations.colours.body": "46:9",
+      "foundations.density.body": "46:13",
+      "foundations.typography.body": "46:17",
+      "foundations.breakpoints.body": "46:21",
+      "tableDoc": "66:267",
+      "cellsDoc": "67:17"
+    }
+  },
+  "pendingValidations": [],
+  "completedSteps": [
+    "P0.a",
+    "P0.b",
+    "P0.c",
+    "P0.d",
+    "P0.e",
+    "P0.f",
+    "P1.a",
+    "P1.b",
+    "P1.c",
+    "P1.d",
+    "P1.e",
+    "P1.f",
+    "P1.g",
+    "P1.h",
+    "P2.a",
+    "P2.b",
+    "P2.c",
+    "P3.a",
+    "P3.b",
+    "P3.c",
+    "P3.d",
+    "P3.e",
+    "P3.f",
+    "P3.g",
+    "P3.h",
+    "P3.i",
+    "P3.j",
+    "P3.docs",
+    "P4.b-audit-table"
+  ],
+  "library": {
+    "libraryKey": "lk-bf553b252422d48ca6c83dd1c1f867326a720e18456834233c11725d3979cf23352e08b10896bb7d5200a23f391e95f7788f6fa2eb7083b8b7b7f2857f35fc7f",
+    "collections": {
+      "Colors": "9478ebce266d7b3c125d4efb51f8bcb88b9a2b28",
+      "Tables": "9668a1a7ffcf6fac6629fb3e67a3745d6eeb3284",
+      "Typography": "848bcfa219fdd482caaf88a8ff5ec82f1e9220e8",
+      "Layouts": "fe32c1e8f02077620bb3fa957218a849370a1123",
+      "Shadows": "af900a4ca4bbfaac0b3cf2fe3cb19bdfa5fb661d",
+      "General": "4d71030777357370941730c8ddf391933679450d"
+    },
+    "colorsModes": ["Dark", "Light", "Light (High Contrast)"],
+    "notes": "Colour variable names: Grey/11, Primary/A3, Info/3, Black/A4, White/1, Aliases/Success|Warning|Caution/N. Keys fetched via getVariablesInLibraryCollectionAsync(Colors) at Phase 1 time (index too large to store). Library Tables: cellHeight/headerHeight modes Default 56 / Compact 40 / Ultra Compact 32 / Large 72; columnPadding 16. Typography: fontBody Lato, fontUI Legacy Raleway / Modern Noto Sans JP. General: borderRadius 4, elementHeight 32. Fonts available in Figma: Lato (all weights); Monorale NOT available."
+  },
+  "decisions": {
+    "uiFont": "Noto Sans JP (Modern)",
+    "dataFont": "Lato",
+    "density": "code wins (36/48/56, padding 8/12/16)",
+    "scope": "tokens + shell + 5 core cells (Text, Status, Timestamp, Actions, Switch)"
+  },
+  "notes": [
+    "Foundations root 46:2 pinned to library Colors mode Light. Library Colors default mode is Dark \u2014 pin Light on doc/component pages.",
+    "Lesson: resize() fixes both axes; set layoutSizingVertical='HUG' after resize on auto-layout frames.",
+    "Lesson: after vectorPaths assignment a vector resizes to its path bounds; setting x/y=0 collapses positions. Build multi-path icons via createNodeFromSvg and reparent the paths.",
+    "Lesson: setBoundVariableForPaint returns a paint without the opacity you passed; spread the paint and set opacity afterwards."
+  ],
+  "pending": [
+    "remaining cells: number, bytes, duration, boolean, multiline, composite, thumbnail, link, progress, truncate, icon",
+    "Code Connect (*.figma.tsx, needs @figma/code-connect dev dep + published library keys)",
+    "Blocks page: list page composition",
+    "Guidelines / Getting Started pages",
+    "publish file as team library"
+  ],
+  "readme": "State ledger for the Figma build of the table (run fsui-table-001). File: https://www.figma.com/design/vQuMH0DtHatIYqkv5A4BVO/UI-Kit--v4-AIN-. Node/variable/style IDs are stable; re-read this file at the start of any Figma session and verify IDs with a read-only use_figma before mutating. Update it after every Figma write.",
+  "nextSteps": [
+    "1. Model remaining 11 cell types: number, bytes, duration, boolean, multiline, composite, thumbnail, link, progress, truncate, icon",
+    "2. Table Columns collection (column/1..8/width) bound on header + cells; Table template -> starting frame pattern",
+    "3. Schema -> Figma generator prototype (cameras schema, kit components, sample rows); designer-mockup input path",
+    "4. Code Connect, Blocks page, Getting Started / Guidelines pages, publish as team library",
+    "5. Rough documentation pass (agent guide)",
+    "6. Storybook (inspect origin/add-storybook first)",
+    "FUTURES: sample-data package; Filters/Pagination; mlit-cctv adoption"
+  ]
+}

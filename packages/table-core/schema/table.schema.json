@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://future-standard.github.io/ui-kit/schema/table.schema.json",
+  "title": "TableSchema",
+  "description": "A table for @future-standard-ui/table. Plain JSON: string accessor paths, cell type names, CSS lengths. Anything that needs a function is a runtime option, not schema. Mirrors packages/table-core/src/schema.ts; validated at runtime by validateSchema().",
+  "type": "object",
+  "required": ["rowKey", "columns"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for persistence and saved views. Emitted as data-table-id."
+    },
+    "rowKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Dot path to a value unique per row, e.g. \"id\" or \"meta.uuid\". Selection and expansion are keyed by it."
+    },
+    "columns": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Column" }
+    },
+    "features": { "$ref": "#/$defs/Features" }
+  },
+  "$defs": {
+    "Breakpoint": {
+      "type": "string",
+      "enum": ["sm", "md", "lg", "xl"],
+      "description": "Container-width breakpoints of the table itself (not the viewport): sm 480px, md 720px, lg 960px, xl 1200px."
+    },
+    "Column": {
+      "type": "object",
+      "required": ["id", "header"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique within the table. Also the default accessor."
+        },
+        "header": {
+          "type": "string",
+          "description": "Display text, already translated. May be empty for icon/action columns."
+        },
+        "accessor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dot path into the row, e.g. \"location.route\", \"tags.0\". Defaults to id."
+        },
+        "cell": { "$ref": "#/$defs/Cell" },
+        "sortable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Header becomes a sort control; the table emits sorting changes."
+        },
+        "align": { "type": "string", "enum": ["start", "center", "end"], "default": "start" },
+        "emphasis": {
+          "type": "string",
+          "enum": ["low", "normal", "high"],
+          "default": "normal",
+          "description": "Visual weight. The high-emphasis column becomes the card title in the stacked layout."
+        },
+        "width": {
+          "type": "string",
+          "description": "CSS length (\"200px\", \"20%\", \"12rem\"). Acts as a floor: the table scrolls rather than squeezing declared columns."
+        },
+        "minWidth": { "type": "string", "description": "CSS length. Defaults to width." },
+        "maxWidth": {
+          "type": "string",
+          "description": "CSS length. Pinned columns are locked to width automatically."
+        },
+        "pin": {
+          "type": "string",
+          "enum": ["start", "end"],
+          "description": "Lock to an edge while the body scrolls. Pinned columns cannot have visibleFrom/visibleUntil; every pinned column except the outermost on its side must declare width."
+        },
+        "visibleFrom": {
+          "$ref": "#/$defs/Breakpoint",
+          "description": "Render only at this container breakpoint and above."
+        },
+        "visibleUntil": {
+          "$ref": "#/$defs/Breakpoint",
+          "description": "Render only below this breakpoint (exclusive). Must be larger than visibleFrom. Pair with visibleFrom on sibling columns for a combined-on-small layout."
+        },
+        "group": {
+          "type": "string",
+          "description": "Header group title; adjacent columns with the same title merge. Grouped columns must share visibleFrom/visibleUntil."
+        }
+      }
+    },
+    "Cell": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Renderer name. Built in: text, composite. Standard set (@future-standard-ui/table-cells): number, bytes, duration, boolean, timestamp, multiline, status, thumbnail, link, actions, switch, progress, truncate, icon. Projects may register more. Unknown types fall back to text."
+        },
+        "options": {
+          "type": "object",
+          "description": "Passed to the renderer untouched. See docs/components/table/cells.md for each type's options.",
+          "additionalProperties": true
+        }
+      }
+    },
+    "Condition": {
+      "type": "object",
+      "required": ["accessor"],
+      "additionalProperties": false,
+      "description": "JSON-safe test against the row, used by actions/switch options (enabledWhen, visibleWhen).",
+      "properties": {
+        "accessor": { "type": "string" },
+        "equals": {},
+        "not": {},
+        "in": { "type": "array" },
+        "truthy": { "type": "boolean" }
+      }
+    },
+    "Features": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "selection": {
+          "type": "string",
+          "enum": ["none", "single", "multiple"],
+          "default": "none"
+        },
+        "expandable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Rows get a toggle and a drawer (content supplied at runtime via renderDrawer)."
+        },
+        "stickyHeader": { "type": "boolean", "default": false },
+        "zebra": { "type": "boolean", "default": false },
+        "density": {
+          "type": "string",
+          "enum": ["compact", "normal", "comfortable"],
+          "default": "normal"
+        },
+        "grouping": {
+          "type": "object",
+          "required": ["by"],
+          "additionalProperties": false,
+          "description": "Group adjacent rows by a column's value. Pass data sorted by that column.",
+          "properties": {
+            "by": { "type": "string", "description": "A column id." },
+            "collapsible": { "type": "boolean", "default": false },
+            "stickyGroupHeader": { "type": "boolean", "default": false }
+          }
+        },
+        "stacked": {
+          "type": "object",
+          "required": ["below"],
+          "additionalProperties": false,
+          "description": "Below this container breakpoint, rows render as cards (mobile layout).",
+          "properties": { "below": { "$ref": "#/$defs/Breakpoint" } }
+        }
+      }
+    }
+  }
+}

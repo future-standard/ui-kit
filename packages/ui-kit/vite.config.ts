@@ -6,5 +6,8 @@ export default createLibraryConfig({
     '@future-standard-ui/button',
     '@future-standard-ui/icon-button',
     '@future-standard-ui/loading-button',
+    '@future-standard-ui/table',
+    '@future-standard-ui/table-cells',
+    '@future-standard-ui/table-core',
   ],
 });

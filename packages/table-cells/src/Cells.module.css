@@ -1,0 +1,347 @@
+/*
+ * Standard cells — presentation only. State comes from data attributes set by the renderers;
+ * colour from `--table-cell-*` theme aliases; structure from private `--_*` vars. Parts are
+ * `data-ui="cell-*"` so overrides can target one cell kind without touching the table.
+ */
+@layer component {
+  .placeholder {
+    color: var(--table-text-color-muted);
+  }
+
+  .unit {
+    margin-inline-start: 3px;
+    color: var(--table-text-color-muted);
+    font-size: 0.85em;
+    font-style: italic;
+  }
+
+  /* ---- multiline / timestamp ------------------------------------------- */
+
+  .stack {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: inherit;
+    line-height: 1.25;
+    text-align: inherit;
+  }
+
+  .stack > :nth-child(n + 2) {
+    color: var(--table-text-color-muted);
+    font-size: 0.86em;
+  }
+
+  .stack [data-emphasis="high"] {
+    color: var(--table-text-color-strong);
+    font-weight: 700;
+  }
+
+  .stack [data-emphasis="low"] {
+    color: var(--table-text-color-muted);
+  }
+
+  /* ---- status ---------------------------------------------------------- */
+
+  .status {
+    --_tone: var(--table-cell-tone-neutral);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+
+    &[data-tone="info"] {
+      --_tone: var(--table-cell-tone-info);
+    }
+
+    &[data-tone="success"] {
+      --_tone: var(--table-cell-tone-success);
+    }
+
+    &[data-tone="warning"] {
+      --_tone: var(--table-cell-tone-warning);
+    }
+
+    &[data-tone="danger"] {
+      --_tone: var(--table-cell-tone-danger);
+    }
+
+    &[data-variant="badge"] {
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--_tone) 16%, transparent);
+      color: var(--_tone);
+      font-size: 0.86em;
+      font-weight: 600;
+    }
+  }
+
+  .statusDot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--_tone);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--_tone) 25%, transparent);
+  }
+
+  .status[data-variant="badge"] .statusDot {
+    width: 6px;
+    height: 6px;
+    box-shadow: none;
+  }
+
+  .statusLabel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ---- thumbnail ------------------------------------------------------- */
+
+  .thumbnail {
+    --_width: 64px;
+    --_height: 36px;
+    display: block;
+    width: var(--_width);
+    height: var(--_height);
+    border-radius: 3px;
+    background: var(--table-cell-thumbnail-background);
+    object-fit: cover;
+  }
+
+  .thumbnailPlaceholder {
+    display: block;
+    width: var(--_width, 64px);
+    height: var(--_height, 36px);
+    border-radius: 3px;
+    background: var(--table-cell-thumbnail-background);
+  }
+
+  /* ---- link ------------------------------------------------------------ */
+
+  .link {
+    color: var(--table-link-color);
+    text-decoration: none;
+    font: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  /* ---- actions --------------------------------------------------------- */
+
+  .actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    /* Visible on row hover / focus; always visible for keyboard and touch users. */
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--table-text-color);
+    font: inherit;
+    font-size: 0.93em;
+    cursor: pointer;
+    transition:
+      background-color var(--speed-fast) var(--easing-primary-out),
+      color var(--speed-fast) var(--easing-primary-out);
+
+    &:hover:not(:disabled) {
+      background: var(--table-cell-action-hover-background);
+      color: var(--table-text-color-strong);
+    }
+
+    &[data-design="danger"]:hover:not(:disabled) {
+      color: var(--table-cell-tone-danger);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 1px;
+    }
+  }
+
+  .actionIcon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ---- switch ---------------------------------------------------------- */
+
+  .switch {
+    appearance: none;
+    position: relative;
+    display: inline-block;
+    width: var(--switch-width, 40px);
+    height: var(--switch-height, 24px);
+    margin: 0;
+    border: var(--switch-border-width, 2px) solid var(--switch-default-off-border);
+    border-radius: 999px;
+    background: var(--switch-default-off-background);
+    vertical-align: middle;
+    cursor: pointer;
+    transition:
+      background-color var(--speed-fast) var(--easing-primary-out),
+      border-color var(--speed-fast) var(--easing-primary-out);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 2px;
+      width: var(--switch-inner-size, 16px);
+      height: var(--switch-inner-size, 16px);
+      border-radius: 999px;
+      background: var(--switch-default-off-inner);
+      transform: translateY(-50%);
+      transition:
+        transform var(--speed-fast) var(--easing-primary-out),
+        background-color var(--speed-fast) var(--easing-primary-out);
+    }
+
+    &:checked {
+      border-color: var(--switch-default-on-border);
+      background: var(--switch-default-on-background);
+
+      &::after {
+        background: var(--switch-default-on-inner);
+        transform: translate(
+          calc(
+            var(--switch-width, 40px) -
+            var(--switch-inner-size, 16px) -
+            2 *
+            var(--switch-border-width, 2px) -
+            4px
+          ),
+          -50%
+        );
+      }
+    }
+
+    &:disabled {
+      border-color: var(--switch-disabled-off-border);
+      background: var(--switch-disabled-off-background);
+      cursor: not-allowed;
+
+      &::after {
+        background: var(--switch-disabled-off-inner);
+      }
+
+      &:checked {
+        border-color: var(--switch-disabled-on-border);
+        background: var(--switch-disabled-on-background);
+
+        &::after {
+          background: var(--switch-disabled-on-inner);
+        }
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--table-focus-ring-color);
+      outline-offset: 2px;
+    }
+  }
+
+  /* ---- progress -------------------------------------------------------- */
+
+  .progress {
+    --_fill: var(--table-cell-progress-fill);
+    display: inline-grid;
+    grid-template-columns: minmax(60px, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-width: 90px;
+
+    &[data-tone="warning"] {
+      --_fill: var(--table-cell-tone-warning);
+    }
+
+    &[data-tone="danger"] {
+      --_fill: var(--table-cell-tone-danger);
+    }
+
+    &[data-tone="success"] {
+      --_fill: var(--table-cell-tone-success);
+    }
+  }
+
+  .progressTrack {
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--table-cell-progress-track);
+  }
+
+  .progressFill {
+    /* Spans are inline by default and ignore width — the bar rendered empty until this. */
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--_fill);
+    transition: width var(--speed-normal, 0.25s) var(--easing-primary-out);
+  }
+
+  .progressValue {
+    min-width: 3.5ch;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+  }
+
+  /* ---- truncate -------------------------------------------------------- */
+
+  .truncate {
+    display: block;
+    max-width: var(--_max-width, 100%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ---- icon ------------------------------------------------------------ */
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--table-text-color-muted);
+    vertical-align: middle;
+  }
+
+  .icon svg {
+    width: 16px;
+    height: 16px;
+  }
+}

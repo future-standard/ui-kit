@@ -1,14 +1,13 @@
-import { Button } from '@future-standard-ui/button';
 import { IconButton } from '@future-standard-ui/icon-button';
-import { LoadingButton } from '@future-standard-ui/loading-button';
 import { useThemeToggle } from '@future-standard-ui/theme';
-import { useState } from 'react';
-
-const StarIcon = () => (
-  <svg width='16' height='16' viewBox='0 0 16 16' fill='currentColor' role='img' aria-label='Star'>
-    <path d='M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z' />
-  </svg>
-);
+import { useEffect, useState } from 'react';
+import { ButtonsExample } from './examples/ButtonsExample';
+import { CamerasExample } from './examples/table/CamerasExample';
+import { CellsGalleryExample } from './examples/table/CellsGalleryExample';
+import { ClipsExample } from './examples/table/ClipsExample';
+import { PrimitivesExample } from './examples/table/PrimitivesExample';
+import { ResponsiveExample } from './examples/table/ResponsiveExample';
+import { VanillaExample } from './examples/table-vanilla/VanillaExample';
 
 const MoonIcon = () => (
   <svg
@@ -36,58 +35,99 @@ const SunIcon = () => (
   </svg>
 );
 
-export function App() {
-  const [loading, setLoading] = useState(false);
-  const { isDarkThemeEnabled, onThemeToggle } = useThemeToggle();
+/** Example pages, addressed by URL hash so they can be linked and screenshotted. */
+const pages = [
+  { id: 'buttons', title: 'Buttons', render: () => <ButtonsExample /> },
+  {
+    id: 'table-cameras',
+    title: 'Table — schema-driven',
+    intro:
+      'Uncontrolled, client-sorted. Every visible behaviour comes from the JSON schema below the table; resize the window to see columns appear at the md / lg / xl container breakpoints.',
+    render: () => <CamerasExample />,
+  },
+  {
+    id: 'table-clips',
+    title: 'Table — controlled, server-sorted',
+    intro:
+      'The mlit-cctv list-screen pattern: the screen owns sorting and selection, a fake server sorts with latency, and the table only reports changes.',
+    render: () => <ClipsExample />,
+  },
+  {
+    id: 'table-cells',
+    title: 'Table — cell gallery',
+    intro:
+      'One column per standard cell type with the JSON that produces it. Three rows: typical, threshold-tripping, and empty values.',
+    render: () => <CellsGalleryExample />,
+  },
+  {
+    id: 'table-responsive',
+    title: 'Table — responsive',
+    intro:
+      'Pinned start/end columns with schema-derived offsets, ingress/egress collapsing into one composite column below the lg breakpoint, and a header that sticks to the table or to the page.',
+    render: () => <ResponsiveExample />,
+  },
+  {
+    id: 'table-vanilla',
+    title: 'Table — vanilla DOM',
+    intro:
+      'The same schema rendered by React and by a plain-DOM renderer that imports only table-core. Sort, select and expand either; then compare the DOM contract both emit.',
+    render: () => <VanillaExample />,
+  },
+  {
+    id: 'table-primitives',
+    title: 'Table — primitives',
+    intro: 'Hand-composed with Table.Root / Head / Body / Row: one header, one body per office.',
+    render: () => <PrimitivesExample />,
+  },
+];
 
-  function handleLoadingClick() {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
-  }
+const readHash = () => window.location.hash.replace(/^#\/?/, '') || pages[0].id;
+
+export function App() {
+  const { isDarkThemeEnabled, onThemeToggle } = useThemeToggle();
+  const [pageId, setPageId] = useState(readHash);
+
+  useEffect(() => {
+    const onHashChange = () => setPageId(readHash());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  const page = pages.find((p) => p.id === pageId) ?? pages[0];
 
   return (
-    <div style={{ maxWidth: 640, margin: '0 auto', padding: '2rem' }}>
-      <div
+    <div style={{ maxWidth: 1280, margin: '0 auto', padding: '2rem' }}>
+      <header
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '2rem',
+          gap: 16,
+          marginBottom: '1.5rem',
         }}
       >
-        <h1 style={{ margin: 0 }}>@future-standard-ui UI Kit</h1>
+        <h1 style={{ margin: 0, fontSize: '1.25rem' }}>@future-standard-ui</h1>
+        <nav style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {pages.map((p) => (
+            <a
+              key={p.id}
+              href={`#/${p.id}`}
+              style={{ fontWeight: p.id === page.id ? 700 : 400, color: 'inherit' }}
+            >
+              {p.title}
+            </a>
+          ))}
+        </nav>
         <IconButton
           icon={isDarkThemeEnabled ? <SunIcon /> : <MoonIcon />}
           aria-label={isDarkThemeEnabled ? 'Switch to light mode' : 'Switch to dark mode'}
           onClick={onThemeToggle}
         />
-      </div>
+      </header>
 
-      <Section title='Button'>
-        <Button variant='primary'>Primary</Button>
-        <Button variant='secondary'>Secondary</Button>
-        <Button disabled>Disabled</Button>
-      </Section>
-
-      <Section title='LoadingButton'>
-        <LoadingButton loading={loading} onClick={handleLoadingClick}>
-          {loading ? 'Submitting...' : 'Submit'}
-        </LoadingButton>
-      </Section>
-
-      <Section title='IconButton'>
-        <IconButton icon={<StarIcon />} aria-label='Favorite' />
-        <IconButton icon={<StarIcon />} aria-label='Favorite' variant='secondary' />
-      </Section>
+      <h2 style={{ marginTop: 0 }}>{page.title}</h2>
+      {page.intro && <p style={{ opacity: 0.75, marginTop: -8 }}>{page.intro}</p>}
+      {page.render()}
     </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section style={{ marginBottom: '2rem' }}>
-      <h2 style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>{title}</h2>
-      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>{children}</div>
-    </section>
   );
 }

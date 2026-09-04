@@ -1,0 +1,46 @@
+{
+  "name": "@future-standard-ui/tables",
+  "version": "0.0.0",
+  "description": "Meta-package: the table engine, React table and standard cells in one install.",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --emitDeclarationOnly"
+  },
+  "dependencies": {
+    "@future-standard-ui/table": "workspace:*",
+    "@future-standard-ui/table-cells": "workspace:*",
+    "@future-standard-ui/table-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@future-standard-ui/build-config": "workspace:*",
+    "@types/react": "19.2.14",
+    "typescript": "5.9.3",
+    "vite": "8.0.0"
+  }
+}
